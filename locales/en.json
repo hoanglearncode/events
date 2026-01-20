@@ -1,0 +1,531 @@
+{
+  "common": {
+    "free": "Free",
+    "buy": "Buy Now",
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "or": "or",
+    "and": "and",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "viewAll": "View All",
+    "details": "Details",
+    "download": "Download",
+    "tryNow": "Try Now",
+    "install": "Install",
+    "search": "Search"
+  },
+  "searchInputlabel": "Search products",
+  "Featured": "Featured",
+  "ProductFeatured": "Featured Products",
+  "share": "Share this post",
+  "lq": "Related Articles",
+  "gb": "Price",
+  "nb": "Seller",
+  "productEmpty": "No products found",
+  "productEmptyDes": "There are no products to display at the moment.",
+  "leaveWarning": "You are in the middle of a payment. Leaving the page will cancel the process.",
+  "warningBanner": "In payment process — please do not close/refresh this page until finished.",
+  "timerLabel": "Time left",
+  "timerExpired": "Payment time expired. Please try again.",
+  "successTitleSuffix": "Complete payment",
+  "successSub": "Please complete the payment on the newly opened tab.",
+  "checkout": {
+    "back": "Back",
+    "productInfo": "Product Information",
+    "quantity": "Quantity",
+    "selectPackage": "Select Service Package",
+    "domestic": "Domestic",
+    "international": "International",
+    "createOrder": "Create Order",
+    "continue": "Continue",
+    "paymentMethod": "Payment Method",
+    "orderCode": "Order Code",
+    "total": "Total",
+    "payWithQR": "Pay via QR Code (PayOS)",
+    "payWithPaypal": "Pay via PayPal",
+    "sessionFound": "Session Found",
+    "sessionFoundDesc": "You have an unfinished transaction. Do you want to continue?",
+    "mustFinishPayment": "Transaction in Progress",
+    "mustFinishPaymentDesc": "You have an active payment session. Do you want to continue it or start a new one?",
+    "continuePayment": "Continue Payment",
+    "cancelPayment": "Cancel & Start New",
+    "cancelAndHome": "Cancel and return Home",
+    "backHome": "Back to Home",
+    "errors": {
+      "invalidId": "Invalid Product ID",
+      "notFoundId": "Product ID not found",
+      "selectPackage": "Please select a package",
+      "paymentFailed": "Payment failed",
+      "orderFailed": "Order creation failed",
+      "noPaymentLink": "Payment link not received"
+    }
+  },
+  "navbar": {
+    "tools": "Tools",
+    "courses": "Courses",
+    "marketplace": "Marketplace",
+    "blog": "Blog",
+    "login": "Sign In",
+    "register": "Sign Up",
+    "search": "Open search",
+    "selectLanguage": "Select language",
+    "openMenu": "Open menu",
+    "language": "Language",
+    "myProfile": "My Profile",
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "notifications": "Notifications",
+    "adminDashboard": "Admin Dashboard",
+    "sellerDashboard": "Seller Dashboard",
+    "myData": "My Data",
+    "addNewPost": "Add New Post",
+    "logout": "Logout",
+    "profile": "Profile",
+    "dashboard": "Dashboard"
+  },
+  "auth": {
+    "fields": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "rememberMe": "Remember me",
+      "agreeToTerms": "I agree to the Terms of Service"
+    },
+    "placeholders": {
+      "fullName": "John Doe",
+      "email": "name@company.com",
+      "emailLogin": "your-email@company.com",
+      "password": "••••••••"
+    },
+    "buttons": {
+      "login": "Start Creating Videos",
+      "register": "Activate ManixAI Now",
+      "processing": "Processing...",
+      "creating": "Creating account...",
+      "forgotPassword": "Forgot password?",
+      "resetPassword": "Reset Password",
+      "verifyEmail": "Verify Email"
+    },
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Sign in to your account",
+      "success": "Login successful!",
+      "failed": "Login failed. Please check your information.",
+      "invalidCredentials": "Invalid email or password",
+      "accountLocked": "Your account has been locked. Please contact support.",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up now"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Create a new account to get started",
+      "registrationSuccess": "Registration successful! Please check your email to verify your account.",
+      "registrationFailed": "Registration failed. Please try again.",
+      "checkInformation": "Please check the information you entered",
+      "emailExists": "This email is already in use",
+      "haveAccount": "Already have an account?",
+      "loginNow": "Sign in now"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subtitle": "Enter your email to reset your password",
+      "success": "Password reset email has been sent!",
+      "failed": "Failed to send password reset email",
+      "emailNotFound": "No account found with this email",
+      "backToLogin": "Back to login"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "subtitle": "Enter your new password",
+      "success": "Password has been reset successfully!",
+      "failed": "Failed to reset password",
+      "tokenExpired": "Verification token has expired",
+      "tokenInvalid": "Invalid verification token"
+    },
+    "verifyEmail": {
+      "title": "Verify Email",
+      "success": "Email verified successfully!",
+      "failed": "Email verification failed",
+      "alreadyVerified": "Email was already verified"
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "success": "Password changed successfully!",
+      "failed": "Failed to change password",
+      "incorrectPassword": "Current password is incorrect"
+    }
+  },
+
+  "validation": {
+    "email": {
+      "required": "Please enter your email address",
+      "invalid": "Invalid email address"
+    },
+    "password": {
+      "required": "Please enter a password",
+      "min": "Password must be at least {{min}} characters",
+      "uppercase": "Password must contain at least {{count}} uppercase letter",
+      "lowercase": "Password must contain at least {{count}} lowercase letter",
+      "number": "Password must contain at least {{count}} number",
+      "special": "Password must contain at least {{count}} special character (!@#$%^&*...)",
+      "mismatch": "Passwords do not match",
+      "current": {
+        "required": "Please enter your current password"
+      },
+      "confirmation": {
+        "required": "Please confirm your password",
+        "mismatch": "Passwords do not match"
+      },
+      "requirements": {
+        "min_length": "At least {{min}} characters",
+        "uppercase": "At least {{count}} uppercase",
+        "lowercase": "At least {{count}} lowercase",
+        "number": "At least {{count}} number",
+        "special": "At least {{count}} special character"
+      }
+    },
+    "name": {
+      "required": "Please enter your full name",
+      "max": "Name cannot exceed {{max}} characters"
+    },
+    "terms": {
+      "required": "You must agree to the Terms of Service"
+    },
+    "token": {
+      "invalid": "Invalid verification token"
+    },
+    "user": {
+      "id": {
+        "required": "User ID is required"
+      }
+    },
+    "verification": {
+      "hash": {
+        "required": "Verification code is required"
+      }
+    }
+  },
+
+  "footer": {
+    "brandDescription": "The world's leading industrial-scale Video AI operation platform. Comprehensive solution for the new era Content Creator.",
+    "productsTitle": "Products",
+    "companyTitle": "Company",
+    "newsletterTitle": "Subscribe to Newsletter",
+    "newsletterDesc": "Get the latest updates about Sora 2 and Veo 3.1",
+    "emailPlaceholder": "Your email",
+    "subscribeSuccess": "Subscribed successfully!",
+    "copyright": "© 2026 ManixAI Corporation.",
+    "allRightsReserved": "All rights reserved.",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "cookies": "Cookies",
+    "madeWithLove": "Made with ♥ in Vietnam",
+    "products": {
+      "createVideoAI": "Create AI Video",
+      "promptEngine": "Prompt Engine",
+      "profileManager": "Profile Manager",
+      "apiWebhooks": "API & Webhooks"
+    },
+    "company": {
+      "aboutUs": "About Us",
+      "blog": "Blog",
+      "careers": "Careers",
+      "contact": "Contact"
+    }
+  },
+
+  "cta": {
+    "downloadDashboard": "Download Manix Dashboard",
+    "viewDocs": "Documentation",
+    "startFree": "Start for Free",
+    "exploreAll": "Explore All"
+  },
+
+  "tools": {
+    "featured": {
+      "updated": "Updated just now"
+    },
+    "filter": {
+      "title": "Ecosystem",
+      "subtitle": "Ecosystem within the platform",
+      "categories": "Categories"
+    },
+    "pageTitle": "ManixAI Software Ecosystem",
+    "pageSubtitle": "All the tools you need to build an AI content empire",
+    "featuredTitle": "Featured Tools",
+    "featuredSubtitle": "Most loved by the ManixAI community",
+    "allToolsTitle": "All Tools",
+    "allToolsSubtitle": "Explore the entire ManixAI software ecosystem",
+    "noResults": "No tools found",
+    "noResultsHint": "Try adjusting your filters or search",
+    "searchPlaceholder": "Search tools...",
+    "foundResults": "Found {{count}} tools",
+    "badge": {
+      "popular": "Popular"
+    },
+    "categories": {
+      "all": "All",
+      "desktopApp": "Desktop App",
+      "automation": "Automation",
+      "extension": "Extension",
+      "mobile": "Mobile"
+    },
+    "detail": {
+      "backToList": "Back",
+      "professionalPlan": "Professional Plan",
+      "monthlyPayment": "Monthly Payment",
+      "downloadInstall": "Download & Install",
+      "try24h": "Try 24h",
+      "includes": {
+        "allPremium": "All Premium features",
+        "lifetimeUpdates": "Lifetime updates",
+        "license1Device": "License for 1 device"
+      },
+      "noteNeedHub": "Requires Manix Hub Console to be installed for license authentication."
+    },
+    "tabs": {
+      "overview": "Overview",
+      "features": "Features",
+      "requirements": "Requirements",
+      "overviewContent": "Manix Render Cloud v3 is the brain that powers the entire AI video pipeline, optimized for Sora & Veo.",
+      "multiThread": "Multi-threading",
+      "multiThreadDesc": "Parallel rendering, maximum cloud utilization.",
+      "security": "Security",
+      "securityDesc": "Full encryption of prompts and data.",
+      "requirementsTitle": "System Requirements"
+    },
+    "hero": {
+      "badge": "The Ultimate AI Toolkit",
+      "title": "Software",
+      "titleHighlight": "Ecosystem",
+      "description": "All the tools you need to build an AI content empire. From anonymous browsers to multi-threaded cloud rendering systems."
+    },
+    "bottomSection": {
+      "title": "Centralized Interface, Easy Management.",
+      "description": "Every software in the ecosystem connects through Manix Hub Console. One account manages hundreds of workflows.",
+      "features": {
+        "api": "Open API system for Developers",
+        "autoUpdate": "Automatic updates to latest version",
+        "support": "24/7 technical support via Telegram",
+        "lowResource": "Extremely low hardware resource usage"
+      }
+    }
+  },
+
+  "courses": {
+    "allToolsSubtitle": "Explore the complete ManixAI software ecosystem",
+    "pageTitle": "ManixAI Academy",
+    "pageSubtitle": "Level up your AI Video creation skills",
+    "featuredTitle": "Featured Courses",
+    "featuredSubtitle": "Editor's choice",
+    "newestTitle": "Newest Courses",
+    "bestSellerTitle": "Best Sellers",
+    "searchPlaceholder": "Search courses...",
+    "noCourses": "No courses found",
+    "badge": {
+      "bestSeller": "Best Seller"
+    },
+    "students": "students",
+    "viewDetails": "View Details",
+    "filters": {
+      "sort": "Sort",
+      "newest": "Newest",
+      "popular": "Popular",
+      "rating": "Rating",
+      "advanced": "Advanced Filter",
+      "searchPlaceholder": "Search courses, tags, content..."
+    },
+    "header": {
+      "academy": "ManixAI Academy",
+      "title": "Level up your skills",
+      "subtitle": "AI Video Creation",
+      "description": "Learn from top experts in Generative AI. Real-world workflows, ready to apply in work and business.",
+      "searchPlaceholder": "Search for courses you're interested in..."
+    },
+    "home": {
+      "learnAndCreate": "Learn & Create AI Content",
+      "description": "Real-world courses, regularly updated — from Prompt to Viral Video.",
+      "newest": "Newest Courses",
+      "bestSeller": "Best Sellers",
+      "showing": "Showing {{shown}} of {{total}} courses"
+    },
+    "featured": {
+      "title": "Featured Courses",
+      "subtitle": "Editor's choice"
+    },
+    "detail": {
+      "badge": {
+        "creative": "Creative Content",
+        "bestSeller": "Best Seller"
+      },
+      "hero": {
+        "title": "Master AI Video: From Idea to 1 Million Views",
+        "description": "The only course that helps you build a fully automated AI video production workflow, saving 90% of your time.",
+        "reviews": "{{count}} reviews",
+        "language": "Vietnamese"
+      },
+      "whatYouLearn": {
+        "title": "What You'll Learn",
+        "items": {
+          "1": "Master Sora 2 & Veo 3.1 from A-Z",
+          "2": "Automate 4K video rendering workflows",
+          "3": "Advanced Prompt Engineering techniques",
+          "4": "Build million-view channels quickly",
+          "5": "Monetize AI Video services",
+          "6": "Directorial mindset in the AI era"
+        }
+      },
+      "curriculum": {
+        "title": "Course Curriculum",
+        "summary": "{{chapters}} Chapters • {{lessons}} Lessons • {{hours}} hours total",
+        "chapter1": {
+          "title": "Chapter 1: Introduction & AI Video Overview",
+          "lesson1": "Why AI Video is the future?",
+          "lesson2": "Essential tools to prepare",
+          "lesson3": "Setting up ManixAI account"
+        },
+        "chapter2": {
+          "title": "Chapter 2: Master Sora 2 Prompting",
+          "lesson1": "Cinematic Prompt Structure",
+          "lesson2": "Camera control techniques",
+          "lesson3": "Common physics error handling"
+        },
+        "chapter3": {
+          "title": "Chapter 3: Battle-Tested Viral Rendering",
+          "lesson1": "10 videos/day production workflow",
+          "lesson2": "Multi-thread optimization",
+          "lesson3": "AI-assisted post-production editing"
+        }
+      },
+      "instructor": {
+        "title": "Instructor",
+        "role": "Founder of ManixAI & AI Educator",
+        "reviews": "Reviews",
+        "bio": "With over 5 years in Generative AI, Hoàng has helped thousands of individuals and businesses optimize their content creation workflows."
+      },
+      "previewVideo": "Watch Introduction Video",
+      "discount": "Save {{percent}}%",
+      "registerNow": "Enroll Now",
+      "addToCart": "Add to Cart",
+      "includes": {
+        "title": "This Course Includes:",
+        "lifetimeAccess": "Lifetime Access",
+        "allDevices": "Learn on Any Device",
+        "materials": "{{count}} Practice Materials",
+        "certificate": "Completion Certificate"
+      },
+      "coupon": {
+        "title": "Have a discount code?",
+        "code": "ENTER CODE: AI2024",
+        "apply": "Apply"
+      }
+    }
+  },
+
+  "marketplace": {
+    "pageTitle": "ManixAI Marketplace",
+    "pageSubtitle": "Exchange AI accounts, prompt packs, and professional services",
+    "hero": {
+      "badge": "AI Services Marketplace",
+      "title": "ManixAI",
+      "titleHighlight": "Marketplace",
+      "description": "Exchange AI accounts, video assets, and professional services.",
+      "stats": {
+        "transactions": "Transactions/Month",
+        "sellers": "Trusted Sellers"
+      }
+    },
+    "buyBox": {
+      "quantity": "Quantity",
+      "buyNow": "Buy Now",
+      "addToCart": "Add to Cart"
+    },
+    "features": {
+      "title": "Benefits & Features"
+    },
+    "product": {
+      "reviews": "reviews",
+      "sold": "Sold",
+      "verified": "Trusted Seller",
+      "inStock": "In Stock",
+      "outOfStock": "Out of Stock"
+    },
+    "seller": {
+      "totalSales": "Total Sales"
+    },
+    "filters": {
+      "allCategories": "All",
+      "categories": "Categories",
+      "buyerProtection": {
+        "title": "Buyer Protection",
+        "description": "Your money is held in escrow until you confirm the order is successful."
+      },
+      "searchPlaceholder": "Search accounts, prompts...",
+      "advanced": "Advanced Filter",
+      "newest": "Newest",
+      "popular": "Popular",
+      "lowestPrice": "Lowest Price"
+    },
+    "totalProducts": "Total: {{count}} products",
+    "categories": {
+      "all": "All",
+      "aiAccount": "AI Accounts",
+      "promptPack": "Prompt Packs",
+      "scriptTool": "Scripts & Tools",
+      "service": "Services"
+    },
+    "searchPlaceholder": "Search accounts, prompts...",
+    "protectionTitle": "Buyer Protection",
+    "protectionDesc": "Your money is held in escrow until you confirm the order is successful."
+  },
+
+  "blog": {
+    "knowledgeBase": "ManixAI Knowledge Base",
+    "title": "Knowledge",
+    "videoAI": "AI Video",
+    "subtitle": "Latest techniques for Sora, Veo, and fully automated 4K video production workflows. Daily AI trend updates with experts.",
+    "noPosts": "No posts found matching your criteria",
+    "views": "views",
+    "author": "Author",
+    "followAuthor": "Follow Author",
+    "relatedPosts": "Related Posts",
+    "shareTitle": "Share Post",
+    "hot": "Hot",
+    "by": "By"
+  },
+
+  "portal": {
+    "center": "ManixAI Control Center",
+    "discover": "Discover",
+    "ecosystem": "Ecosystem",
+    "welcome": "Welcome back, {{name}}! All the tools you need are right here.",
+    "searchPlaceholder": "Search tools, courses, articles...",
+    "latestTools": "Latest Tools & Software",
+    "featuredCourses": "Featured Courses",
+    "manixAcademy": "ManixAI Academy",
+    "learnNow": "Learn Now",
+    "latestKnowledge": "Latest Knowledge",
+    "systemActivity": "System Activity",
+    "clearAllNotifications": "Clear All Notifications",
+    "marketplaceBusy": "Marketplace is buzzing!",
+    "marketplaceNewListings": "Over 500+ Sora accounts & Prompt Packs newly listed today.",
+    "visitMarketplace": "Visit Marketplace",
+    "systemPower": "System Power",
+    "renderNodes": "Render Nodes",
+    "storageUsed": "Storage Used"
+  }
+}

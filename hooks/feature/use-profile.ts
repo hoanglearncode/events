@@ -1,0 +1,1 @@
+const validteUseNar = (token: string) => {};

@@ -1,0 +1,241 @@
+{
+  "hero": {
+    "badge": {
+      "icon": "Sparkles",
+      "text": "Integrated with Veo 3.1, Sora 2 & Runway Gen-4 (Early Access)"
+    },
+    "title": {
+      "main": "AI Video Production",
+      "highlight": "At Industrial Scale"
+    },
+    "description": "ManixAI is the only AI Video platform designed for large-scale production — from solo creators to agencies and enterprises. Run thousands of parallel 4K video renders, automate prompts, and fully control cost and production time.",
+    "cta": [
+      { "text": "Explore the Platform", "icon": "Rocket", "variant": "default" }
+    ],
+    "stats": [
+      { "label": "Videos Generated", "value": "2.5M+", "icon": "Video" },
+      { "label": "Global Users", "value": "45K+", "icon": "Users" },
+      { "label": "Agencies & Brands", "value": "4K+", "icon": "Building2" },
+      { "label": "Avg. Render Time", "value": "< 45s", "icon": "Zap" }
+    ]
+  },
+  "trustBadges": [
+    { "name": "SOC 2 Type II", "icon": "ShieldCheck" },
+    { "name": "GDPR Compliant", "icon": "ShieldCheck" },
+    { "name": "ISO 27001", "icon": "Award" },
+    { "name": "Anti-Detect Certified", "icon": "Fingerprint" },
+    { "name": "99.9% Uptime SLA", "icon": "Target" }
+  ],
+  "problemSolution": {
+    "title": "The problem is no longer AI",
+    "highlight": "It's the workflow",
+    "description": "Most AI video tools focus on generating a single video. ManixAI solves the real challenge: mass video production that is stable, scalable, and automated.",
+    "problems": [
+      {
+        "title": "Complex Prompting",
+        "desc": "Users must learn hundreds of technical prompt commands.",
+        "icon": "Wand2",
+        "color": "indigo"
+      },
+      {
+        "title": "Slow Rendering & Queue Bottlenecks",
+        "desc": "Each video takes tens of minutes or even hours.",
+        "icon": "Clock",
+        "color": "purple"
+      },
+      {
+        "title": "Account Checkpoints & Bans",
+        "desc": "Multiple AI accounts without a protection system.",
+        "icon": "AlertTriangle",
+        "color": "amber"
+      },
+      {
+        "title": "Impossible to Scale",
+        "desc": "No way to produce 100–1000 videos per day.",
+        "icon": "TrendingDown",
+        "color": "rose"
+      }
+    ],
+    "media": {
+      "type": "video",
+      "url": "https://www.youtube.com/watch?v=-niDmmj0Jow&t=2959s",
+      "alt": "Team discussing video production workflow",
+      "embed": "link"
+    }
+  },
+  "promptEngine": {
+    "title": "Next-Generation Prompt Engine",
+    "description": "No need to learn prompting. ManixAI analyzes your idea, context, and distribution platform to automatically generate optimized prompts for each AI model.",
+    "features": [
+      "Automatic style detection (cinematic, anime, documentary, viral)",
+      "Optimized for TikTok, Reels, and Shorts",
+      "Supports Vietnamese, English, Japanese, Chinese, and Korean",
+      "Save and reuse prompt templates"
+    ],
+    "conversation": [
+      {
+        "type": "user",
+        "title": "",
+        "message": "Create an advertisement video for a Japanese-style coffee shop, calm and relaxing"
+      },
+      {
+        "type": "ai",
+        "title": "Optimized Prompt for Veo 3.1",
+        "message": "Warm cinematic shot of a minimalist Japanese-style coffee shop in the morning, soft natural lighting, steam rising from coffee cups, shallow depth of field, calm atmosphere, 4K ultra quality, social media optimized framing."
+      }
+    ]
+  },
+  "features": {
+    "title": "Feature Ecosystem",
+    "subtitle": "Built for large-scale AI video production",
+    "items": [
+      {
+        "title": "True Multi-Thread Rendering",
+        "desc": "Run 20–50 independent rendering threads simultaneously — no fake queues.",
+        "icon": "Layers",
+        "color": "indigo"
+      },
+      {
+        "title": "Profile & Account Manager",
+        "desc": "Manage hundreds of AI accounts with automatic rotation and checkpoint protection.",
+        "icon": "Users",
+        "color": "purple"
+      },
+      {
+        "title": "Auto Prompt Generator",
+        "desc": "Turn simple descriptions into cinematic-grade 4K prompts.",
+        "icon": "MessageSquare",
+        "color": "blue"
+      },
+      {
+        "title": "Batch Video Pipeline",
+        "desc": "Upload CSV/JSON files to generate hundreds of videos with one click.",
+        "icon": "FileStack",
+        "color": "emerald"
+      },
+      {
+        "title": "API & Webhooks",
+        "desc": "Connect ManixAI to your internal systems, SaaS, or automation workflows.",
+        "icon": "Code",
+        "color": "amber"
+      },
+      {
+        "title": "Antidetect & Enterprise Security",
+        "desc": "Fingerprint isolation, IP rotation, and enterprise-grade security.",
+        "icon": "ShieldCheck",
+        "color": "slate"
+      }
+    ]
+  },
+  "useCases": {
+    "title": "What is ManixAI used for?",
+    "subtitle": "Real-world applications across industries",
+    "cases": [
+      {
+        "title": "TikTok Automation",
+        "desc": "Build automated content systems for dozens of TikTok channels.",
+        "icon": "Flame",
+        "stats": "500K+ videos/month"
+      },
+      {
+        "title": "Agency Video Ads",
+        "desc": "Produce ad videos for multiple clients in parallel.",
+        "icon": "BarChart3",
+        "stats": "850+ agencies"
+      },
+      {
+        "title": "E-commerce & Dropshipping",
+        "desc": "Create product videos, reviews, and simulated UGC content.",
+        "icon": "ShoppingCart",
+        "stats": "3.2K+ brands"
+      },
+      {
+        "title": "AI SaaS & Dev Teams",
+        "desc": "Integrate AI video generation into your product via API.",
+        "icon": "Code",
+        "stats": "1.8K+ developers"
+      },
+      {
+        "title": "Education & Training",
+        "desc": "Generate lecture videos, simulations, and explainers.",
+        "icon": "GraduationCap",
+        "stats": "420+ teams"
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "How did they scale?",
+    "items": [
+      {
+        "name": "Nguyen Minh Tuan",
+        "role": "TikTok Automation",
+        "avatar": {
+          "type": "image",
+          "url": "https://i.pravatar.cc/150?img=12",
+          "alt": "Nguyen Minh Tuan"
+        },
+        "content": "ManixAI allows me to operate 30 TikTok channels simultaneously. This was unimaginable before.",
+        "rating": 5
+      },
+      {
+        "name": "Tran Thi Huong",
+        "role": "Marketing Director",
+        "avatar": {
+          "type": "image",
+          "url": "https://i.pravatar.cc/150?img=45",
+          "alt": "Tran Thi Huong"
+        },
+        "content": "We reduced video production costs by 70% while massively increasing output.",
+        "rating": 5
+      },
+      {
+        "name": "David Chen",
+        "role": "Agency Owner",
+        "avatar": {
+          "type": "image",
+          "url": "https://i.pravatar.cc/150?img=33",
+          "alt": "David Chen"
+        },
+        "content": "ManixAI is not just a tool — it's a video production infrastructure for agencies.",
+        "rating": 5
+      },
+      {
+        "name": "Le Hoang Nam",
+        "role": "SaaS Founder",
+        "avatar": {
+          "type": "image",
+          "url": "https://i.pravatar.cc/150?img=68",
+          "alt": "Le Hoang Nam"
+        },
+        "content": "ManixAI's API helped us launch our product 3 months faster.",
+        "rating": 5
+      }
+    ]
+  },
+  "faq": {
+    "title": "Quick Answers",
+    "subtitle": "Key questions before scaling",
+    "items": [
+      {
+        "q": "Is ManixAI suitable for beginners?",
+        "a": "Yes. Beginners can use Auto Prompt and presets, while advanced users can customize deeply."
+      },
+      {
+        "q": "Is there a limit on video rendering?",
+        "a": "It depends on the plan. Pro and Enterprise plans support unlimited rendering threads."
+      },
+      {
+        "q": "Do exported videos have watermarks?",
+        "a": "No. All exported videos are watermark-free and safe for commercial use."
+      },
+      {
+        "q": "Does ManixAI support teams and permissions?",
+        "a": "Yes. You can create teams, assign roles, and track costs per member."
+      },
+      {
+        "q": "How is ManixAI different from standalone tools?",
+        "a": "ManixAI is a full AI video production system, not a single-video generator."
+      }
+    ]
+  }
+}

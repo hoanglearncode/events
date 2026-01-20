@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  manix_frontend:
+    image: ghcr.io/websitemanix/manix_ai:latest
+    container_name: manix_ai
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+    networks:
+      - manix-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: manix-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    depends_on:
+      - manix_frontend
+    networks:
+      - manix-network
+
+  certbot:
+    image: certbot/certbot
+    container_name: manix-certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
+networks:
+  manix-network:
+    name: manix-network
+    external: true

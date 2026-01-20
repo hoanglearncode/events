@@ -1,0 +1,237 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+
+:root {
+  /* Brand Colors */
+  --brand-primary: #624a2b; /* Coffee Bean */
+  --brand-secondary: #9c620f; /* Amber / warm accent */
+  --brand-accent: #ab936c; /* Camel Taupe */
+  --brand-success: #10b981; /* keep green success */
+  --brand-warning: #f59e0b; /* keep amber warning (can reuse #9c620f if preferred) */
+  --brand-error: #ef4444; /* keep red */
+
+  /* Theme Colors */
+  --background: #fbf9f7; /* soft off-white (keeps page airy, complements Desert Dust) */
+  --foreground: #211d11; /* Shadow Black - main text */
+
+  --card: #ffffff; /* card background (white) */
+  --card-foreground: var(--foreground);
+
+  --popover: #ffffff;
+  --popover-foreground: var(--foreground);
+
+  --primary: #624a2b; /* Coffee Bean */
+  --primary-foreground: #ffffff;
+
+  --secondary: #ab936c; /* Camel Taupe */
+  --secondary-foreground: #211d11;
+
+  --muted: #f1efe9; /* very light neutral (subtle background) */
+  --muted-foreground: #8b7f6e; /* mid-tone text */
+
+  --accent: #9c620f; /* Amber Brown as accent */
+  --accent-foreground: #ffffff;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #e6e0d8; /* light border (works with Desert Dust) */
+  --input: #f3efe9;
+  --ring: #624a2b; /* Coffee Bean for focus ring */
+
+  --radius: 0.75rem;
+
+  /* Chart Colors (use palette + complementary) */
+  --chart-1: #624a2b; /* Coffee Bean */
+  --chart-2: #9c620f; /* Amber */
+  --chart-3: #ab936c; /* Camel */
+  --chart-4: #c9c3b6; /* Desert Dust (lighter) */
+  --chart-5: #211d11; /* Shadow Black */
+
+  /* Sidebar (Light) */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #211d11;
+  --sidebar-primary: #624a2b;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f7f5f2;
+  --sidebar-accent-foreground: #211d11;
+  --sidebar-border: #e6e0d8;
+  --sidebar-ring: #624a2b;
+}
+
+/* CKEditor theme mapping (keeps existing rules) */
+.ck-theme-wrapper {
+  --ck-border-radius: var(--radius);
+  --ck-color-base-background: var(--card);
+  --ck-color-base-foreground: var(--foreground);
+  --ck-color-base-border: var(--border);
+  --ck-color-focus-border: var(--ring);
+
+  --ck-color-text: var(--foreground);
+  --ck-color-placeholder-text: var(--muted-foreground);
+
+  --ck-color-toolbar-background: var(--card);
+  --ck-color-toolbar-border: var(--border);
+
+  --ck-color-button-default-hover-background: var(--muted);
+  --ck-color-button-on-background: var(--primary);
+  --ck-color-button-on-foreground: var(--primary-foreground);
+
+  --ck-color-dropdown-panel-background: var(--popover);
+  --ck-color-dropdown-panel-border: var(--border);
+
+  --ck-color-link-default: var(--brand-primary);
+}
+
+/* editor styling kept (no change) */
+.ck-theme-wrapper .ck-editor { border-radius: var(--radius); }
+.ck-theme-wrapper .ck-toolbar { border-radius: var(--radius) var(--radius) 0 0; border-color: var(--border); }
+.ck-theme-wrapper .ck-editor__editable { background: var(--card); color: var(--foreground); min-height: 160px; padding: 1rem; border-radius: 0 0 var(--radius) var(--radius); }
+.ck-theme-wrapper .ck-editor__editable:focus { box-shadow: 0 0 0 2px var(--ring); }
+.ck-theme-wrapper .ck-editor__editable.ck-placeholder::before { color: var(--muted-foreground); }
+.ck-theme-wrapper .ck-button { border-radius: calc(var(--radius) - 2px); }
+.dark .ck-theme-wrapper { --ck-color-shadow-drop: rgba(0, 0, 0, 0.4); }
+
+/* =============
+   DARK THEME
+   ============= */
+.dark {
+  /* We create dark counterparts using the same palette; 
+     primary stays Coffee Bean, background goes dark */
+  --background: #14120f; /* dark warm near-black */
+  --foreground: #f6f3ef; /* light text */
+
+  --card: #1f1b18; /* dark card */
+  --card-foreground: var(--foreground);
+
+  --popover: #1f1b18;
+  --popover-foreground: var(--foreground);
+
+  --primary: #624a2b; /* Coffee Bean still usable on dark */
+  --primary-foreground: #ffffff;
+
+  --secondary: #ab936c;
+  --secondary-foreground: #14120f;
+
+  --muted: #2a2623; 
+  --muted-foreground: #cfc5b8;
+
+  --accent: #9c620f;
+  --accent-foreground: #14120f;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #2b2724;
+  --input: #2b2724;
+  --ring: #9c620f;
+
+  /* Chart Colors (dark-friendly) */
+  --chart-1: #624a2b;
+  --chart-2: #9c620f;
+  --chart-3: #ab936c;
+  --chart-4: #c9c3b6;
+  --chart-5: #211d11;
+
+  /* Sidebar (Dark) */
+  --sidebar: #1f1b18;
+  --sidebar-foreground: #f6f3ef;
+  --sidebar-primary: #624a2b;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #2a2623;
+  --sidebar-accent-foreground: #f6f3ef;
+  --sidebar-border: #2b2724;
+  --sidebar-ring: #9c620f;
+}
+
+@theme inline {
+  --font-sans: "Geist", "Geist Fallback";
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
+
+  /* Map CSS variables to Tailwind */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground selection:bg-primary/30;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  .dark body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Utilities (kept from your original) */
+@layer utilities {
+  .text-brand-primary { color: var(--brand-primary); }
+  .bg-brand-primary { background-color: var(--brand-primary); }
+  .border-brand-primary { border-color: var(--brand-primary); }
+
+  .text-brand-secondary { color: var(--brand-secondary); }
+  .bg-brand-secondary { background-color: var(--brand-secondary); }
+  .border-brand-secondary { border-color: var(--brand-secondary); }
+
+  .text-brand-accent { color: var(--brand-accent); }
+  .bg-brand-accent { background-color: var(--brand-accent); }
+  .border-brand-accent { border-color: var(--brand-accent); }
+
+  .text-brand-success { color: var(--brand-success); }
+  .bg-brand-success { background-color: var(--brand-success); }
+
+  .text-brand-warning { color: var(--brand-warning); }
+  .bg-brand-warning { background-color: var(--brand-warning); }
+
+  .text-brand-error { color: var(--brand-error); }
+  .bg-brand-error { background-color: var(--brand-error); }
+
+  .glass-dark { @apply bg-card/50 backdrop-blur-xl border-border; }
+
+  .card-elevated { @apply bg-card border-border shadow-lg; }
+  .card-flat { @apply bg-card border-border; }
+}

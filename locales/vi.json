@@ -1,0 +1,531 @@
+{
+  "common": {
+    "free": "Miễn phí",
+    "buy": "Mua ngay",
+    "loading": "Đang tải...",
+    "processing": "Đang xử lý...",
+    "submit": "Gửi",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "delete": "Xóa",
+    "edit": "Sửa",
+    "confirm": "Xác nhận",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "previous": "Trước",
+    "close": "Đóng",
+    "yes": "Có",
+    "no": "Không",
+    "or": "hoặc",
+    "and": "và",
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu",
+    "viewAll": "Xem tất cả",
+    "details": "Chi tiết",
+    "download": "Tải xuống",
+    "tryNow": "Dùng thử ngay",
+    "install": "Cài đặt",
+    "search": "Tìm kiếm"
+  },
+  "searchInputlabel": "Tìm kiếm sản phẩm",
+  "Featured": "Nổi bật",
+  "ProductFeatured": "Sản phẩm Nổi bật",
+  "share": "Chia sẻ bài viết",
+  "lq": "Bài viết liên quan",
+  "gb": "Giá bán",
+  "nb": "Người bán",
+  "productEmpty": "Chưa có sản phẩm nào",
+  "productEmptyDes": "Hiện tại chưa có sản phẩm nào được thêm. Vui lòng quay lại sau hoặc thêm sản phẩm mới.",
+  "leaveWarning": "Bạn đang trong quá trình thanh toán. Rời khỏi trang sẽ hủy giao dịch.",
+  "warningBanner": "Đang trong quy trình thanh toán — vui lòng không đóng/refresh trang cho đến khi hoàn tất.",
+  "timerLabel": "Thời gian còn lại",
+  "timerExpired": "Hết thời gian thanh toán. Vui lòng thử lại.",
+  "successTitleSuffix": "Hoàn tất thanh toán",
+  "successSub": "Vui lòng hoàn tất thanh toán trên tab mới được mở.",
+  "checkout": {
+    "back": "Quay lại",
+    "productInfo": "Thông tin sản phẩm",
+    "quantity": "Số lượng",
+    "selectPackage": "Chọn gói dịch vụ",
+    "domestic": "Nội địa",
+    "international": "Quốc tế",
+    "createOrder": "Tạo đơn hàng",
+    "continue": "Tiếp tục",
+    "paymentMethod": "Phương thức thanh toán",
+    "orderCode": "Mã đơn hàng",
+    "total": "Tổng cộng",
+    "payWithQR": "Thanh toán QR Code (PayOS)",
+    "payWithPaypal": "Thanh toán PayPal",
+    "sessionFound": "Tìm thấy phiên giao dịch",
+    "sessionFoundDesc": "Bạn đang có một giao dịch chưa hoàn tất. Bạn có muốn tiếp tục không?",
+    "mustFinishPayment": "Giao dịch đang thực hiện",
+    "mustFinishPaymentDesc": "Bạn đang có một phiên thanh toán đang hoạt động. Bạn muốn tiếp tục nó hay tạo mới?",
+    "continuePayment": "Tiếp tục thanh toán",
+    "cancelPayment": "Hủy & Tạo mới",
+    "cancelAndHome": "Hủy và về trang chủ",
+    "backHome": "Về trang chủ",
+    "errors": {
+      "invalidId": "ID sản phẩm không hợp lệ",
+      "notFoundId": "Không tìm thấy ID sản phẩm",
+      "selectPackage": "Vui lòng chọn gói dịch vụ",
+      "paymentFailed": "Lỗi thanh toán",
+      "orderFailed": "Lỗi tạo đơn hàng",
+      "noPaymentLink": "Không nhận được link thanh toán"
+    }
+  },
+  "navbar": {
+    "tools": "Công cụ",
+    "courses": "Khóa học",
+    "marketplace": "Marketplace",
+    "blog": "Blog",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "search": "Mở tìm kiếm",
+    "selectLanguage": "Chọn ngôn ngữ",
+    "openMenu": "Mở menu",
+    "language": "Ngôn ngữ",
+    "myProfile": "Hồ sơ của tôi",
+    "quickLinks": "Liên kết nhanh",
+    "home": "Trang chủ",
+    "notifications": "Thông báo",
+    "adminDashboard": "Trang quản trị",
+    "sellerDashboard": "Trang quản trị",
+    "myData": "Dữ liệu của tôi",
+    "addNewPost": "Thêm bài viết mới",
+    "logout": "Đăng xuất",
+    "profile": "Hồ sơ",
+    "dashboard": "Dashboard"
+  },
+  "auth": {
+    "fields": {
+      "fullName": "Họ và tên",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "rememberMe": "Ghi nhớ tôi",
+      "agreeToTerms": "Tôi đồng ý với điều khoản sử dụng"
+    },
+    "placeholders": {
+      "fullName": "Nguyễn Văn A",
+      "email": "name@company.com",
+      "emailLogin": "your-email@company.com",
+      "password": "••••••••"
+    },
+    "buttons": {
+      "login": "Bắt đầu tạo Video",
+      "register": "Kích hoạt ManixAI ngay",
+      "processing": "Đang xử lý...",
+      "creating": "Đang tạo tài khoản...",
+      "forgotPassword": "Quên mật khẩu?",
+      "resetPassword": "Đặt lại mật khẩu",
+      "verifyEmail": "Xác thực email"
+    },
+    "login": {
+      "title": "Đăng nhập",
+      "subtitle": "Đăng nhập vào tài khoản của bạn",
+      "success": "Đăng nhập thành công!",
+      "failed": "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.",
+      "invalidCredentials": "Email hoặc mật khẩu không chính xác",
+      "accountLocked": "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ hỗ trợ.",
+      "noAccount": "Chưa có tài khoản?",
+      "signUp": "Đăng ký ngay"
+    },
+    "register": {
+      "title": "Đăng ký tài khoản",
+      "subtitle": "Tạo tài khoản mới để bắt đầu",
+      "registrationSuccess": "Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.",
+      "registrationFailed": "Đăng ký thất bại. Vui lòng thử lại.",
+      "checkInformation": "Vui lòng kiểm tra lại thông tin đã nhập",
+      "emailExists": "Email này đã được sử dụng",
+      "haveAccount": "Đã có tài khoản?",
+      "loginNow": "Đăng nhập ngay"
+    },
+    "forgotPassword": {
+      "title": "Quên mật khẩu",
+      "subtitle": "Nhập email để đặt lại mật khẩu",
+      "success": "Email đặt lại mật khẩu đã được gửi!",
+      "failed": "Không thể gửi email đặt lại mật khẩu",
+      "emailNotFound": "Không tìm thấy tài khoản với email này",
+      "backToLogin": "Quay lại đăng nhập"
+    },
+    "resetPassword": {
+      "title": "Đặt lại mật khẩu",
+      "subtitle": "Nhập mật khẩu mới của bạn",
+      "success": "Mật khẩu đã được đặt lại thành công!",
+      "failed": "Không thể đặt lại mật khẩu",
+      "tokenExpired": "Mã xác thực đã hết hạn",
+      "tokenInvalid": "Mã xác thực không hợp lệ"
+    },
+    "verifyEmail": {
+      "title": "Xác thực email",
+      "success": "Email đã được xác thực thành công!",
+      "failed": "Xác thực email thất bại",
+      "alreadyVerified": "Email đã được xác thực trước đó"
+    },
+    "changePassword": {
+      "title": "Đổi mật khẩu",
+      "success": "Mật khẩu đã được thay đổi thành công!",
+      "failed": "Không thể thay đổi mật khẩu",
+      "incorrectPassword": "Mật khẩu hiện tại không chính xác"
+    }
+  },
+
+  "validation": {
+    "email": {
+      "required": "Vui lòng nhập địa chỉ email",
+      "invalid": "Địa chỉ email không hợp lệ"
+    },
+    "password": {
+      "required": "Vui lòng nhập mật khẩu",
+      "min": "Mật khẩu phải có ít nhất {{min}} ký tự",
+      "uppercase": "Mật khẩu phải chứa ít nhất {{count}} chữ cái viết hoa",
+      "lowercase": "Mật khẩu phải chứa ít nhất {{count}} chữ cái viết thường",
+      "number": "Mật khẩu phải chứa ít nhất {{count}} chữ số",
+      "special": "Mật khẩu phải chứa ít nhất {{count}} ký tự đặc biệt (!@#$%^&*...)",
+      "mismatch": "Mật khẩu xác nhận không khớp",
+      "current": {
+        "required": "Vui lòng nhập mật khẩu hiện tại"
+      },
+      "confirmation": {
+        "required": "Vui lòng xác nhận mật khẩu",
+        "mismatch": "Mật khẩu xác nhận không khớp"
+      },
+      "requirements": {
+        "min_length": "Ít nhất {{min}} ký tự",
+        "uppercase": "Ít nhất {{count}} chữ hoa",
+        "lowercase": "Ít nhất {{count}} chữ thường",
+        "number": "Ít nhất {{count}} chữ số",
+        "special": "Ít nhất {{count}} ký tự đặc biệt"
+      }
+    },
+    "name": {
+      "required": "Vui lòng nhập họ và tên",
+      "max": "Tên không được vượt quá {{max}} ký tự"
+    },
+    "terms": {
+      "required": "Bạn phải đồng ý với điều khoản sử dụng"
+    },
+    "token": {
+      "invalid": "Mã xác thực không hợp lệ"
+    },
+    "user": {
+      "id": {
+        "required": "ID người dùng là bắt buộc"
+      }
+    },
+    "verification": {
+      "hash": {
+        "required": "Mã xác minh là bắt buộc"
+      }
+    }
+  },
+
+  "footer": {
+    "brandDescription": "Nền tảng vận hành Video AI quy mô công nghiệp hàng đầu thế giới. Giải pháp toàn diện cho Content Creator thời đại mới.",
+    "productsTitle": "Sản phẩm",
+    "companyTitle": "Công ty",
+    "newsletterTitle": "Đăng ký nhận tin",
+    "newsletterDesc": "Nhận thông báo mới nhất về Sora 2 và Veo 3.1",
+    "emailPlaceholder": "Email của bạn",
+    "subscribeSuccess": "Đăng ký thành công!",
+    "copyright": "© 2026 ManixAI Corporation.",
+    "allRightsReserved": "Tất cả quyền được bảo lưu.",
+    "termsOfService": "Điều khoản sử dụng",
+    "privacyPolicy": "Chính sách bảo mật",
+    "cookies": "Cookies",
+    "madeWithLove": "Made with ♥ in Vietnam",
+    "products": {
+      "createVideoAI": "Tạo Video AI",
+      "promptEngine": "Prompt Engine",
+      "profileManager": "Quản lý Profile",
+      "apiWebhooks": "API & Webhooks"
+    },
+    "company": {
+      "aboutUs": "Về chúng tôi",
+      "blog": "Blog",
+      "careers": "Sự nghiệp",
+      "contact": "Liên hệ"
+    }
+  },
+
+  "cta": {
+    "downloadDashboard": "Tải Manix Dashboard",
+    "viewDocs": "Tài liệu hướng dẫn",
+    "startFree": "Bắt đầu miễn phí",
+    "exploreAll": "Khám phá tất cả"
+  },
+
+  "tools": {
+    "featured": {
+      "updated": "Cập nhật ngay bây giờ"
+    },
+    "filter": {
+      "title": "Hệ sinh thái",
+      "subtitle": "Hệ sinh thái trong nền tảng",
+      "categories": "Danh mục"
+    },
+    "pageTitle": "Hệ sinh thái phần mềm ManixAI",
+    "pageSubtitle": "Tất cả các công cụ bạn cần để xây dựng đế chế nội dung AI",
+    "featuredTitle": "Công cụ nổi bật",
+    "featuredSubtitle": "Được yêu thích nhất bởi cộng đồng ManixAI",
+    "allToolsTitle": "Tất cả công cụ",
+    "allToolsSubtitle": "Khám phá toàn bộ hệ sinh thái phần mềm ManixAI",
+    "noResults": "Không tìm thấy công cụ",
+    "noResultsHint": "Thử điều chỉnh bộ lọc hoặc tìm kiếm của bạn",
+    "searchPlaceholder": "Tìm kiếm công cụ...",
+    "foundResults": "Tìm thấy {{count}} công cụ",
+    "badge": {
+      "popular": "Popular"
+    },
+    "categories": {
+      "all": "Tất cả",
+      "desktopApp": "Desktop App",
+      "automation": "Automation",
+      "extension": "Extension",
+      "mobile": "Mobile"
+    },
+    "detail": {
+      "backToList": "Quay lại",
+      "professionalPlan": "Gói chuyên nghiệp",
+      "monthlyPayment": "Thanh toán hàng tháng",
+      "downloadInstall": "Tải & Cài đặt",
+      "try24h": "Dùng thử 24h",
+      "includes": {
+        "allPremium": "Tất cả tính năng Premium",
+        "lifetimeUpdates": "Cập nhật trọn đời",
+        "license1Device": "Bản quyền 1 máy"
+      },
+      "noteNeedHub": "Cần cài Manix Hub Console để xác thực bản quyền."
+    },
+    "tabs": {
+      "overview": "Tổng quan",
+      "features": "Tính năng",
+      "requirements": "Yêu cầu",
+      "overviewContent": "Manix Render Cloud v3 là bộ não vận hành toàn bộ pipeline video AI, tối ưu cho Sora & Veo.",
+      "multiThread": "Đa luồng",
+      "multiThreadDesc": "Render song song, tận dụng tối đa cloud.",
+      "security": "Bảo mật",
+      "securityDesc": "Mã hóa toàn bộ prompt và dữ liệu.",
+      "requirementsTitle": "Cấu hình yêu cầu"
+    },
+    "hero": {
+      "badge": "The Ultimate AI Toolkit",
+      "title": "Hệ sinh thái",
+      "titleHighlight": "Phần mềm ManixAI",
+      "description": "Tất cả các công cụ bạn cần để xây dựng đế chế nội dung AI. Từ trình duyệt ẩn danh đến hệ thống render cloud đa luồng."
+    },
+    "bottomSection": {
+      "title": "Giao diện tập trung, Quản trị dễ dàng.",
+      "description": "Mọi phần mềm trong hệ sinh thái đều được kết nối thông qua Manix Hub Console. Bạn chỉ cần 1 tài khoản để quản trị hàng trăm luồng công việc.",
+      "features": {
+        "api": "Hệ thống API mở rộng cho Developer",
+        "autoUpdate": "Cập nhật tự động phiên bản mới nhất",
+        "support": "Hỗ trợ kỹ thuật 24/7 qua Telegram",
+        "lowResource": "Tối ưu hóa tài nguyên phần cứng cực thấp"
+      }
+    }
+  },
+
+  "courses": {
+    "allToolsSubtitle": "Khám phá toàn bộ hệ sinh thái phần mềm ManixAI",
+    "pageTitle": "ManixAI Academy",
+    "pageSubtitle": "Nâng tầm kỹ năng sáng tạo Video AI",
+    "featuredTitle": "Khóa học nổi bật",
+    "featuredSubtitle": "Lựa chọn theo biên tập viên",
+    "newestTitle": "Khóa học mới",
+    "bestSellerTitle": "Bán chạy",
+    "searchPlaceholder": "Tìm kiếm khóa học...",
+    "noCourses": "Không tìm thấy khóa học nào",
+    "badge": {
+      "bestSeller": "Bán chạy"
+    },
+    "students": "học viên",
+    "viewDetails": "Xem chi tiết",
+    "filters": {
+      "sort": "Sắp xếp",
+      "newest": "Mới nhất",
+      "popular": "Bán chạy",
+      "rating": "Đánh giá",
+      "advanced": "Bộ lọc",
+      "searchPlaceholder": "Tìm khóa học, tag, nội dung..."
+    },
+    "header": {
+      "academy": "ManixAI Academy",
+      "title": "Nâng tầm kỹ năng",
+      "subtitle": "Sáng tạo Video AI",
+      "description": "Học từ các chuyên gia hàng đầu trong lĩnh vực Generative AI. Quy trình thực chiến, áp dụng ngay vào công việc và kinh doanh.",
+      "searchPlaceholder": "Tìm kiếm khóa học bạn quan tâm..."
+    },
+    "home": {
+      "learnAndCreate": "Học & Tạo nội dung AI",
+      "description": "Khóa học thực chiến, cập nhật thường xuyên — từ Prompt đến Viral Video.",
+      "newest": "Khóa học mới",
+      "bestSeller": "Bán chạy",
+      "showing": "Hiển thị {{shown}} trên {{total}} khóa học"
+    },
+    "featured": {
+      "title": "Khóa học nổi bật",
+      "subtitle": "Lựa chọn theo biên tập viên"
+    },
+    "detail": {
+      "badge": {
+        "creative": "Sáng tạo nội dung",
+        "bestSeller": "Bán chạy nhất"
+      },
+      "hero": {
+        "title": "Làm chủ Video AI: Từ ý tưởng đến 1 triệu lượt xem",
+        "description": "Khóa học duy nhất giúp bạn xây dựng quy trình sản xuất video AI tự động hóa hoàn toàn, tiết kiệm 90% thời gian.",
+        "reviews": "{{count}} đánh giá",
+        "language": "Tiếng Việt"
+      },
+      "whatYouLearn": {
+        "title": "Bạn sẽ học được gì?",
+        "items": {
+          "1": "Làm chủ Sora 2 và Veo 3.1 từ A-Z",
+          "2": "Tự động hóa quy trình render video 4K",
+          "3": "Kỹ thuật viết Prompt chuyên sâu",
+          "4": "Xây dựng kênh triệu view nhanh chóng",
+          "5": "Kinh doanh dịch vụ tạo Video AI",
+          "6": "Tư duy đạo diễn trong kỷ nguyên AI"
+        }
+      },
+      "curriculum": {
+        "title": "Nội dung khóa học",
+        "summary": "{{chapters}} Chương • {{lessons}} Bài học • {{hours}} giờ tổng cộng",
+        "chapter1": {
+          "title": "Chương 1: Giới thiệu & Tổng quan Video AI",
+          "lesson1": "Tại sao Video AI là tương lai?",
+          "lesson2": "Các công cụ cần chuẩn bị",
+          "lesson3": "Cài đặt tài khoản ManixAI"
+        },
+        "chapter2": {
+          "title": "Chương 2: Master Sora 2 Prompting",
+          "lesson1": "Cấu trúc Prompt chuẩn Cinematic",
+          "lesson2": "Kỹ thuật điều khiển camera",
+          "lesson3": "Xử lý lỗi vật lý thường gặp"
+        },
+        "chapter3": {
+          "title": "Chương 3: Thực chiến Render vạn view",
+          "lesson1": "Quy trình sản xuất 10 video/ngày",
+          "lesson2": "Tối ưu hóa đa luồng",
+          "lesson3": "Chỉnh sửa hậu kỳ với AI"
+        }
+      },
+      "instructor": {
+        "title": "Giảng viên",
+        "role": "Founder of ManixAI & AI Educator",
+        "reviews": "Đánh giá",
+        "bio": "Với hơn 5 năm kinh nghiệm trong lĩnh vực Generative AI, Hoàng đã giúp hàng ngàn cá nhân và doanh nghiệp tối ưu hóa quy trình sáng tạo nội dung."
+      },
+      "previewVideo": "Xem video giới thiệu",
+      "discount": "Giảm {{percent}}%",
+      "registerNow": "Đăng ký ngay",
+      "addToCart": "Thêm vào giỏ hàng",
+      "includes": {
+        "title": "Khóa học này bao gồm:",
+        "lifetimeAccess": "Truy cập trọn đời",
+        "allDevices": "Học trên mọi thiết bị",
+        "materials": "{{count}} tài liệu thực hành",
+        "certificate": "Chứng chỉ hoàn thành"
+      },
+      "coupon": {
+        "title": "Bạn có mã giảm giá?",
+        "code": "NHẬP MÃ: AI2024",
+        "apply": "Áp dụng"
+      }
+    }
+  },
+
+  "marketplace": {
+    "pageTitle": "ManixAI Marketplace",
+    "pageSubtitle": "Nơi trao đổi tài khoản AI, prompt pack và dịch vụ chuyên nghiệp",
+    "hero": {
+      "badge": "Sàn giao dịch dịch vụ AI",
+      "title": "Chợ",
+      "titleHighlight": "ManixAI Marketplace",
+      "description": "Nơi trao đổi tài khoản AI, nguyên liệu làm video và các dịch vụ chuyên nghiệp.",
+      "stats": {
+        "transactions": "Giao dịch/Tháng",
+        "sellers": "Người bán uy tín"
+      }
+    },
+    "buyBox": {
+      "quantity": "Số lượng",
+      "buyNow": "Mua ngay",
+      "addToCart": "Thêm vào giỏ hàng"
+    },
+    "features": {
+      "title": "Quyền lợi & Tính năng"
+    },
+    "product": {
+      "reviews": "đánh giá",
+      "sold": "Đã bán",
+      "verified": "Seller uy tín",
+      "inStock": "Còn hàng",
+      "outOfStock": "Hết hàng"
+    },
+    "seller": {
+      "totalSales": "Tổng đơn đã bán"
+    },
+    "filters": {
+      "allCategories": "Tất cả",
+      "categories": "Danh mục",
+      "buyerProtection": {
+        "title": "Bảo vệ người mua",
+        "description": "Tiền của bạn sẽ được giữ trung gian cho đến khi xác nhận đơn hàng thành công."
+      },
+      "searchPlaceholder": "Tìm tài khoản, prompt...",
+      "advanced": "Lọc nâng cao",
+      "newest": "Mới nhất",
+      "popular": "Bán chạy",
+      "lowestPrice": "Giá thấp"
+    },
+    "totalProducts": "Tổng: {{count}} sản phẩm",
+    "categories": {
+      "all": "Tất cả",
+      "aiAccount": "Tài khoản AI",
+      "promptPack": "Prompt Pack",
+      "scriptTool": "Script & Tool",
+      "service": "Dịch vụ"
+    },
+    "searchPlaceholder": "Tìm tài khoản, prompt...",
+    "protectionTitle": "Bảo vệ người mua",
+    "protectionDesc": "Tiền của bạn sẽ được giữ trung gian cho đến khi xác nhận đơn hàng thành công."
+  },
+
+  "blog": {
+    "knowledgeBase": "ManixAI Knowledge Base",
+    "title": "Kiến thức",
+    "videoAI": "Video AI",
+    "subtitle": "Nơi chia sẻ những kỹ thuật mới nhất về Sora, Veo và quy trình sản xuất video 4K tự động hóa. Cập nhật xu hướng AI mỗi ngày cùng chuyên gia.",
+    "noPosts": "Không tìm thấy bài viết nào phù hợp",
+    "views": "lượt xem",
+    "author": "Tác giả",
+    "followAuthor": "Theo dõi tác giả",
+    "relatedPosts": "Bài viết liên quan",
+    "shareTitle": "Chia sẻ bài viết",
+    "hot": "Hot",
+    "by": "Bởi"
+  },
+
+  "portal": {
+    "center": "Trung tâm điều khiển ManixAI",
+    "discover": "Khám phá",
+    "ecosystem": "Hệ sinh thái",
+    "welcome": "Chào mừng bạn, {{name}}! Mọi công cụ bạn cần đều ở đây.",
+    "searchPlaceholder": "Tìm tool, khóa học, bài viết...",
+    "latestTools": "Tool & Phần mềm mới nhất",
+    "featuredCourses": "Khóa học tiêu biểu",
+    "manixAcademy": "Học viện ManixAI",
+    "learnNow": "Học ngay bây giờ",
+    "latestKnowledge": "Kiến thức mới nhất",
+    "systemActivity": "Hoạt động hệ thống",
+    "clearAllNotifications": "Xem tất cả thông báo",
+    "marketplaceBusy": "Chợ dịch vụ đang nhộn nhịp!",
+    "marketplaceNewListings": "Hơn 500+ tài khoản Sora & Prompt Pack vừa được niêm yết mới hôm nay.",
+    "visitMarketplace": "Ghé thăm Marketplace",
+    "systemPower": "Sức mạnh hệ thống",
+    "renderNodes": "Render Nodes",
+    "storageUsed": "Storage Used"
+  }
+}
