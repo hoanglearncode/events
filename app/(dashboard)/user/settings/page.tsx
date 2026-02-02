@@ -72,7 +72,7 @@ const PlatformSettings = () => {
   };
 
   return (
-    <div className="container mx-auto py-10 max-w-5xl">
+    <div className="mx-6 py-18 lg:mx-12 lg:py-24">
       <div className="flex flex-col gap-8">
         <div className="flex items-center justify-between">
             <div>

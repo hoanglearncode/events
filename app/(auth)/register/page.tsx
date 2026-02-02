@@ -58,16 +58,13 @@ function SocialButton({
 export default function RegisterPage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-2 bg-background">
-      {/* LEFT SIDE - marketing / features */}
       <aside className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-tr from-secondary/10 via-background to-primary/10 border-r border-border relative overflow-hidden">
-        {/* background blur */}
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none dark:opacity-20">
           <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-secondary rounded-full blur-[130px]" />
           <div className="absolute bottom-1/3 left-1/4 w-72 h-72 bg-primary rounded-full blur-[130px]" />
         </div>
 
         <div className="relative z-10">
-          {/* BRAND */}
           <div className="flex items-center gap-3 mb-8">
             <Image
               src="/event_logo.jpg"
@@ -82,7 +79,6 @@ export default function RegisterPage() {
             </span>
           </div>
 
-          {/* HERO */}
           <h1 className="text-5xl font-extrabold leading-tight mb-6">
             Tham gia cộng đồng <br />
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -126,15 +122,11 @@ export default function RegisterPage() {
             </ul>
           </div>
         </div>
-
-        {/* FOOTER SLOGAN */}
         <div className="relative z-10 text-sm text-muted-foreground italic">
           Nhanh chóng – Minh bạch – Đúng người
         </div>
       </aside>
 
-
-      {/* RIGHT SIDE - register form */}
       <main className="flex items-center justify-center p-6 lg:p-12">
         <Card
           className="w-full max-w-md glass-dark"

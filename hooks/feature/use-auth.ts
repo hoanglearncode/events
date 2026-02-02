@@ -34,10 +34,9 @@ export function useAuth() {
 
         return { success: true };
       } catch (error: any) {
-        console.error("Login error:", error);
         return {
           success: false,
-          error: error.message || "Đăng nhập thất bại",
+          error: "Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin.",
         };
       }
     },

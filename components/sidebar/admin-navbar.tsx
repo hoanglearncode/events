@@ -53,12 +53,10 @@ const mainNavItems: NavItem[] = [
   { href: "/admin/reports", label: "Báo cáo", icon: AlertCircle },
   { href: "/admin/users", label: "Người dùng", icon: User },
   { href: "/admin/analytics", label: "Phân tích", icon: BarChart3 },
-  { href: "/admin/messages", label: "Tin nhắn", icon: MessageSquare },
 ];
 
 const supportNavItems: NavItem[] = [
   { href: "/admin/notifications", label: "Thông báo", icon: Bell },
-  { href: "/admin/content", label: "Nội dung", icon: Container },
   { href: "/admin/settings", label: "Cài đặt", icon: Settings },
 ];
 

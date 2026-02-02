@@ -78,9 +78,6 @@ function PasswordField({
 }
 
 export default function RegisterComponent() {
-  const { t } = useTranslation();
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -118,7 +115,7 @@ export default function RegisterComponent() {
     try {
       clearErrors();
       await registerMutation.mutateAsync(data as any);
-      toast.success(t("auth.register.registrationSuccess"));
+      toast.success("Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.");
     } catch (error: unknown) {
       console.error("Registration error:", error);
 
@@ -132,10 +129,10 @@ export default function RegisterComponent() {
             });
           }
         });
-        toast.error(t("auth.register.checkInformation"));
+        toast.error("Vui lòng kiểm tra lại thông tin đăng ký.");
       } else {
         const errorMessage =
-          (error as Error)?.message || t("auth.register.registrationFailed");
+          (error as Error)?.message || "Đăng ký thất bại. Vui lòng thử lại sau.";
         toast.error(errorMessage);
       }
     }
@@ -149,10 +146,10 @@ export default function RegisterComponent() {
     >
       {/* Full name */}
       <div className="space-y-2">
-        <Label htmlFor={`fullName`}>{t("auth.fields.fullName")}</Label>
+        <Label htmlFor={`fullName`}>Họ và tên</Label>
         <Input
           id={`fullName`}
-          placeholder={t("auth.placeholders.fullName")}
+          placeholder="Nhập họ và tên"
           className="bg-input"
           autoComplete="name"
           {...register("fullName")}
@@ -163,11 +160,11 @@ export default function RegisterComponent() {
 
       {/* Email */}
       <div className="space-y-2">
-        <Label htmlFor={`email`}>{t("auth.fields.email")}</Label>
+        <Label htmlFor={`email`}>Email</Label>
         <Input
           id={`email`}
           type="email"
-          placeholder={t("auth.placeholders.email")}
+          placeholder="Nhập email"
           className="bg-input"
           autoComplete="email"
           {...register("email")}
@@ -178,10 +175,10 @@ export default function RegisterComponent() {
 
       {/* Password */}
       <div className="space-y-2">
-        <Label htmlFor={`password`}>{t("auth.fields.password")}</Label>
+        <Label htmlFor={`password`}>Mật khẩu</Label>
         <PasswordField
           id={`password`}
-          placeholder={t("auth.placeholders.password")}
+          placeholder="Nhập mật khẩu"
           registerReturn={register("password")}
           error={errors.password?.message as string | undefined}
         />
@@ -191,11 +188,11 @@ export default function RegisterComponent() {
       {/* Confirm password */}
       <div className="space-y-2">
         <Label htmlFor={`confirmPassword`}>
-          {t("auth.fields.confirmPassword")}
+          Xác nhận mật khẩu
         </Label>
         <PasswordField
           id={`confirmPassword`}
-          placeholder={t("auth.placeholders.password")}
+          placeholder="Nhập lại mật khẩu"
           registerReturn={register("confirmPassword")}
           error={errors.confirmPassword?.message as string | undefined}
         />
@@ -212,7 +209,7 @@ export default function RegisterComponent() {
             className="accent-primary"
             {...register("agreeToTerms")}
           />
-          {t("auth.fields.agreeToTerms")}
+          <span className="text-xs">Tôi đồng ý với Điều khoản và Chính sách</span>
         </label>
         <FieldError
           message={errors.agreeToTerms?.message as string | undefined}
@@ -235,11 +232,11 @@ export default function RegisterComponent() {
         {isSubmitting ? (
           <div className="flex items-center gap-2 justify-center w-full">
             <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
-            {t("auth.buttons.creating")}
+            Đang tạo tài khoản...
           </div>
         ) : (
-          <div className="flex items-center gap-2 text-lg justify-center w-full">
-            {t("auth.buttons.register")} <ArrowRight className="w-5 h-5" />
+          <div className="flex items-center gap-2 text-md justify-center w-full">
+            Đăng ký <ArrowRight className="w-5 h-5" />
           </div>
         )}
       </Button>

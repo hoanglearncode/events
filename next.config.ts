@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
 
   productionBrowserSourceMaps: false,
   compiler: {
-    removeConsole: true,
+    removeConsole: false,
   },
   images: {
     domains: ["res.cloudinary.com", "via.placeholder.com"],

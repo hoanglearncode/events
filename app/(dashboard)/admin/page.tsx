@@ -6,7 +6,6 @@ import { TrendingUp, Users, FileText, Eye, MessageSquare, ThumbsUp, Calendar, Fi
 const NewsAdminDashboard = () => {
   const [timeRange, setTimeRange] = useState('7days');
 
-  // Dữ liệu thống kê tổng quan
   const stats = [
     { 
       title: 'Tổng bài viết', 
@@ -112,11 +111,6 @@ const NewsAdminDashboard = () => {
               <option value="30days">30 ngày qua</option>
               <option value="90days">90 ngày qua</option>
             </select>
-            
-            <button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity flex items-center gap-2">
-              <Download size={18} />
-              Xuất báo cáo
-            </button>
           </div>
         </div>
       </div>

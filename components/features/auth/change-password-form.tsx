@@ -36,13 +36,9 @@ const ChangePasswordForm: React.FC = () => {
   });
   const { mutateAsync, isPending } = useChangePassword();
   const router = useRouter();
-
   const [showOld, setShowOld] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
-  // Watch password để hiển thị strength indicator
-  const newPassword = watch("newPassword");
 
   const onSubmit = async (data: ResetPasswordFormData) => {
     try {
@@ -53,7 +49,6 @@ const ChangePasswordForm: React.FC = () => {
         icon: <CheckCircle2 className="w-5 h-5 text-brand-success" />,
       });
 
-      // Delay để user thấy toast
       setTimeout(() => {
         window.location.href = "/website";
       }, 1000);
@@ -70,41 +65,11 @@ const ChangePasswordForm: React.FC = () => {
     }
   };
 
-  // Password strength calculator
-  const getPasswordStrength = (password: string = "") => {
-    if (!password) return { level: 0, text: "", color: "" };
-
-    let strength = 0;
-    if (password.length >= 8) strength++;
-    if (password.length >= 12) strength++;
-    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
-    if (/\d/.test(password)) strength++;
-    if (/[^a-zA-Z0-9]/.test(password)) strength++;
-
-    if (strength <= 2)
-      return { level: 33, text: "Yếu", color: "bg-brand-error" };
-    if (strength <= 3)
-      return { level: 66, text: "Trung bình", color: "bg-brand-warning" };
-    return { level: 100, text: "Mạnh", color: "bg-brand-success" };
-  };
-
-  const passwordStrength = getPasswordStrength(newPassword);
 
   return (
     <Card className="border-0 shadow-none bg-transparent">
-      <CardHeader className="px-0">
-        <CardTitle className="flex items-center gap-2 text-card-foreground">
-          <Lock className="w-5 h-5 text-primary" />
-          Đổi mật khẩu
-        </CardTitle>
-        <CardDescription className="text-muted-foreground">
-          Cập nhật mật khẩu của bạn để bảo vệ tài khoản
-        </CardDescription>
-      </CardHeader>
-
       <CardContent className="px-0">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Mật khẩu cũ */}
           <div className="space-y-2">
             <Label htmlFor="oldPassword" className="text-card-foreground">
               Mật khẩu cũ
@@ -139,7 +104,6 @@ const ChangePasswordForm: React.FC = () => {
             )}
           </div>
 
-          {/* Mật khẩu mới */}
           <div className="space-y-2">
             <Label htmlFor="newPassword" className="text-card-foreground">
               Mật khẩu mới
@@ -167,34 +131,6 @@ const ChangePasswordForm: React.FC = () => {
               </button>
             </div>
 
-            {/* Password strength indicator */}
-            {newPassword && (
-              <div className="space-y-1">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-muted-foreground">
-                    Độ mạnh mật khẩu:
-                  </span>
-                  <span
-                    className={`font-medium ${
-                      passwordStrength.level === 100
-                        ? "text-brand-success"
-                        : passwordStrength.level === 66
-                          ? "text-brand-warning"
-                          : "text-brand-error"
-                    }`}
-                  >
-                    {passwordStrength.text}
-                  </span>
-                </div>
-                <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                  <div
-                    className={`h-full transition-all duration-300 ${passwordStrength.color}`}
-                    style={{ width: `${passwordStrength.level}%` }}
-                  />
-                </div>
-              </div>
-            )}
-
             {errors.newPassword && (
               <p className="text-xs text-brand-error flex items-center gap-1">
                 <AlertCircle className="w-3 h-3" />
@@ -203,7 +139,6 @@ const ChangePasswordForm: React.FC = () => {
             )}
           </div>
 
-          {/* Xác nhận mật khẩu */}
           <div className="space-y-2">
             <Label htmlFor="confirmPassword" className="text-card-foreground">
               Xác nhận mật khẩu mới
@@ -236,39 +171,6 @@ const ChangePasswordForm: React.FC = () => {
                 {errors.confirmPassword.message}
               </p>
             )}
-          </div>
-
-          {/* Password requirements */}
-          <div className="rounded-lg bg-muted/50 border border-border p-3">
-            <p className="text-xs font-medium text-muted-foreground mb-2">
-              Mật khẩu cần có:
-            </p>
-            <ul className="text-xs text-muted-foreground space-y-1">
-              <li className="flex items-center gap-2">
-                <div
-                  className={`w-1 h-1 rounded-full ${newPassword?.length >= 8 ? "bg-brand-success" : "bg-border"}`}
-                />
-                Tối thiểu 8 ký tự
-              </li>
-              <li className="flex items-center gap-2">
-                <div
-                  className={`w-1 h-1 rounded-full ${/[A-Z]/.test(newPassword || "") ? "bg-brand-success" : "bg-border"}`}
-                />
-                Ít nhất 1 chữ hoa
-              </li>
-              <li className="flex items-center gap-2">
-                <div
-                  className={`w-1 h-1 rounded-full ${/[a-z]/.test(newPassword || "") ? "bg-brand-success" : "bg-border"}`}
-                />
-                Ít nhất 1 chữ thường
-              </li>
-              <li className="flex items-center gap-2">
-                <div
-                  className={`w-1 h-1 rounded-full ${/\d/.test(newPassword || "") ? "bg-brand-success" : "bg-border"}`}
-                />
-                Ít nhất 1 số
-              </li>
-            </ul>
           </div>
 
           <Button

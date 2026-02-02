@@ -15,11 +15,8 @@ import ChangePasswordFrom from "@/components/features/auth/change-password-form"
 export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-6">
-      <Card className="w-full max-w-md bg-card/50 border-border backdrop-blur-xl">
-        {/* -------------------- Header -------------------- */}
+      <Card className="w-full max-w-lg bg-card/50 border-border backdrop-blur-xl">
         <CardHeader className="space-y-1 text-center">
-
-          {/* Context icon */}
           <div className="mx-auto w-12 h-12 rounded-full bg-brand-success/20 flex items-center justify-center ring-1 ring-brand-success/30">
             <ShieldCheck className="w-6 h-6 text-brand-success" />
           </div>
@@ -32,8 +29,6 @@ export default function ResetPasswordPage() {
             Mật khẩu mới phải khác với mật khẩu cũ của bạn.
           </CardDescription>
         </CardHeader>
-
-        {/* -------------------- Content -------------------- */}
         <CardContent>
           <ChangePasswordFrom />
         </CardContent>

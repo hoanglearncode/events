@@ -154,12 +154,12 @@ export default function AdminBlogManagement() {
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Quản lý bài viết</h2>
 
-        <div className="flex items-center bg-muted rounded-full p-1 gap-1">
+        <div className="flex items-center bg-muted rounded-md p-1 gap-1">
           <Button
             variant="ghost"
             onClick={() => setTab("all")}
             className={`
-              rounded-full px-4 h-9 text-sm font-medium transition-all
+              rounded-md px-4 h-9 text-sm font-medium transition-all
               ${
                 tab === "all"
                   ? "bg-primary text-primary-foreground shadow"
@@ -174,7 +174,7 @@ export default function AdminBlogManagement() {
             variant="ghost"
             onClick={() => setTab("pending")}
             className={`
-              rounded-full px-4 h-9 text-sm font-medium transition-all
+              rounded-md px-4 h-9 text-sm font-medium transition-all
               ${
                 tab === "pending"
                   ? "bg-primary text-primary-foreground shadow"

@@ -36,7 +36,6 @@ function FieldError({ message }: { message?: string }) {
 
 function PasswordInput({ id, registerReturn, error, placeholder }: any) {
   const [show, setShow] = useState(false);
-  const { t } = useTranslation();
 
   return (
     <div className="relative">
@@ -52,7 +51,7 @@ function PasswordInput({ id, registerReturn, error, placeholder }: any) {
         type="button"
         onClick={() => setShow((s) => !s)}
         aria-pressed={show}
-        aria-label={show ? t("common.hidePassword") : t("common.showPassword")}
+        aria-label={show ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
         className="absolute inset-y-0 right-2 flex items-center px-2"
       >
         {show ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -62,13 +61,11 @@ function PasswordInput({ id, registerReturn, error, placeholder }: any) {
 }
 
 export default function LoginForm() {
-  const { t } = useTranslation();
-  const { login, isLoggingIn, loginError } = useAuth();
+  const { login, isLoggingIn } = useAuth();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty },
-    setError,
+    formState: { errors, isSubmitting },
     setFocus,
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -76,7 +73,6 @@ export default function LoginForm() {
     mode: "onTouched",
   });
 
-  const [locked, setLocked] = useState(false);
 
   const onSubmit = async (data: LoginFormValues) => {
     const result = await login(data);
@@ -85,7 +81,6 @@ export default function LoginForm() {
     }
   };
 
-  // focus the first error after validation
   const onError = useCallback(
     (errs: any) => {
       const firstKey = Object.keys(errs || {})[0];
@@ -103,13 +98,12 @@ export default function LoginForm() {
       className="space-y-4"
       noValidate
     >
-      {/* EMAIL */}
       <div className="space-y-2">
-        <Label htmlFor={`email`}>{t("auth.fields.email")}</Label>
+        <Label htmlFor={`email`}>Email</Label>
         <Input
           id={`email`}
           type="email"
-          placeholder={t("auth.placeholders.emailLogin")}
+          placeholder={"demo@gmail.com"}
           className="bg-input"
           aria-invalid={!!errors.email}
           autoComplete="email"
@@ -118,22 +112,20 @@ export default function LoginForm() {
         <FieldError message={errors.email?.message as string | undefined} />
       </div>
 
-      {/* PASSWORD */}
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <Label htmlFor={`password`}>{t("auth.fields.password")}</Label>
+          <Label htmlFor={`password`}>Mật khẩu</Label>
         </div>
 
         <PasswordInput
           id={`password`}
-          placeholder={t("auth.placeholders.password")}
+          placeholder={"Mật khẩu"}
           registerReturn={register("password")}
           error={errors.password?.message as string | undefined}
         />
         <FieldError message={errors.password?.message as string | undefined} />
       </div>
 
-      {/* Remember & forgot password */}
       <div className="flex items-center justify-between gap-4">
         <label className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
           <input
@@ -142,31 +134,31 @@ export default function LoginForm() {
             className="form-checkbox"
           />
           <span className="text-sm text-muted-foreground">
-            {t("auth.fields.rememberMe")}
+            Ghi nhớ đăng nhập
           </span>
         </label>
         <Link
           href="/forgot-password"
           className="text-xs text-primary hover:underline"
         >
-          {t("auth.buttons.forgotPassword")}
+          Quên mật khẩu?
         </Link>
       </div>
 
       <Button
         type="submit"
         className="ml-auto w-full bg-primary hover:bg-primary/90 transition-all font-semibold"
-        disabled={isSubmitting || locked}
-        aria-disabled={isSubmitting || locked}
+        disabled={isSubmitting}
+        aria-disabled={isSubmitting}
       >
-        {isSubmitting ? (
+        {isSubmitting && isLoggingIn ? (
           <div className="flex items-center gap-2 justify-center w-full">
             <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
-            {t("auth.buttons.processing")}
+            Đang đăng nhập...
           </div>
         ) : (
           <div className="flex items-center gap-2 justify-center w-full">
-            {t("auth.buttons.login")} <Sparkles className="w-4 h-4" />
+            Đăng nhập <Sparkles className="w-4 h-4" />
           </div>
         )}
       </Button>

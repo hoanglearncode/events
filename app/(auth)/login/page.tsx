@@ -37,7 +37,6 @@ function SocialButton({
   label,
   ...props
 }: React.ComponentProps<typeof Button> & { label: string }) {
-  // keep as simple wrapper to ensure accessible name
   return (
     <Button
       {...(props as any)}
@@ -53,14 +52,12 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-2 bg-background">
     <aside className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-primary/10 via-background to-secondary/10 border-r border-border relative overflow-hidden">
-      {/* background blur */}
       <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none dark:opacity-20">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary rounded-full blur-[120px]" />
         <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-secondary rounded-full blur-[120px]" />
       </div>
 
       <div className="relative z-10">
-        {/* BRAND */}
         <div className="flex items-center gap-3 mb-8">
           <Image
             src="/event_logo.jpg"
@@ -75,7 +72,6 @@ export default function LoginPage() {
           </span>
         </div>
 
-        {/* HERO */}
         <h1 className="text-4xl font-extrabold leading-tight mb-6">
           Kết nối Nhân sự <br />
           <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -84,7 +80,6 @@ export default function LoginPage() {
         </h1>
 
         <div className="space-y-6 max-w-lg">
-          {/* ITEM 1 */}
           <div className="flex gap-4">
             <div className="mt-1 bg-primary/10 p-2 rounded-md h-fit">
               <Layers className="w-5 h-5 text-primary" />
@@ -100,7 +95,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* ITEM 2 */}
           <div className="flex gap-4">
             <div className="mt-1 bg-secondary/10 p-2 rounded-md h-fit">
               <Bot className="w-5 h-5 text-secondary" />
@@ -116,7 +110,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* ITEM 3 */}
           <div className="flex gap-4">
             <div className="mt-1 bg-accent/10 p-2 rounded-md h-fit">
               <Video className="w-5 h-5 text-accent" />
@@ -134,7 +127,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* FOOT SLOGAN */}
       <div className="relative z-10 mt-12 pt-8 border-t border-border">
         <div className="flex items-center gap-4 text-sm text-muted-foreground italic">
           <ShieldCheck className="w-4 h-4 text-accent" />
@@ -142,8 +134,6 @@ export default function LoginPage() {
         </div>
       </div>
     </aside>
-
-
       <main className="flex items-center justify-center p-6 lg:p-12">
         <Card
           className="w-full max-w-md glass-dark"

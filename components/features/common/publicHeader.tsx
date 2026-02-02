@@ -45,6 +45,7 @@ import {
   Shield,
   Database,
   PlusCircle,
+  Box,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -57,11 +58,15 @@ import { useProfileDetails } from "@/hooks/queries/profileQueries";
 import type { ProfileDetailData } from "@/types/profile";
 import { decodeToken } from "@/middleware";
 
+import { mainNavItems, supportNavItems } from "@/components/sidebar/public_sidebar";
+import { metaConfig } from "@/shared/config/site.config";
+
 export default function PublicHeader() {
   const { i18n, t } = useTranslation();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  console.log(mainNavItems)
 
   const router = useRouter();
 
@@ -99,8 +104,6 @@ export default function PublicHeader() {
     return normalizeProfile(profileResponse);
   }, [profileResponse, enabled]);
 
-  // nav items
-  const navItems : any = [];
 
   function handleSignOut() {
     Cookies.remove(ACCESS_TOKEN);
@@ -113,21 +116,6 @@ export default function PublicHeader() {
   }
 
   // language
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-    try {
-      localStorage.setItem("language", lng);
-    } catch {}
-  };
-  useEffect(() => {
-    try {
-      const savedLang = localStorage.getItem("language");
-      if (savedLang && ["vi", "en"].includes(savedLang)) {
-        i18n.changeLanguage(savedLang);
-      }
-    } catch {}
-  }, [i18n]);
-
   const currentLang = i18n.language || "vi";
   const displayName = profile?.fullname || "User";
   const displayEmail = profile?.email || "";
@@ -208,7 +196,7 @@ export default function PublicHeader() {
                   alt="Volhub"
                   width={28}
                   height={28}
-                  className="w-7 h-7 sm:w-9 sm:h-9 transition-transform duration-300"
+                  className="w-7 h-7 sm:w-9 sm:h-9 transition-transform duration-300 rounded-full"
                   priority
                 />
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent opacity-0 blur-lg transition-opacity duration-300 rounded-full" />
@@ -221,8 +209,8 @@ export default function PublicHeader() {
             {/* Desktop Navigation */}
             <NavigationMenu className="hidden lg:flex">
               <NavigationMenuList>
-                {navItems.map((item : any) => (
-                  <NavigationMenuItem key={item.name}>
+                {mainNavItems.map((item : any) => (
+                  <NavigationMenuItem key={item.id}>
                     <NavigationMenuLink
                       asChild
                       className="group inline-flex w-max items-center justify-center px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50 rounded-md"
@@ -254,43 +242,6 @@ export default function PublicHeader() {
             {/* Theme Toggle - Smaller on mobile */}
             <div className="hidden sm:flex">
               <ThemeToggle />
-            </div>
-
-            {/* Language dropdown - Hidden on mobile */}
-            <div className="hidden lg:flex">
-              <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex items-center gap-1 rounded-full px-3 text-xs h-9 touch-manipulation"
-                    aria-label={t("navbar.selectLanguage")}
-                  >
-                    <Globe className="h-3.5 w-3.5" />
-                    <span>{currentLang.toUpperCase()}</span>
-                    <ChevronDown className="h-3.5 w-3.5 opacity-60" />
-                  </Button>
-                </DropdownMenuTrigger>
-
-                <DropdownMenuContent
-                  align="end"
-                  className="min-w-[120px] flex flex-col gap-1"
-                >
-                  <DropdownMenuItem
-                    onClick={() => changeLanguage("vi")}
-                    className={`text-xs cursor-pointer ${currentLang === "vi" ? "bg-primary text-primary-foreground" : ""}`}
-                  >
-                    🇻🇳 Tiếng Việt
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem
-                    onClick={() => changeLanguage("en")}
-                    className={`text-xs cursor-pointer ${currentLang === "en" ? "bg-primary text-primary-foreground" : ""}`}
-                  >
-                    🇺🇸 English
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
 
             {/* Desktop auth / user box */}
@@ -362,73 +313,26 @@ export default function PublicHeader() {
                             </div>
                           </div>
                         </div>
-
-                        <div className="space-y-1">
-                          <button
-                            onClick={() => handleNavigateTo("/profile")}
-                            className="w-full flex items-center gap-2 text-left px-3 py-2 rounded-lg text-sm text-foreground hover:bg-accent/50 transition-colors"
-                          >
-                            <User className="w-4 h-4" />
-                            {t("navbar.myProfile")}
-                          </button>
-
-                          <div className="pt-2 border-t border-border mt-2">
-                            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest px-3 mb-2">
-                              {t("navbar.quickLinks")}
-                            </div>
-                            <div className="flex flex-col gap-1">
+                          {profile?.role === "ADMIN" && (
+                            <div className="mt-2 pt-2 border-border">
                               <button
-                                onClick={() => handleNavigateTo("/website")}
-                                className="w-full flex items-center gap-2 text-left px-3 py-2 rounded-lg text-sm text-foreground hover:bg-accent/50 transition-colors"
+                                onClick={() => handleNavigateTo("/admin")}
+                                className="
+                                  w-full flex items-center gap-3
+                                  px-3 py-2 rounded-md text-sm font-medium
+                                  text-muted-foreground
+                                  hover:text-foreground
+                                  hover:bg-muted
+                                  transition-colors
+                                "
                               >
-                                <Home className="w-4 h-4" />
-                                {t("navbar.home")}
-                              </button>
-                              <button
-                                onClick={() => handleNavigateTo("/noti")}
-                                className="w-full flex items-center gap-2 text-left px-3 py-2 rounded-lg text-sm text-foreground hover:bg-accent/50 transition-colors"
-                              >
-                                <Bell className="w-4 h-4" />
-                                {t("navbar.notifications")}
-                              </button>
-
-                              {role === "ROLE_ADMIN" && (
-                                <button
-                                  onClick={() => handleNavigateTo("/admin")}
-                                  className="w-full flex items-center gap-2 text-left px-3 py-2 rounded-lg text-sm text-foreground hover:bg-accent/50 transition-colors"
-                                >
-                                  <Shield className="w-4 h-4" />
-                                  {t("navbar.adminDashboard")}
-                                </button>
-                              )}
-                              {role === "ROLE_SELLER" && (
-                                <button
-                                  onClick={() => handleNavigateTo("/seller")}
-                                  className="w-full flex items-center gap-2 text-left px-3 py-2 rounded-lg text-sm text-foreground hover:bg-accent/50 transition-colors"
-                                >
-                                  <Shield className="w-4 h-4" />
-                                  {t("navbar.sellerDashboard")}
-                                </button>
-                              )}
-
-                              <button
-                                onClick={() => handleNavigateTo("/my-data")}
-                                className="w-full flex items-center gap-2 text-left px-3 py-2 rounded-lg text-sm text-foreground hover:bg-accent/50 transition-colors"
-                              >
-                                <Database className="w-4 h-4" />
-                                {t("navbar.myData")}
-                              </button>
-                              <button
-                                onClick={() => handleNavigateTo("/post/new")}
-                                className="w-full flex items-center gap-2 text-left px-3 py-2 rounded-lg text-sm text-foreground hover:bg-accent/50 transition-colors"
-                              >
-                                <PlusCircle className="w-4 h-4" />
-                                {t("navbar.addNewPost")}
+                                <Box className="w-4 h-4" />
+                                <span>Dashboard</span>
                               </button>
                             </div>
-                          </div>
-
-                          <div className="border-t border-border mt-2 pt-2">
+                          )}
+                        <div className="space-y-0.5">    
+                          <div className="border-border mt-2 pt-2">
                             <button
                               onClick={handleSignOut}
                               className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-destructive hover:bg-destructive/10 transition-colors"
@@ -495,15 +399,15 @@ export default function PublicHeader() {
                       >
                         <div className="relative">
                           <Image
-                            src="/manix-log.png"
-                            alt="ManixAI"
+                            src="/event_logo.jpg"
+                            alt="Event Logo"
                             width={32}
                             height={32}
                             className="transition-transform duration-300"
                           />
                         </div>
                         <span className="text-lg bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                          ManixAI
+                          {metaConfig.siteName}
                         </span>
                       </Link>
                     </SheetTitle>
@@ -514,9 +418,9 @@ export default function PublicHeader() {
                 <div className="flex-1 overflow-y-auto px-4 py-4 overscroll-contain">
                   {/* Navigation Links - Larger touch targets */}
                   <div className="space-y-2 mb-6">
-                    {navItems.map((item : any) => (
+                    {mainNavItems.map((item : any) => (
                       <Link
-                        key={item.name}
+                        key={item.id}
                         href={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="block touch-manipulation"
@@ -526,11 +430,8 @@ export default function PublicHeader() {
                             <item.icon className="w-5 h-5 text-primary" />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <p className="font-semibold text-base text-foreground mb-1">
-                              {item.name}
-                            </p>
-                            <p className="text-sm text-muted-foreground line-clamp-2">
-                              {item.description}
+                            <p className="font-semibold text-base text-foreground">
+                              {item.label}
                             </p>
                           </div>
                         </div>
@@ -543,41 +444,11 @@ export default function PublicHeader() {
                     {/* Theme Toggle for mobile */}
                     <div className="flex items-center justify-between p-3 rounded-lg bg-accent/5">
                       <span className="text-sm font-medium text-foreground">
-                        {t("navbar.theme")}
+                        {"Theme"}
                       </span>
                       <ThemeToggle />
                     </div>
-
-                    {/* Language Selection - Better mobile layout */}
-                    <div>
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-1">
-                        {t("navbar.language")}
-                      </p>
-                      <div className="grid grid-cols-2 gap-2">
-                        <Button
-                          variant={
-                            currentLang === "vi" ? "default" : "outline"
-                          }
-                          size="lg"
-                          className="h-12 touch-manipulation"
-                          onClick={() => changeLanguage("vi")}
-                        >
-                          <span className="text-base">🇻🇳</span>
-                          <span className="ml-2 text-sm">Tiếng Việt</span>
-                        </Button>
-                        <Button
-                          variant={
-                            currentLang === "en" ? "default" : "outline"
-                          }
-                          size="lg"
-                          className="h-12 touch-manipulation"
-                          onClick={() => changeLanguage("en")}
-                        >
-                          <span className="text-base">🇺🇸</span>
-                          <span className="ml-2 text-sm">English</span>
-                        </Button>
-                      </div>
-                    </div>
+                    
                   </div>
                 </div>
 

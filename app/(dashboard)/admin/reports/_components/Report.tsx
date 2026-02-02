@@ -51,6 +51,9 @@ import {
   type PaginationMeta,
 } from "@/components/TablePagination";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import { useMemo } from "react";
 
 // types/complaint.ts
 export type ComplaintStatus = "pending" | "resolved" | "failed";
@@ -253,7 +256,18 @@ export default function ComplaintManagementPage() {
   const [messageText, setMessageText] = useState("");
   const [sendingMessage, setSendingMessage] = useState(false);
   const [messageTarget, setMessageTarget] = useState<Complaint | null>(null);
+  const [search, setSearch] = useState("");
 
+  const filteredPosts = useMemo(() => {
+    if (!search.trim()) return [...data];
+
+    const q = search.toLowerCase();
+    return data.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.authorName.toLowerCase().includes(q)
+    );
+  }, [data, search]);
   // Load Data
   useEffect(() => {
     fetchData();
@@ -373,25 +387,23 @@ export default function ComplaintManagementPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground space-y-8">
-      <div className="flex items-center justify-end">
-        <Button onClick={fetchData} variant="outline" disabled={isLoading}>
-          {isLoading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            "Làm mới dữ liệu"
-          )}
-        </Button>
-      </div>
-
       {/* Main Table Card */}
       <Card className="card-elevated border-none">
-        <CardHeader>
-          <CardTitle>Danh sách yêu cầu</CardTitle>
-          {/* <CardDescription>
-            Hiển thị {pagination?.from}-{pagination?.to} trong tổng số{" "}
-            {pagination?.total} bản ghi.
-          </CardDescription> */}
-        </CardHeader>
+      <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/40">
+        <div className="relative w-full max-w-2xl">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Tìm theo tiêu đề bài viết..."
+            className="pl-9"
+          />
+        </div>
+
+        <span className="text-sm text-muted-foreground">
+          {filteredPosts.length}/{posts.length} bài viết
+        </span>
+      </div>  
         <CardContent>
           <div className="rounded-md border border-border">
             <Table>

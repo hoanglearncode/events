@@ -8,7 +8,13 @@ import { Separator } from "@/components/ui/separator";
 import { Zap, Send, CheckCircle2,  Twitter,
   Facebook,
   Linkedin,
-  Youtube, } from "lucide-react";
+  Youtube,
+  Instagram, } from "lucide-react";
+
+import TikTokIcon from "@/components/icon/Tiktok";
+import ThreadsIcon from "@/components/icon/Threads";
+
+import { metaConfig } from "@/shared/config/site.config";
 
 export default function PublicFooter() {
   const { t } = useTranslation();
@@ -17,10 +23,11 @@ export default function PublicFooter() {
   const [isLoading, setIsLoading] = useState(false);
 
   const socialLinks = [
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Youtube, href: "#", label: "YouTube" },
+    { icon: ThreadsIcon, href: "https://www.threads.com/@nhacoevent", label: "Threads" },
+    { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61552728892066", label: "Facebook" },
+    { icon: Instagram, href: "https://www.instagram.com/nhacoevent/", label: "Instagram" },
+    { icon: Youtube, href: "https://www.youtube.com/", label: "YouTube" },
+    { icon: TikTokIcon, href: "https://www.tiktok.com/@nhacoevent", label: "TikTok" },
   ];
   const handleSubscribe = () => {
     if (!email) return;
@@ -48,11 +55,11 @@ export default function PublicFooter() {
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent">
                 <Zap className="h-5 w-5 text-white" />
               </div>
-              <span className="text-lg font-bold">ManixAI</span>
+              <span className="text-lg font-bold">{metaConfig.siteName}</span>
             </div>
 
             <p className="max-w-sm text-sm text-muted-foreground leading-relaxed">
-              {t("footer.brandDescription")}
+              {metaConfig.siteDescription}
             </p>
 
             <div className="flex gap-3">
@@ -76,11 +83,11 @@ export default function PublicFooter() {
           {/* NEWSLETTER */}
           <div className="space-y-5">
             <h4 className="text-sm font-semibold uppercase tracking-wide">
-              {t("footer.newsletterTitle")}
+              {metaConfig.subscribeTitle}
             </h4>
 
             <p className="text-sm text-muted-foreground">
-              {t("footer.newsletterDesc")}
+              {metaConfig.newsDescription}
             </p>
 
             <div className="relative max-w-sm">
@@ -123,7 +130,7 @@ export default function PublicFooter() {
         {/* BOTTOM */}
         <div className="flex flex-col gap-4 text-center text-xs text-muted-foreground md:flex-row md:justify-between md:text-left">
           <span>
-            {t("footer.copyright")} · {t("footer.allRightsReserved")}
+            {metaConfig.siteAuthor} · {t("footer.allRightsReserved")}
           </span>
 
           <div className="flex justify-center gap-6">

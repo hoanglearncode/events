@@ -26,47 +26,6 @@ import {
 } from "lucide-react";
 
 export default function SellerAnalytics() {
-  const [timeRange, setTimeRange] = useState("Last 30 days");
-
-  const sidebarLinks = [
-    {
-      id: "overview",
-      label: "Dashboard",
-      icon: <LayoutDashboard size={18} />,
-      href: "#seller",
-    },
-    {
-      id: "products",
-      label: "Sản phẩm",
-      icon: <Package size={18} />,
-      href: "#seller/products",
-    },
-    {
-      id: "orders",
-      label: "Đơn hàng",
-      icon: <ShoppingBag size={18} />,
-      href: "#seller/orders",
-    },
-    {
-      id: "finances",
-      label: "Tài chính",
-      icon: <Wallet size={18} />,
-      href: "#seller/finances",
-    },
-    {
-      id: "analytics",
-      label: "Báo cáo",
-      icon: <BarChart3 size={18} />,
-      href: "#seller/analytics",
-    },
-    {
-      id: "messages",
-      label: "Tin nhắn",
-      icon: <MessageSquare size={18} />,
-      href: "#seller/messaging",
-    },
-  ];
-
   const auditLogs = [
     {
       id: 1,

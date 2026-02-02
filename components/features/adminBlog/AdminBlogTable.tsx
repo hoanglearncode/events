@@ -1,4 +1,4 @@
-import React from "react";
+
 import {
   Table,
   TableBody,
@@ -11,6 +11,9 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trash2, CheckCircle, Eye, Star } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import { useMemo, useState } from "react";
 
 const formatDate = (date: string) => {
   if (!date) return "";
@@ -63,8 +66,39 @@ export default function AdminBlogTable({
   onApprove,
   onFeature,
 }: AdminBlogTableProps) {
+
+  const [search, setSearch] = useState("");
+
+  const filteredPosts = useMemo(() => {
+    if (!search.trim()) return posts;
+
+    const q = search.toLowerCase();
+    return posts.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.authorName.toLowerCase().includes(q)
+    );
+  }, [posts, search]);
+
+
   return (
     <div className="bg-card border rounded-lg overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/40">
+        <div className="relative w-full max-w-2xl">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Tìm theo tiêu đề bài viết..."
+            className="pl-9"
+          />
+        </div>
+
+        <span className="text-sm text-muted-foreground">
+          {filteredPosts.length}/{posts.length} bài viết
+        </span>
+      </div>  
+
       <Table>
         <TableHeader>
           <TableRow className="bg-muted">

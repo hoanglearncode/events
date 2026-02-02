@@ -27,28 +27,7 @@ export default function AdminManagement() {
             Danh sách các đơn hàng đã bán - khiếu nại
           </p>
         </div>
-
-        {/* Tabs */}
-        <Tabs defaultValue="products" className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
-            <TabsTrigger value="products" className="gap-2">
-              <ShoppingBag className="h-4 w-4" />
-              Đơn hàng
-            </TabsTrigger>
-            <TabsTrigger value="categories" className="gap-2">
-              <MailWarning className="h-4 w-4" />
-              Khiếu nại
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="products" className="space-y-6">
-            <ProductManagement />
-          </TabsContent>
-
-          <TabsContent value="categories" className="space-y-6">
-            <CategoryManagement />
-          </TabsContent>
-        </Tabs>
+        <CategoryManagement />
       </div>
     </div>
   );

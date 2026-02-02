@@ -4,22 +4,21 @@ import { getValidationMessage } from "../helpers/validation";
 // Password validation with translator text
 export const passwordSchema = z
   .string()
-  .min(8, "validation.password.min")
-  .regex(/[A-Z]/, "validation.password.uppercase")
-  .regex(/[a-z]/, "validation.password.lowercase")
-  .regex(/\d/, "validation.password.number")
-  .regex(/[!@#$%^&*(),.?":{}|<>]/, "validation.password.special");
-
+  .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
+  .regex(/[A-Z]/, "Mật khẩu phải chứa ít nhất 1 ký tự in hoa")
+  .regex(/[a-z]/, "Mật khẩu phải chứa ít nhất 1 ký tự thường")
+  .regex(/\d/, "Mật khẩu phải chứa ít nhất 1 ký tự số")
+  .regex(/[!@#$%^&*(),.?":{}|<>]/, "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt");
 // Email validation
 export const emailSchema = z
   .string()
-  .email("validation.email.invalid")
-  .min(1, "validation.email.required");
+  .email("Mail không hợp lệ")
+  .min(1, "Mail là bắt buộc");
 
 // Login schema
 export const loginSchema = z.object({
   email: emailSchema,
-  password: z.string().min(1, "validation.password.required"),
+  password: z.string().min(1, "Vui lòng nhập mật khẩu"),
   remember: z.boolean().optional(),
 });
 
@@ -29,25 +28,25 @@ export const registerSchema = z
     fullName: z.string().optional().nullable(),
     email: z
       .string()
-      .email("validation.email.invalid")
-      .min(1, "validation.email.required"),
+      .email("Email không hợp lệ")
+      .min(1, "Email là bắt buộc"),
     password: z
       .string()
-      .min(8, "validation.password.min")
-      .regex(/[A-Z]/, "validation.password.uppercase")
-      .regex(/[a-z]/, "validation.password.lowercase")
-      .regex(/\d/, "validation.password.number")
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, "validation.password.special"),
+      .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
+      .regex(/[A-Z]/, "Mật khẩu phải chứa ít nhất 1 ký tự in hoa")
+      .regex(/[a-z]/, "Mật khẩu phải chứa ít nhất 1 ký tự thường")
+      .regex(/\d/, "Mật khẩu phải chứa ít nhất 1 ký tự số")
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt"),
     confirmPassword: z
       .string()
-      .min(1, "validation.password.confirmation.required"),
+      .min(1, "Vui lòng xác nhận mật khẩu"),
     agreeToTerms: z.boolean().refine((val) => val === true, {
-      message: "validation.terms.required",
+      message: "Bạn phải đồng ý với Điều khoản dịch vụ và Chính sách bảo mật",
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "validation.password.mismatch",
-    path: ["password_confirmation"],
+    message: "Mật khẩu xác nhận không khớp",
+    path: ["confirmPassword"],
   });
 
 // Forgot password schema
@@ -71,7 +70,7 @@ export const resetPasswordSchema = z
 // Verify email schema
 export const verifyEmailSchema = z.object({
   email: emailSchema,
-  otpCode: z.string().min(1, "validation.verification.hash.required"),
+  otpCode: z.string().min(1, "Mã xác nhận là bắt buộc"),
 });
 
 // Resend verification email schema
@@ -82,20 +81,20 @@ export const resendVerificationEmailSchema = z.object({
 // Change password schema
 export const changePasswordSchema = z
   .object({
-    current_password: z.string().min(1, "validation.password.current.required"),
+    current_password: z.string().min(1, "Vui lòng nhập mật khẩu hiện tại"),
     password: z
       .string()
-      .min(8, "validation.password.min")
-      .regex(/[A-Z]/, "validation.password.uppercase")
-      .regex(/[a-z]/, "validation.password.lowercase")
-      .regex(/\d/, "validation.password.number")
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, "validation.password.special"),
+      .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
+      .regex(/[A-Z]/, "Mật khẩu phải chứa ít nhất 1 ký tự in hoa")
+      .regex(/[a-z]/, "Mật khẩu phải chứa ít nhất 1 ký tự thường")
+      .regex(/\d/, "Mật khẩu phải chứa ít nhất 1 ký tự số")
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt"),
     password_confirmation: z
       .string()
-      .min(1, "validation.password.confirmation.required"),
+      .min(1, "Vui lòng xác nhận mật khẩu"),
   })
   .refine((data) => data.password === data.password_confirmation, {
-    message: "validation.password.mismatch",
+    message: "Mật khẩu xác nhận không khớp",
     path: ["password_confirmation"],
   });
 
@@ -114,27 +113,27 @@ export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
 
 export const passwordRequirements = [
   {
-    label: "validation.password.requirements.min_length",
+    label: "Mật khẩu phải có ít nhất 8 ký tự",
     test: (password: string) => password.length >= 8,
     params: { min: 8 },
   },
   {
-    label: "validation.password.requirements.uppercase",
+    label: "Mật khẩu phải chứa ít nhất 1 ký tự in hoa",
     test: (password: string) => /[A-Z]/.test(password),
     params: { count: 1 },
   },
   {
-    label: "validation.password.requirements.lowercase",
+    label: "Mật khẩu phải chứa ít nhất 1 ký tự thường",
     test: (password: string) => /[a-z]/.test(password),
     params: { count: 1 },
   },
   {
-    label: "validation.password.requirements.number",
+    label: "Mật khẩu phải chứa ít nhất 1 ký tự số",
     test: (password: string) => /\d/.test(password),
     params: { count: 1 },
   },
   {
-    label: "validation.password.requirements.special",
+    label: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt",
     test: (password: string) => /[!@#$%^&*(),.?":{}|<>]/.test(password),
     params: { count: 1 },
   },
