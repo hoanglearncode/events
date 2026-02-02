@@ -72,4 +72,4 @@ export const QUESTION_TYPES: QuestionTypeOption[] = [
 /** Question types that render an editable option list */
 export const OPTION_TYPES = ["multiple", "checkbox", "dropdown"] as const;
 
-export const PAGE_TITLE = "Hóa Chất Nhật Minh";
+export const PAGE_TITLE = "Nhà có event";

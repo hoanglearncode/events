@@ -1,14 +1,16 @@
 "use client";
 
 import React from "react";
-import { Eye, Globe, Image } from "lucide-react";
+import { Eye, Globe, Image as ImageEmpty } from "lucide-react";
 import { PAGE_TITLE } from "../../_utils/constants";
+import renderImages from "./RenderImages";
 
 interface PostPreviewProps {
   postContent: string;
+  images?: File[];
 }
 
-export default function PostPreview({ postContent }: PostPreviewProps) {
+export default function PostPreview({ postContent, images }: PostPreviewProps) {
   return (
     <div
       className="rounded-2xl shadow-lg overflow-hidden"
@@ -80,11 +82,18 @@ export default function PostPreview({ postContent }: PostPreviewProps) {
 
           {/* image placeholder */}
           <div
-            className="rounded-xl aspect-video mb-4 flex items-center justify-center"
+            className="relative rounded-xl aspect-video mb-4 overflow-hidden"
             style={{ backgroundColor: "var(--border)" }}
           >
-            <Image className="w-12 h-12" style={{ color: "var(--muted-foreground)" }} />
+            {images && images.length > 0 ? (
+              renderImages(images)
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <ImageEmpty className="w-12 h-12" style={{ color: "var(--muted-foreground)" }} />
+              </div>
+            )}
           </div>
+
 
           {/* action bar */}
           <div
