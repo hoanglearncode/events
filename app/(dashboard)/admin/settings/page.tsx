@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Settings, Building2, FileText, CreditCard, Shield, 
   Globe, Mail, Server, Save, Loader2, AlertTriangle,
   CheckCircle2, DollarSign, Users, Lock, Zap, Eye,
-  Clock, Bell, Activity, Database, Coffee
+  Clock, Bell, Activity, Database, Coffee,
+  Plus
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -19,8 +20,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 
-import { General, Content, Recruitment, Authentication, Payment, Integration } from "./_types/setting";
+import { General, Content, Recruitment, Authentication, PaymentGatewayConfig, Integration } from "./_types/setting";
 import { useRouter, useSearchParams } from "next/navigation";
+import { platformSettingSchema } from "./_helper/validation";
+import { ZodError } from "zod";
+import { toast } from "sonner";
+
+
+const listOfDate = ["1", "5", "10", "15", "20", "30", "60", "90"]
 
 const PlatformAdminSettings = () => {
   const searchParams = useSearchParams();
@@ -29,24 +36,9 @@ const PlatformAdminSettings = () => {
   const tabFromUrl = searchParams.get("tab") || "general";
   const [isSaving, setIsSaving] = useState(false);
   const [activeTab, setActiveTab] = useState(tabFromUrl);
-
-  const [config, setConfig] = useState({
-    siteName: "TopDev clone",
-    maintenanceMode: false,
-    allowRegistration: true,
-    jobApprovalRequired: false,
-    newsCommentAutoApprove: false,
-    cvViewPrice: 50,
-    currency: "VND",
-    supportEmail: "admin@platform.com",
-    seoTitle: "Nền tảng tuyển dụng IT hàng đầu Việt Nam",
-    paymentGateway: "vnpay",
-    smtpServer: "smtp.sendgrid.net",
-    cvBlurEnabled: true,
-    jobPostDuration: "30",
-    freeJobPosts: 3,
-    pointValue: 1000,
-    hotJobFee: 100
+  const [showSecret, setShowSecret] = useState({
+    google: false,
+    facebook: false,
   });
 
   // data value 
@@ -59,13 +51,94 @@ const PlatformAdminSettings = () => {
     allowRegister: true
   });
 
-  
+  const [recruitment, setRecruitment] = useState<Recruitment>({
+    isViewProfile: true,
+    isApproval: true,
+    freeCounter: 10,
+    timeReset: "30"
+  })
+
+  const [content, setContent] = useState<Content>({
+    allowComment: true,
+    blackListKey: []
+  });
+
+  const [paymentConfig, setPaymentConfig] = useState<{gateways : PaymentGatewayConfig[]} >({
+    gateways: [],
+  });
+
+  const [integration, setIntegration] = useState<Integration>({
+    email: {
+      username: "",
+      password: "",
+      host: "",
+      port: "",
+    },
+
+    analytics: {
+      ga4: {
+        measurementId: "",
+        verified: false,
+      },
+    },
+
+    oauth: {
+      google: {
+        clientId: "",
+        enabled: false,
+        verified: false,
+      },
+      facebook: {
+        clientId: "",
+        enabled: false,
+        verified: false,
+      },
+    },
+
+    meta: {
+      encrypted: true,
+      managedBy: "SECRET_MANAGER",
+    },
+  });
+
+  const [auth, setAuth] = useState<Authentication>({
+    twoFactor: true,
+    emailVerification: true,
+    lifeTimeOfToken: "30"
+  });
+
+  useEffect(()=> {
+    
+  }, [])
 
   const handleSave = () => {
-    setIsSaving(true);
-    setTimeout(() => {
+    try {
+      setIsSaving(true);
+
+      platformSettingSchema.parse({
+        general,
+        recruitment,
+        content,
+        auth,
+        integration,
+      });
+
+      setTimeout(() => {
+        setIsSaving(false);
+        toast.success("Cập nhật thành công!")
+      }, 1000);
+
+    } catch (error) {
       setIsSaving(false);
-    }, 1500);
+
+      if (error instanceof ZodError) {
+        const firstError = error.errors[0];
+        toast.error(`Lỗi ${firstError.message}`);
+        return;
+      }
+
+      console.error(error);
+    }
   };
 
   const handleTabChange = (tab: string) => {
@@ -73,11 +146,74 @@ const PlatformAdminSettings = () => {
     router.push(`?tab=${tab}`, { scroll: false });
   };
 
+
+  const setDefaultGateway = (key: string) => {
+    setPaymentConfig(prev => ({
+      gateways: prev.gateways.map(g => ({
+        ...g,
+        isDefault: g.key === key,
+      })),
+    }));
+  };
+
+  const addGateway = () => {
+    const newGateway: PaymentGatewayConfig = {
+      key: "zalopay",
+      name: "ZaloPay",
+      enabled: false,
+      isDefault: false,
+    };
+
+    setPaymentConfig(prev => ({
+      gateways: [...prev.gateways, newGateway],
+    }));
+  };
+
+  const toggleGateway = (key: string) => {
+    setPaymentConfig(prev => ({
+      gateways: prev.gateways.map(g =>
+        g.key === key
+          ? { ...g, enabled: !g.enabled, isDefault: g.enabled ? false : g.isDefault }
+          : g
+      ),
+    }));
+  };
+
+  const handleTestEmail = () => {}
+
+  const verifyGA = () => {
+    // call backend
+    // if success:
+    setIntegration(prev => ({
+      ...prev,
+      analytics: {
+        ...prev.analytics,
+        ga4: {
+          ...prev.analytics.ga4,
+          verified: true,
+          verifiedAt: new Date().toISOString(),
+        },
+      },
+    }));
+  }
+
+  const verifyOAuth = (provider: "google" | "facebook") => {
+    // call backend verify OAuth config
+    setIntegration(prev => ({
+      ...prev,
+      oauth: {
+        ...prev.oauth,
+        [provider]: {
+          ...prev.oauth[provider],
+          verified: true,
+          lastUpdated: new Date().toISOString(),
+        },
+      },
+    }));
+  }
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(156,98,15,0.05),transparent_70%)] pointer-events-none"></div>
-      <div className="fixed inset-0 bg-[linear-gradient(to_right,rgba(98,74,43,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(98,74,43,0.03)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
-      
       <div className="relative">
         <div className="container mx-auto py-8 px-4 max-w-7xl">
           <div className="mb-8">
@@ -124,17 +260,17 @@ const PlatformAdminSettings = () => {
             </div>
 
             {/* System Status Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="bg-card border border-border rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">System Status</p>
                     <p className="text-lg font-bold text-foreground">
-                      {config.maintenanceMode ? "Maintenance" : "Active"}
+                      {general.maintainMode ? "Maintenance" : "Active"}
                     </p>
                   </div>
-                  <div className={`p-2.5 rounded-lg ${config.maintenanceMode ? 'bg-brand-warning/10' : 'bg-brand-success/10'}`}>
-                    <Activity className={`w-5 h-5 ${config.maintenanceMode ? 'text-brand-warning' : 'text-brand-success'}`} />
+                  <div className={`p-2.5 rounded-lg ${general.maintainMode ? 'bg-brand-warning/10' : 'bg-brand-success/10'}`}>
+                    <Activity className={`w-5 h-5 ${general.maintainMode ? 'text-brand-warning' : 'text-brand-success'}`} />
                   </div>
                 </div>
               </div>
@@ -144,11 +280,11 @@ const PlatformAdminSettings = () => {
                   <div>
                     <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Registration</p>
                     <p className="text-lg font-bold text-foreground">
-                      {config.allowRegistration ? "Open" : "Closed"}
+                      {general.allowRegister ? "Open" : "Closed"}
                     </p>
                   </div>
-                  <div className={`p-2.5 rounded-lg ${config.allowRegistration ? 'bg-brand-primary/10' : 'bg-muted'}`}>
-                    <Users className={`w-5 h-5 ${config.allowRegistration ? 'text-brand-primary' : 'text-muted-foreground'}`} />
+                  <div className={`p-2.5 rounded-lg ${general.allowRegister ? 'bg-brand-primary/10' : 'bg-muted'}`}>
+                    <Users className={`w-5 h-5 ${general.allowRegister ? 'text-brand-primary' : 'text-muted-foreground'}`} />
                   </div>
                 </div>
               </div>
@@ -157,29 +293,17 @@ const PlatformAdminSettings = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Payment Gateway</p>
-                    <p className="text-lg font-bold text-foreground uppercase">{config.paymentGateway}</p>
+                    <p className="text-lg font-bold text-foreground uppercase">{paymentConfig.gateways.find(i => i.isDefault)?.name}</p>
                   </div>
                   <div className="p-2.5 bg-brand-secondary/10 rounded-lg">
                     <CreditCard className="w-5 h-5 text-brand-secondary" />
                   </div>
                 </div>
               </div>
-
-              <div className="bg-card border border-border rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">CV View Price</p>
-                    <p className="text-lg font-bold text-foreground">{config.cvViewPrice} Points</p>
-                  </div>
-                  <div className="p-2.5 bg-brand-accent/10 rounded-lg">
-                    <Eye className="w-5 h-5 text-brand-accent" />
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Warning Alert */}
-            {config.maintenanceMode && (
+            {general.maintainMode && (
               <div className="bg-gradient-to-r from-brand-warning/10 to-brand-warning/5 border-l-4 border-brand-warning p-5 rounded-lg shadow-sm mb-6">
                 <div className="flex items-start gap-4">
                   <div className="p-2 bg-brand-warning/20 rounded-lg flex-shrink-0">
@@ -267,6 +391,7 @@ const PlatformAdminSettings = () => {
                           <Label className="text-sm font-medium text-foreground">Tên nền tảng</Label>
                           <Input 
                             value={general.systemName} 
+                            placeholder="System Name"
                             onChange={(e) => setGeneral({...general, systemName: e.target.value})}
                             className="border-border focus:border-brand-primary focus:ring-brand-primary/20"
                           />
@@ -275,6 +400,7 @@ const PlatformAdminSettings = () => {
                           <Label className="text-sm font-medium text-foreground">Email hỗ trợ</Label>
                           <Input 
                             value={general.systemEmail} 
+                            placeholder="contact@gmail.com"
                             onChange={(e) => setGeneral({...general, systemEmail: e.target.value})}
                             className="border-border focus:border-brand-primary focus:ring-brand-primary/20"
                           />
@@ -284,6 +410,7 @@ const PlatformAdminSettings = () => {
                         <Label className="text-sm font-medium text-foreground">SEO Title</Label>
                         <Input 
                           value={general.systemTitle} 
+                          placeholder="A brief name of the platform...."
                           onChange={(e) => setGeneral({...general, systemTitle: e.target.value})}
                           className="border-border focus:border-brand-primary focus:ring-brand-primary/20"
                         />
@@ -293,7 +420,7 @@ const PlatformAdminSettings = () => {
                         <Textarea 
                           value={general.systemDescription}
                           onChange={(e) => setGeneral({...general, systemDescription: e.target.value})}
-                          placeholder="Mô tả ngắn gọn về nền tảng để hiển thị trên kết quả tìm kiếm..."
+                          placeholder="A brief description of the platform...."
                           className="border-border focus:border-brand-primary focus:ring-brand-primary/20 min-h-[100px]"
                         />
                         <p className="text-xs text-muted-foreground">Khuyến nghị: 150-160 ký tự</p>
@@ -328,7 +455,7 @@ const PlatformAdminSettings = () => {
                         <Switch 
                           checked={general.maintainMode}
                           onCheckedChange={(c) => setGeneral({...general, maintainMode: c})}
-                          className="data-[state=checked]:bg-brand-warning"
+                          className="data-[state=checked]:bg-primary bg-gray-400"
                         />
                       </div>
                       
@@ -349,7 +476,7 @@ const PlatformAdminSettings = () => {
                         <Switch 
                           checked={general.allowRegister}
                           onCheckedChange={(c) => setGeneral({...general, allowRegister: c})}
-                          className="data-[state=checked]:bg-brand-primary"
+                          className="data-[state=checked]:bg-primary"
                         />
                       </div>
                     </CardContent>
@@ -390,7 +517,7 @@ const PlatformAdminSettings = () => {
             {/* ================= TAB: TUYỂN DỤNG ================= */}
             <TabsContent value="recruitment" className="space-y-6 mt-6">
               <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200 pt-0">
-                <CardHeader className="border-b border-border bg-muted rounded-t-xl py-2">
+                <CardHeader className="border-b border-border bg-muted rounded-t-xl py-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-brand-accent/10 rounded-lg">
                       <Building2 className="w-4 h-4 text-brand-accent" />
@@ -418,8 +545,8 @@ const PlatformAdminSettings = () => {
                       </p>
                     </div>
                     <Switch 
-                      checked={config.jobApprovalRequired}
-                      onCheckedChange={(c) => setConfig({...config, jobApprovalRequired: c})}
+                      checked={recruitment.isApproval}
+                      onCheckedChange={(c) => setRecruitment({...recruitment, isApproval: c})}
                       className="data-[state=checked]:bg-primary bg-gray-400"
                     />
                   </div>
@@ -431,17 +558,14 @@ const PlatformAdminSettings = () => {
                         Thời hạn tin đăng mặc định
                       </Label>
                       <Select 
-                        value={config.jobPostDuration}
-                        onValueChange={(v) => setConfig({...config, jobPostDuration: v})}
+                        value={recruitment.timeReset}
+                        onValueChange={(v) => setRecruitment({...recruitment, timeReset: v})}
                       >
                         <SelectTrigger className="border-border focus:border-brand-accent focus:ring-brand-accent/20">
                           <SelectValue placeholder="Chọn thời hạn" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="15">15 ngày</SelectItem>
-                          <SelectItem value="30">30 ngày</SelectItem>
-                          <SelectItem value="60">60 ngày</SelectItem>
-                          <SelectItem value="90">90 ngày</SelectItem>
+                          {listOfDate.map((i) => (<SelectItem key={i} value={i}>{i} ngày</SelectItem>))}
                         </SelectContent>
                       </Select>
                       <p className="text-xs text-muted-foreground">Tin đăng sẽ tự động hết hạn sau khoảng thời gian này</p>
@@ -454,8 +578,8 @@ const PlatformAdminSettings = () => {
                       </Label>
                       <Input 
                         type="number" 
-                        value={config.freeJobPosts}
-                        onChange={(e) => setConfig({...config, freeJobPosts: parseInt(e.target.value)})}
+                        value={recruitment.freeCounter}
+                        onChange={(e) => setRecruitment({...recruitment, freeCounter: parseInt(e.target.value)})}
                         className="border-border focus:border-brand-accent focus:ring-brand-accent/20"
                       />
                       <p className="text-xs text-muted-foreground">Mỗi doanh nghiệp mới sẽ có số tin đăng miễn phí này</p>
@@ -463,48 +587,12 @@ const PlatformAdminSettings = () => {
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-                <CardHeader className="border-b border-border bg-gradient-to-r from-muted to-transparent">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-brand-primary/10 rounded-lg">
-                      <Eye className="w-4 h-4 text-brand-primary" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">Xem hồ sơ ứng viên (CV)</CardTitle>
-                      <CardDescription>Quy định bảo vệ thông tin cá nhân của ứng viên</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="flex items-start justify-between p-5 border border-border rounded-xl bg-gradient-to-br from-brand-primary/5 to-transparent hover:border-brand-primary/30 transition-all duration-200">
-                    <div className="space-y-1 flex-1">
-                      <div className="flex items-center gap-2">
-                        <Label className="text-base font-semibold text-foreground">Làm mờ thông tin liên hệ</Label>
-                        <Badge variant="outline" className="bg-brand-primary/10 text-brand-primary border-brand-primary/20">
-                          <Lock className="w-3 h-3 mr-1" />
-                          Privacy
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        Ẩn Email, SĐT và thông tin nhạy cảm của ứng viên. 
-                        Nhà tuyển dụng cần sử dụng <span className="font-semibold text-brand-primary">{config.cvViewPrice} Points</span> để mở khóa.
-                      </p>
-                    </div>
-                    <Switch 
-                      checked={config.cvBlurEnabled}
-                      onCheckedChange={(c) => setConfig({...config, cvBlurEnabled: c})}
-                      className="data-[state=checked]:bg-primary bg-muted/20"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
             </TabsContent>
 
             {/* ================= TAB: NỘI DUNG & TIN TỨC ================= */}
             <TabsContent value="content" className="space-y-6 mt-6">
-              <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-                <CardHeader className="border-b border-border bg-gradient-to-r from-muted to-transparent">
+              <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200 pt-0">
+                <CardHeader className="border-b border-border bg-muted rounded-t-xl py-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-brand-success/10 rounded-lg">
                       <FileText className="w-4 h-4 text-brand-success" />
@@ -525,9 +613,9 @@ const PlatformAdminSettings = () => {
                       </p>
                     </div>
                     <Switch 
-                      checked={config.newsCommentAutoApprove}
-                      onCheckedChange={(c) => setConfig({...config, newsCommentAutoApprove: c})}
-                      className="data-[state=checked]:bg-brand-success"
+                      checked={content.allowComment}
+                      onCheckedChange={(c) => setContent({...content, allowComment: c})}
+                      className="data-[state=checked]:bg-primary"
                     />
                   </div>
                   
@@ -539,7 +627,9 @@ const PlatformAdminSettings = () => {
                       Từ khóa cấm (Blacklist)
                     </Label>
                     <Textarea 
-                      className="min-h-[120px] border-border focus:border-brand-error focus:ring-brand-error/20 font-mono text-sm" 
+                      value={content.blackListKey.join(', ').toString()}
+                      onChange={(e) => setContent({...content, blackListKey: e.target.value.toString().split(',').map(i => i.trim())})}
+                      className="min-h-[120px] border-border focus:border-brand-error focus:ring-brand-error/20 text-sm" 
                       placeholder="lừa đảo, cờ bạc, cheat, hack, spam..."
                     />
                     <div className="flex items-start gap-2 p-3 bg-brand-error/5 border border-brand-error/20 rounded-lg">
@@ -556,8 +646,8 @@ const PlatformAdminSettings = () => {
 
             {/* ================= TAB: TÀI CHÍNH & POINT ================= */}
             <TabsContent value="finance" className="space-y-6 mt-6">
-              <div className="grid gap-6 md:grid-cols-2">
-                <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200">
+              <div className="grid gap-6 md:grid-cols-1">
+                {/* <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200">
                   <CardHeader className="border-b border-border bg-gradient-to-r from-brand-secondary/10 to-transparent">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-brand-secondary rounded-lg">
@@ -618,86 +708,76 @@ const PlatformAdminSettings = () => {
                       </div>
                     </div>
                   </CardContent>
-                </Card>
+                </Card> */}
 
                 <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200">
                   <CardHeader className="border-b border-border bg-gradient-to-r from-brand-primary/10 to-transparent">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-brand-primary rounded-lg">
-                        <CreditCard className="w-4 h-4 text-white" />
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-brand-primary rounded-lg">
+                          <CreditCard className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-lg">Cổng thanh toán</CardTitle>
+                          <CardDescription>Tích hợp payment gateway</CardDescription>
+                        </div>
                       </div>
-                      <div>
-                        <CardTitle className="text-lg">Cổng thanh toán</CardTitle>
-                        <CardDescription>Tích hợp payment gateway</CardDescription>
-                      </div>
+                      <Button
+                        onClick={addGateway}
+                        className="bg-primary hover:from-brand-primary/90 hover:to-brand-secondary/90 text-white shadow-lg shadow-brand-primary/20 min-w-[140px] transition-all duration-200"
+                      >
+                        <Plus className="mr-2 h-4 w-4" />
+                        Thêm cổng thanh toán
+                      </Button>
                     </div>
                   </CardHeader>
-                  <CardContent className="space-y-5 pt-6">
+                  <CardContent className="space-y-5">
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium text-foreground">Payment Gateway chính</Label>
-                      <Select 
-                        value={config.paymentGateway} 
-                        onValueChange={(v) => setConfig({...config, paymentGateway: v})}
-                      >
-                        <SelectTrigger className="border-border focus:border-brand-primary focus:ring-brand-primary/20">
-                          <SelectValue placeholder="Chọn cổng thanh toán" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="vnpay">
-                            <div className="flex items-center gap-2">
-                              <div className="w-5 h-5 bg-brand-primary rounded flex items-center justify-center text-[8px] font-bold text-white">VP</div>
-                              VNPay
-                            </div>
-                          </SelectItem>
-                          <SelectItem value="momo">
-                            <div className="flex items-center gap-2">
-                              <div className="w-5 h-5 bg-pink-600 rounded flex items-center justify-center text-[8px] font-bold text-white">M</div>
-                              Momo
-                            </div>
-                          </SelectItem>
-                          <SelectItem value="paypal">
-                            <div className="flex items-center gap-2">
-                              <div className="w-5 h-5 bg-blue-500 rounded flex items-center justify-center text-[8px] font-bold text-white">PP</div>
-                              PayPal
-                            </div>
-                          </SelectItem>
-                          <SelectItem value="stripe">
-                            <div className="flex items-center gap-2">
-                              <div className="w-5 h-5 bg-brand-accent rounded flex items-center justify-center text-[8px] font-bold text-white">S</div>
-                              Stripe
-                            </div>
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                      <Label className="text-sm font-medium text-foreground">
+                        Danh sách Payment Gateway
+                      </Label>
 
-                    <Separator />
+                      <CardContent className="space-y-3 px-1">
+                        {paymentConfig.gateways.map((g) => (
+                          <div
+                            key={g.key}
+                            className="flex items-center justify-between rounded-lg border p-4 transition-colors"
+                          >
+                            {/* LEFT */}
+                            <div>
+                              <p className="font-medium">{g.name}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {g.enabled ? "Đang hoạt động" : "Chưa kích hoạt"}
+                              </p>
+                            </div>
 
-                    <div className="p-4 bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 rounded-lg border border-brand-primary/20">
-                      <div className="flex items-start gap-3">
-                        <div className="p-1.5 bg-brand-primary rounded-lg flex-shrink-0">
-                          <Server className="w-4 h-4 text-white" />
-                        </div>
-                        <div className="text-sm">
-                          <p className="text-foreground mb-1">
-                            Để cấu hình chi tiết <span className="font-semibold">API Key, Secret Key, Webhook</span>
-                          </p>
-                          <button className="text-brand-primary font-medium hover:text-brand-secondary transition-colors hover:underline">
-                            Mở trang quản lý Merchant →
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                            {/* RIGHT */}
+                            <div className="flex items-center gap-3">
+                              {/* DEFAULT BADGE */}
+                              {g.isDefault && (
+                                <Badge variant="default">Mặc định</Badge>
+                              )}
 
-                    <div className="grid grid-cols-2 gap-3 pt-2">
-                      <div className="p-3 bg-muted rounded-lg border border-border">
-                        <p className="text-xs text-muted-foreground mb-1">Giao dịch hôm nay</p>
-                        <p className="text-xl font-bold text-foreground">847</p>
-                      </div>
-                      <div className="p-3 bg-brand-success/10 rounded-lg border border-brand-success/20">
-                        <p className="text-xs text-brand-success mb-1">Doanh thu tháng</p>
-                        <p className="text-xl font-bold text-brand-success">₫156M</p>
-                      </div>
+                              {/* SET DEFAULT */}
+                              {!g.isDefault && g.enabled && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => setDefaultGateway(g.key)}
+                                >
+                                  Đặt mặc định
+                                </Button>
+                              )}
+
+                              {/* TOGGLE ENABLE */}
+                              <Switch
+                                checked={g.enabled}
+                                onCheckedChange={() => toggleGateway(g.key)}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
                     </div>
                   </CardContent>
                 </Card>
@@ -718,14 +798,14 @@ const PlatformAdminSettings = () => {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-5 pt-6">
+                <CardContent className="space-y-5">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="flex items-start justify-between p-4 border border-border rounded-lg hover:border-brand-error/30 transition-all">
                       <div className="space-y-1 flex-1">
                         <Label className="font-semibold text-foreground">Two-Factor Authentication</Label>
                         <p className="text-xs text-muted-foreground">Bắt buộc 2FA cho tài khoản Admin</p>
                       </div>
-                      <Switch className="data-[state=checked]:bg-brand-error" />
+                      <Switch className="data-[state=checked]:bg-primary" checked={auth.twoFactor} onCheckedChange={(isCheck)=> setAuth({...auth, twoFactor: isCheck})} />
                     </div>
 
                     <div className="flex items-start justify-between p-4 border border-border rounded-lg hover:border-brand-error/30 transition-all">
@@ -733,7 +813,7 @@ const PlatformAdminSettings = () => {
                         <Label className="font-semibold text-foreground">Email Verification</Label>
                         <p className="text-xs text-muted-foreground">Yêu cầu xác thực email khi đăng ký</p>
                       </div>
-                      <Switch defaultChecked className="data-[state=checked]:bg-brand-error" />
+                      <Switch checked={auth.emailVerification} onCheckedChange={(isCheck)=> setAuth({...auth, emailVerification: isCheck})} className="data-[state=checked]:bg-primary" />
                     </div>
                   </div>
 
@@ -743,7 +823,8 @@ const PlatformAdminSettings = () => {
                     <Label className="text-sm font-medium text-foreground">Session Timeout (phút)</Label>
                     <Input 
                       type="number" 
-                      defaultValue="30"
+                      value={auth.lifeTimeOfToken}
+                      onChange={(e)=> setAuth({...auth, lifeTimeOfToken: e.target.value})}
                       className="max-w-xs border-border focus:border-brand-error focus:ring-brand-error/20"
                     />
                     <p className="text-xs text-muted-foreground">Tự động đăng xuất sau khoảng thời gian không hoạt động</p>
@@ -754,8 +835,8 @@ const PlatformAdminSettings = () => {
 
             {/* ================= TAB: TÍCH HỢP ================= */}
             <TabsContent value="integration" className="space-y-6 mt-6">
-              <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-                <CardHeader className="border-b border-border bg-gradient-to-r from-muted to-transparent">
+              <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200 pt-0">
+                <CardHeader className="border-b border-border bg-muted rounded-t-xl py-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-brand-accent/10 rounded-lg">
                       <Mail className="w-4 h-4 text-brand-accent" />
@@ -771,8 +852,8 @@ const PlatformAdminSettings = () => {
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-foreground">SMTP Host</Label>
                       <Input 
-                        value={config.smtpServer}
-                        onChange={(e) => setConfig({...config, smtpServer: e.target.value})}
+                        value={integration.email.host}
+                        onChange={(e) => setIntegration({...integration, email: {...integration.email, host: e.target.value}})}
                         placeholder="smtp.sendgrid.net"
                         className="font-mono border-border focus:border-brand-accent focus:ring-brand-accent/20"
                       />
@@ -780,6 +861,8 @@ const PlatformAdminSettings = () => {
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-foreground">SMTP Port</Label>
                       <Input 
+                        value={integration.email.port}
+                        onChange={(e) => setIntegration({...integration, email: {...integration.email, port: e.target.value}})}
                         placeholder="587"
                         className="font-mono border-border focus:border-brand-accent focus:ring-brand-accent/20"
                       />
@@ -787,7 +870,9 @@ const PlatformAdminSettings = () => {
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-foreground">Username</Label>
                       <Input 
-                        placeholder="apikey"
+                        value={integration.email.username}
+                        onChange={(e) => setIntegration({...integration, email: {...integration.email, username: e.target.value}})}
+                        placeholder="username"
                         className="font-mono border-border focus:border-brand-accent focus:ring-brand-accent/20"
                       />
                     </div>
@@ -795,6 +880,8 @@ const PlatformAdminSettings = () => {
                       <Label className="text-sm font-medium text-foreground">Password</Label>
                       <Input 
                         type="password" 
+                        value={integration.email.password}
+                        onChange={(e) => setIntegration({...integration, email: {...integration.email, password: e.target.value}})}
                         placeholder="••••••••••••••"
                         className="font-mono border-border focus:border-brand-accent focus:ring-brand-accent/20"
                       />
@@ -813,15 +900,15 @@ const PlatformAdminSettings = () => {
                         <p className="text-xs text-muted-foreground">Email server đang hoạt động bình thường</p>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm" className="border-brand-success/30 hover:bg-brand-success/10">
+                    <Button onClick={handleTestEmail} variant="outline" size="sm" className="border-brand-success/30 hover:bg-brand-success/10">
                       Gửi test email
                     </Button>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-                <CardHeader className="border-b border-border bg-gradient-to-r from-muted to-transparent">
+              <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200 pt-0">
+                <CardHeader className="border-b border-border bg-muted rounded-t-xl py-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-brand-primary/10 rounded-lg">
                       <Globe className="w-4 h-4 text-brand-primary" />
@@ -837,10 +924,23 @@ const PlatformAdminSettings = () => {
                     <Label className="text-sm font-medium text-foreground">Google Analytics ID (GA4)</Label>
                     <div className="flex gap-3">
                       <Input 
+                        value={integration.analytics.ga4.measurementId}
+                        onChange={(e) =>
+                          setIntegration({
+                            ...integration,
+                            analytics: {
+                              ...integration.analytics,
+                              ga4: {
+                                ...integration.analytics.ga4,
+                                measurementId: e.target.value,
+                              },
+                            },
+                          })
+                        }
                         placeholder="G-XXXXXXXXXX" 
                         className="font-mono border-border focus:border-brand-primary focus:ring-brand-primary/20"
                       />
-                      <Button variant="outline" className="whitespace-nowrap">
+                      <Button variant="outline" onClick={verifyGA} className="whitespace-nowrap">
                         Verify
                       </Button>
                     </div>
@@ -849,32 +949,130 @@ const PlatformAdminSettings = () => {
                   <Separator />
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {/* GOOGLE OAUTH */}
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium text-foreground">Google OAuth Client ID</Label>
+                      <Label className="text-sm font-medium">Google OAuth Client ID</Label>
+
                       <div className="relative">
-                        <Input 
-                          type="password" 
-                          value="••••••••••••••••••••••••••••" 
-                          readOnly 
-                          className="bg-muted font-mono border-border pr-10"
+                        <Input
+                          type={showSecret.google ? "text" : "password"}
+                          value={integration.oauth.google.clientId}
+                          onChange={(e)=> setIntegration({...integration, oauth: {...integration.oauth, google: {...integration.oauth.google, clientId: e.target.value}}})}
+                          placeholder="••••••••••••••••••••••••••••"
+                          className="bg-muted font-mono border-border pr-24"
                         />
-                        <button className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                          <Eye className="w-4 h-4" />
-                        </button>
+
+                        {/* ACTIONS */}
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() =>
+                              setShowSecret(s => ({ ...s, google: !s.google }))
+                            }
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+
+                          <Switch
+                            checked={integration.oauth.google.enabled}
+                            onCheckedChange={(v) =>
+                              setIntegration({
+                                ...integration,
+                                oauth: {
+                                  ...integration.oauth,
+                                  google: {
+                                    ...integration.oauth.google,
+                                    enabled: v,
+                                  },
+                                },
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-muted-foreground">
+                          {integration.oauth.google.enabled
+                            ? "Đang hoạt động"
+                            : "Đã tắt"}
+                        </span>
+
+                        {integration.oauth.google.verified ? (
+                          <span className="text-brand-success font-medium">✔ Verified</span>
+                        ) : (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => verifyOAuth("google")}
+                          >
+                            Verify
+                          </Button>
+                        )}
                       </div>
                     </div>
+
+                    {/* FACEBOOK OAUTH */}
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium text-foreground">Facebook App ID</Label>
+                      <Label className="text-sm font-medium">Facebook App ID</Label>
+
                       <div className="relative">
-                        <Input 
-                          type="password" 
-                          value="••••••••••••••••••••••••••••" 
-                          readOnly 
-                          className="bg-muted font-mono border-border pr-10"
+                        <Input
+                          type={showSecret.facebook ? "text" : "password"}
+                          value={integration.oauth.facebook.clientId}
+                          
+                          onChange={(e)=> setIntegration({...integration, oauth: {...integration.oauth, facebook: {...integration.oauth.facebook, clientId: e.target.value}}})}
+                          className="bg-muted font-mono border-border pr-24"
                         />
-                        <button className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                          <Eye className="w-4 h-4" />
-                        </button>
+
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() =>
+                              setShowSecret(s => ({ ...s, facebook: !s.facebook }))
+                            }
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+
+                          <Switch
+                            checked={integration.oauth.facebook.enabled}
+                            onCheckedChange={(v) =>
+                              setIntegration({
+                                ...integration,
+                                oauth: {
+                                  ...integration.oauth,
+                                  facebook: {
+                                    ...integration.oauth.facebook,
+                                    enabled: v,
+                                  },
+                                },
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-muted-foreground">
+                          {integration.oauth.facebook.enabled
+                            ? "Đang hoạt động"
+                            : "Đã tắt"}
+                        </span>
+
+                        {integration.oauth.facebook.verified ? (
+                          <span className="text-brand-success font-medium">✔ Verified</span>
+                        ) : (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => verifyOAuth("facebook")}
+                          >
+                            Verify
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -892,18 +1090,6 @@ const PlatformAdminSettings = () => {
               </Card>
             </TabsContent>
           </Tabs>
-
-          {/* Footer */}
-          <div className="mt-12 pt-6 border-t border-border">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-              <p>© 2024 TopDev Platform. Phiên bản 2.4.1</p>
-              <div className="flex items-center gap-6">
-                <a href="#" className="hover:text-brand-primary transition-colors">Documentation</a>
-                <a href="#" className="hover:text-brand-primary transition-colors">API Reference</a>
-                <a href="#" className="hover:text-brand-primary transition-colors">Support</a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
