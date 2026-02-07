@@ -29,7 +29,6 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import PublicHeader from "@/components/features/common/publicHeader";
 import PublicFooter from "@/components/features/common/publicFooter";
-import RichTextEditor from "@/components/RichTextEditor";
 import { generateSlug } from "@/hooks/queries/useCategories";
 import Cookies from "js-cookie";
 import { ACCESS_TOKEN } from "@/shared/const/cookie";
@@ -730,10 +729,6 @@ export default function Page() {
               <CardDescription>Nội dung chi tiết bài viết</CardDescription>
             </CardHeader>
             <CardContent>
-              <RichTextEditor
-                value={formValues.content}
-                onChange={(val: string) => handleFieldChange("content", val)}
-              />
               {validationErrors.content && (
                 <p className="text-sm text-destructive mt-2">
                   {validationErrors.content}

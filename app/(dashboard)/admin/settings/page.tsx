@@ -19,15 +19,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 
+import { General, Content, Recruitment, Authentication, Payment, Integration } from "./_types/setting";
+import { useRouter, useSearchParams } from "next/navigation";
+
 const PlatformAdminSettings = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const tabFromUrl = searchParams.get("tab") || "general";
   const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState("general");
+  const [activeTab, setActiveTab] = useState(tabFromUrl);
 
   const [config, setConfig] = useState({
     siteName: "TopDev clone",
     maintenanceMode: false,
     allowRegistration: true,
-    jobApprovalRequired: true,
+    jobApprovalRequired: false,
     newsCommentAutoApprove: false,
     cvViewPrice: 50,
     currency: "VND",
@@ -42,6 +49,18 @@ const PlatformAdminSettings = () => {
     hotJobFee: 100
   });
 
+  // data value 
+  const [general, setGeneral] = useState<General>({
+    systemName: "",
+    systemEmail: "",
+    systemTitle: "",
+    systemDescription: "",
+    maintainMode: false,
+    allowRegister: true
+  });
+
+  
+
   const handleSave = () => {
     setIsSaving(true);
     setTimeout(() => {
@@ -49,20 +68,23 @@ const PlatformAdminSettings = () => {
     }, 1500);
   };
 
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    router.push(`?tab=${tab}`, { scroll: false });
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Organic warm texture overlay */}
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(156,98,15,0.05),transparent_70%)] pointer-events-none"></div>
       <div className="fixed inset-0 bg-[linear-gradient(to_right,rgba(98,74,43,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(98,74,43,0.03)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
       
       <div className="relative">
         <div className="container mx-auto py-8 px-4 max-w-7xl">
-          {/* Header Section */}
           <div className="mb-8">
             <div className="flex items-start justify-between mb-6">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2.5 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-xl shadow-lg shadow-brand-primary/20">
+                  <div className="p-2.5 bg-primary rounded-xl shadow-lg shadow-brand-primary/20">
                     <Settings className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -84,7 +106,7 @@ const PlatformAdminSettings = () => {
                 <Button 
                   onClick={handleSave} 
                   disabled={isSaving}
-                  className="bg-gradient-to-r from-brand-primary to-brand-secondary hover:from-brand-primary/90 hover:to-brand-secondary/90 text-white shadow-lg shadow-brand-primary/20 min-w-[140px] transition-all duration-200"
+                  className="bg-primary hover:from-brand-primary/90 hover:to-brand-secondary/90 text-white shadow-lg shadow-brand-primary/20 min-w-[140px] transition-all duration-200"
                 >
                   {isSaving ? (
                     <>
@@ -175,7 +197,7 @@ const PlatformAdminSettings = () => {
           </div>
 
           {/* Main Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
             <div className="bg-card rounded-xl shadow-sm border border-border p-1.5">
               <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6 gap-1 bg-transparent h-auto p-0">
                 <TabsTrigger 
@@ -227,10 +249,10 @@ const PlatformAdminSettings = () => {
             <TabsContent value="general" className="space-y-6 mt-6">
               <div className="grid gap-6 lg:grid-cols-3">
                 <div className="lg:col-span-2 space-y-6">
-                  <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <CardHeader className="border-b border-border bg-gradient-to-r from-muted to-transparent">
+                  <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200 pt-0">
+                    <CardHeader className="border-b border-border bg-muted rounded-t-xl py-4">
                       <div className="flex items-center gap-3">
-                        <div className="p-2 bg-brand-primary/10 rounded-lg">
+                        <div className="bg-brand-primary/10 rounded-lg">
                           <Globe className="w-4 h-4 text-brand-primary" />
                         </div>
                         <div>
@@ -244,16 +266,16 @@ const PlatformAdminSettings = () => {
                         <div className="space-y-2">
                           <Label className="text-sm font-medium text-foreground">Tên nền tảng</Label>
                           <Input 
-                            value={config.siteName} 
-                            onChange={(e) => setConfig({...config, siteName: e.target.value})}
+                            value={general.systemName} 
+                            onChange={(e) => setGeneral({...general, systemName: e.target.value})}
                             className="border-border focus:border-brand-primary focus:ring-brand-primary/20"
                           />
                         </div>
                         <div className="space-y-2">
                           <Label className="text-sm font-medium text-foreground">Email hỗ trợ</Label>
                           <Input 
-                            value={config.supportEmail} 
-                            onChange={(e) => setConfig({...config, supportEmail: e.target.value})}
+                            value={general.systemEmail} 
+                            onChange={(e) => setGeneral({...general, systemEmail: e.target.value})}
                             className="border-border focus:border-brand-primary focus:ring-brand-primary/20"
                           />
                         </div>
@@ -261,14 +283,16 @@ const PlatformAdminSettings = () => {
                       <div className="space-y-2">
                         <Label className="text-sm font-medium text-foreground">SEO Title</Label>
                         <Input 
-                          value={config.seoTitle} 
-                          onChange={(e) => setConfig({...config, seoTitle: e.target.value})}
+                          value={general.systemTitle} 
+                          onChange={(e) => setGeneral({...general, systemTitle: e.target.value})}
                           className="border-border focus:border-brand-primary focus:ring-brand-primary/20"
                         />
                       </div>
                       <div className="space-y-2">
                         <Label className="text-sm font-medium text-foreground">Meta Description</Label>
                         <Textarea 
+                          value={general.systemDescription}
+                          onChange={(e) => setGeneral({...general, systemDescription: e.target.value})}
                           placeholder="Mô tả ngắn gọn về nền tảng để hiển thị trên kết quả tìm kiếm..."
                           className="border-border focus:border-brand-primary focus:ring-brand-primary/20 min-h-[100px]"
                         />
@@ -293,7 +317,7 @@ const PlatformAdminSettings = () => {
                         <div className="space-y-1 flex-1">
                           <div className="flex items-center gap-2">
                             <Label className="text-sm font-semibold text-foreground">Chế độ bảo trì</Label>
-                            {config.maintenanceMode && (
+                            {general.maintainMode && (
                               <Badge variant="secondary" className="bg-brand-warning/10 text-brand-warning border-brand-warning/20">Active</Badge>
                             )}
                           </div>
@@ -302,8 +326,8 @@ const PlatformAdminSettings = () => {
                           </p>
                         </div>
                         <Switch 
-                          checked={config.maintenanceMode}
-                          onCheckedChange={(c) => setConfig({...config, maintenanceMode: c})}
+                          checked={general.maintainMode}
+                          onCheckedChange={(c) => setGeneral({...general, maintainMode: c})}
                           className="data-[state=checked]:bg-brand-warning"
                         />
                       </div>
@@ -314,7 +338,7 @@ const PlatformAdminSettings = () => {
                         <div className="space-y-1 flex-1">
                           <div className="flex items-center gap-2">
                             <Label className="text-sm font-semibold text-foreground">Đăng ký thành viên</Label>
-                            {config.allowRegistration && (
+                            {general.allowRegister && (
                               <Badge variant="secondary" className="bg-brand-success/10 text-brand-success border-brand-success/20">Open</Badge>
                             )}
                           </div>
@@ -323,8 +347,8 @@ const PlatformAdminSettings = () => {
                           </p>
                         </div>
                         <Switch 
-                          checked={config.allowRegistration}
-                          onCheckedChange={(c) => setConfig({...config, allowRegistration: c})}
+                          checked={general.allowRegister}
+                          onCheckedChange={(c) => setGeneral({...general, allowRegister: c})}
                           className="data-[state=checked]:bg-brand-primary"
                         />
                       </div>
@@ -365,8 +389,8 @@ const PlatformAdminSettings = () => {
 
             {/* ================= TAB: TUYỂN DỤNG ================= */}
             <TabsContent value="recruitment" className="space-y-6 mt-6">
-              <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-                <CardHeader className="border-b border-border bg-gradient-to-r from-muted to-transparent">
+              <Card className="border-border shadow-sm hover:shadow-md transition-shadow duration-200 pt-0">
+                <CardHeader className="border-b border-border bg-muted rounded-t-xl py-2">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-brand-accent/10 rounded-lg">
                       <Building2 className="w-4 h-4 text-brand-accent" />
@@ -378,7 +402,7 @@ const PlatformAdminSettings = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6 pt-6">
-                  <div className="flex items-start justify-between p-5 border-2 border-dashed border-border rounded-xl bg-muted/30 hover:border-brand-accent/30 hover:bg-brand-accent/5 transition-all duration-200">
+                  <div className="flex items-start justify-between p-5 border-2 border-dashed border-border rounded-xl bg-muted/10 hover:border-brand-accent/30 hover:bg-brand-accent/5 transition-all duration-200">
                     <div className="space-y-1 flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <Label className="text-base font-semibold text-foreground">Phê duyệt tin đăng</Label>
@@ -396,7 +420,7 @@ const PlatformAdminSettings = () => {
                     <Switch 
                       checked={config.jobApprovalRequired}
                       onCheckedChange={(c) => setConfig({...config, jobApprovalRequired: c})}
-                      className="data-[state=checked]:bg-brand-accent"
+                      className="data-[state=checked]:bg-primary bg-gray-400"
                     />
                   </div>
 
@@ -470,7 +494,7 @@ const PlatformAdminSettings = () => {
                     <Switch 
                       checked={config.cvBlurEnabled}
                       onCheckedChange={(c) => setConfig({...config, cvBlurEnabled: c})}
-                      className="data-[state=checked]:bg-brand-primary"
+                      className="data-[state=checked]:bg-primary bg-muted/20"
                     />
                   </div>
                 </CardContent>
