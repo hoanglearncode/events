@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Bell, Briefcase, MessageSquare, Star, Info, 
   CheckCheck, MoreHorizontal, Trash2, Search,
@@ -20,8 +20,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { TablePagination } from "@/components/TablePagination";
 
 const UserNotifications = () => {
+  
   const [notifications, setNotifications] = useState([
     {
       id: "1",
@@ -49,13 +51,41 @@ const UserNotifications = () => {
     }
   ]);
 
+  const [pagination, setPagination] = useState({
+    total: notifications.length,
+    per_page: 10,
+    current_page: 1,
+    last_page: Math.ceil(notifications.length / 5),
+  });
+
+
+  useEffect(() => {
+    setPagination((prev) => ({
+      ...prev,
+      total: notifications.length,
+      last_page: Math.ceil(notifications.length / prev.per_page),
+      current_page: Math.min(
+        prev.current_page,
+        Math.ceil(notifications.length / prev.per_page) || 1
+      ),
+    }));
+  }, [notifications]);
+
   const unreadCount = notifications.filter(n => !n.isRead).length;
+  
+  const startIndex =
+    (pagination.current_page - 1) * pagination.per_page;
+
+  const endIndex =
+    startIndex + pagination.per_page;
+
+  const paginatedNotifications =
+    notifications.slice(startIndex, endIndex);
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300 px-4 py-10 my-10">
       <div className="mx-5 space-y-8">
         
-        {/* Header Section */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border pb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
@@ -79,7 +109,6 @@ const UserNotifications = () => {
           </div>
         </div>
 
-        {/* Search & Filter Bar */}
         <div className="flex items-center gap-3">
             <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -93,7 +122,6 @@ const UserNotifications = () => {
             </Button>
         </div>
 
-        {/* Main Content */}
         <Tabs defaultValue="all" className="w-full">
           <TabsList className="bg-muted/50 p-1 mb-6 border border-border inline-flex w-full sm:w-auto">
             <TabsTrigger value="all" className="px-6 data-[state=active]:bg-card data-[state=active]:text-brand-primary data-[state=active]:shadow-sm">Tất cả</TabsTrigger>
@@ -102,7 +130,7 @@ const UserNotifications = () => {
           </TabsList>
 
           <TabsContent value="all" className="space-y-3 outline-none">
-            <ScrollArea className="h-[calc(100vh-350px)] pr-4">
+            <ScrollArea className="pr-4">
               {notifications.map((n) => (
                 <Card 
                     key={n.id} 
@@ -113,7 +141,6 @@ const UserNotifications = () => {
                         } hover:shadow-md hover:translate-x-1`}
                 >
                   <CardContent className="p-5 flex items-start gap-4">
-                    {/* Icon mapping with Palette colors */}
                     <div className={`mt-1 p-2.5 rounded-xl transition-colors ${
                         n.type === 'job' ? 'bg-brand-primary/10 text-brand-primary' : 
                         n.type === 'message' ? 'bg-brand-success/10 text-brand-success' :
@@ -156,14 +183,14 @@ const UserNotifications = () => {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="glass-dark border-border">
-                                <DropdownMenuItem className="focus:bg-brand-primary/10 cursor-pointer">
+                                <DropdownMenuItem className="cursor-pointer">
                                     Đánh dấu đã đọc
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className="focus:bg-brand-primary/10 cursor-pointer">
+                                <DropdownMenuItem className="cursor-pointer">
                                     Tắt thông báo này
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator className="bg-border" />
-                                <DropdownMenuItem className="text-brand-error focus:bg-brand-error/10 cursor-pointer">
+                                <DropdownMenuItem className="text-brand-error cursor-pointer">
                                     <Trash2 className="mr-2 h-4 w-4" /> Xóa
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -174,6 +201,25 @@ const UserNotifications = () => {
               ))}
             </ScrollArea>
           </TabsContent>
+
+          <TablePagination
+            pagination={pagination}
+            onPageChange={(page) => {
+              if (!page) return;
+              setPagination((prev) => ({
+                ...prev,
+                current_page: Number(page),
+              }));
+            }}
+            onPerPageChange={(perPage) => {
+              setPagination((prev) => ({
+                ...prev,
+                per_page: perPage,
+                current_page: 1,
+                last_page: Math.ceil(prev.total / perPage),
+              }));
+            }}
+          />
         </Tabs>
 
         {/* Bottom Actions */}
@@ -182,7 +228,7 @@ const UserNotifications = () => {
                 <BellOff size={16} />
                 <span>Bạn muốn quản lý cách nhận thông báo qua Email?</span>
             </div>
-            <Button variant="outline" className="border-brand-accent text-brand-primary hover:bg-brand-accent/10 h-9">
+            <Button variant="outline" className="border-brand-accent text-brand-primary  h-9">
                 Cài đặt Email
             </Button>
         </div>

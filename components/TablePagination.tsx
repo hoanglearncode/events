@@ -39,9 +39,6 @@ type TablePaginationProps = {
   maxPageButtons?: number;
 };
 
-/* =======================
-   Helpers (ANTI-NaN CORE)
-======================= */
 
 const safeNumber = (value: any, fallback: number) => {
   const n = Number(value);
@@ -80,9 +77,6 @@ const normalizePagination = (
   };
 };
 
-/* =======================
-   MAIN TABLE PAGINATION
-======================= */
 
 export function TablePagination({
   pagination,

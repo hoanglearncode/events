@@ -26,7 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-
+import MarkdownEditor from "./MarkdownEditor";
 import { useRouter } from "next/navigation";
 
 
@@ -246,17 +246,9 @@ export default function PostEditor({
         </label>
 
         <div className="relative">
-          <Textarea
+          <MarkdownEditor
             value={postContent}
-            onChange={(e) => setPostContent(e.target.value)}
-            placeholder="Bạn đang nghĩ gì?"
-            className="
-              min-h-[200px]
-              pr-12
-              bg-card
-              border-border
-              focus-visible:ring-ring
-            "
+            onChange={setPostContent}
           />
         </div>
       </CardContent>

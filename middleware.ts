@@ -1,140 +1,215 @@
-// middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { ACCESS_TOKEN, REQUIRE_VERIFY_EMAIL } from "./shared/const/cookie";
-import { HOURS } from "./shared/const/unit";
+import Cookies from "js-cookie";
+const ACCESS_TOKEN = "access_token";
+const REFRESH_TOKEN = "refresh_token";
+const REQUIRE_VERIFY_EMAIL = "require_verify_email";
 
-export interface JWTPayload {
+const PROTECTED_ROUTES = ["/admin", "/user"];
+const AUTH_ROUTES = ["/login", "/register", "/forgot-password"];
+const TOKEN_REQUIRED_ROUTES = ["/login/verify", "/change-password"];
+
+interface JWTPayload {
   userId: string;
   email: string;
   role: string;
   exp: number;
   iat: number;
-  status: string;
+  status?: string;
 }
-const PROTECTED_ROUTES = [
-  "/admin",
-  "/seller",
-  "/profile",
-  "/my-data",
-  "/post",
-  "/noti",
-  "/orders",
-  "/payment",
-];
-const AUTH_ROUTES = ["/login", "/register", "/forgot-password"];
-const TOKEN_REQUIRED_ROUTES = [
-  "/reset-password",
-  "/login/verify",
-  "/change-password",
-];
-const PUBLIC_ROUTES = ["/", "/blog", "/courses", "/marketplace", "/tools", "/website"];
+
 export function decodeToken(token: string): JWTPayload | null {
   try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
+    const parts = token.split(".");
+    if (parts.length !== 3) return null;
+
+    const payload = JSON.parse(
+      Buffer.from(parts[1], "base64").toString("utf-8")
+    );
+
     return {
-      role: payload.scope || "user",
-      email: payload.sub || "user@gmail.com",
-      exp: payload.exp || HOURS,
       userId: payload.userId || payload.sub,
-      iat: payload.iat || 0,
+      email: payload.email || payload.sub,
+      role: payload.role || payload.scope || "user",
+      exp: payload.exp,
+      iat: payload.iat,
       status: payload.status,
+    };
+  } catch (error) {
+    console.error("Token decode error:", error);
+    return null;
+  }
+}
+
+export function isTokenExpired(exp: number): boolean {
+  return Date.now() >= exp * 1000;
+}
+
+function getDashboardByRole(role: string): string {
+  const roleMap: Record<string, string> = {
+    ROLE_ADMIN: "/admin",
+    ROLE_USER: "/website",
+    admin: "/admin",
+    user: "/website",
+  };
+  return roleMap[role] || "/website";
+}
+
+async function refreshAccessToken(
+  refreshToken: string,
+): Promise<{ accessToken: string; refreshToken: string } | null> {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    
+    const response = await fetch(`${apiUrl}/api/auth/refresh`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = await response.json();
+    return {
+      accessToken: data.accessToken || data.access_token,
+      refreshToken: data.refreshToken || data.refresh_token || refreshToken,
     };
   } catch (error) {
     return null;
   }
 }
 
-function getDashboardByRole(role: string): string {
-  const dashboardMap: Record<string, string> = {
-    admin: "/admin",
-    seller: "/seller",
-    user: "/website",
-  };
-  return dashboardMap[role.toLowerCase()] || "/website";
+function clearAuthCookies(response: NextResponse): void {
+  response.cookies.delete(ACCESS_TOKEN);
+  response.cookies.delete(REFRESH_TOKEN);
+  response.cookies.delete(REQUIRE_VERIFY_EMAIL);
 }
 
-export function middleware(request: NextRequest) {
+function setAuthCookies(
+  accessToken: string,
+  refreshToken: string
+): void {
+  const isProduction = process.env.NODE_ENV === "production";
+  
+  Cookies.set(ACCESS_TOKEN, accessToken, {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: "lax",
+    maxAge: 60 * 15, // 15 minutes
+    path: "/",
+  });
+
+  // Refresh token - longer lived (7 days typical)
+  Cookies.set(REFRESH_TOKEN, refreshToken, {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    path: "/",
+  });
+}
+
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get(ACCESS_TOKEN)?.value;
+  
+  const accessToken = request.cookies.get(ACCESS_TOKEN)?.value;
+  const refreshToken = request.cookies.get(REFRESH_TOKEN)?.value;
   const emailValidate = request.cookies.get(REQUIRE_VERIFY_EMAIL)?.value;
-  const hasToken = !!token;
-  const isEmailValidate = !!emailValidate;
 
-  // let userRole = "user";
-  // if (hasToken && token) {
-  //   const decoded = decodeToken(token);
-  //   if (decoded) {
-  //     userRole = decoded.role;
-  //   }
-  // }
+  let decodedToken: JWTPayload | null = null;
+  let userRole = "user";
+  let isAuthenticated = false;
 
-  // if (PROTECTED_ROUTES.some((route) => pathname.startsWith(route))) {
-  //   if (!hasToken) {
-  //     const url = request.nextUrl.clone();
-  //     url.pathname = "/login";
-  //     url.searchParams.set("redirect", pathname);
-  //     return NextResponse.redirect(url);
-  //   }
+  if (accessToken) {
+    decodedToken = decodeToken(accessToken);
+    
+    if (decodedToken) {
+      if (isTokenExpired(decodedToken.exp)) {
+        if (refreshToken) {
+          const newTokens = await refreshAccessToken(refreshToken);
+          
+          if (newTokens) {
+            decodedToken = decodeToken(newTokens.accessToken);
+            isAuthenticated = true;
+            userRole = decodedToken?.role || "user";
+            
+            const response = NextResponse.next();
+            setAuthCookies(newTokens.accessToken, newTokens.refreshToken);
+            return response;
+          } else {
+            const response = NextResponse.redirect(new URL("/login", request.url));
+            clearAuthCookies(response);
+            return response;
+          }
+        }
+      } else {
+        isAuthenticated = true;
+        userRole = decodedToken.role;
+      }
+    }
+  }
 
-  //   if (pathname.startsWith("/admin") && userRole !== "ROLE_ADMIN") {
-  //     return new NextResponse(null, { status: 403 });
-  //   }
+  if (PROTECTED_ROUTES.some((route) => pathname.startsWith(route))) {
+    if (!isAuthenticated) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.searchParams.set("redirect", pathname);
+      return NextResponse.redirect(url);
+    }
 
-  //   if (pathname.startsWith("/seller") && !["ROLE_SELLER"].includes(userRole)) {
-  //     return new NextResponse(null, { status: 403 });
-  //   }
-  //   if (isEmailValidate && emailValidate) {
-  //     return NextResponse.redirect(
-  //       new URL(
-  //         `/login/verify?email=${encodeURIComponent(btoa(emailValidate))}`,
-  //         request.url
-  //       )
-  //     );
-  //   }
-  //   return NextResponse.next();
-  // }
+    if (emailValidate && decodedToken?.status !== "VERIFIED") {
+      const url = new URL("/login/verify", request.url);
+      url.searchParams.set("email", btoa(emailValidate));
+      return NextResponse.redirect(url);
+    }
 
-  // if (AUTH_ROUTES.includes(pathname)) {
-  //   if (hasToken) {
-  //     const dashboardUrl = getDashboardByRole(userRole);
-  //     const url = request.nextUrl.clone();
-  //     url.pathname = dashboardUrl;
-  //     return NextResponse.redirect(url);
-  //   }
-  //   return NextResponse.next();
-  // }
-  // if (TOKEN_REQUIRED_ROUTES.some((route) => pathname.startsWith(route))) {
-  //   if (!hasToken) {
-  //     const url = request.nextUrl.clone();
-  //     url.pathname = "/login";
-  //     return NextResponse.redirect(url);
-  //   }
-  //   return NextResponse.next();
-  // }
+    if (pathname.startsWith("/admin") && userRole !== "ROLE_ADMIN") {
+      return NextResponse.json(
+        { error: "Forbidden: Admin access required" },
+        { status: 403 }
+      );
+    }
 
-  // if (
-  //   PUBLIC_ROUTES.some(
-  //     (route) => pathname === route || pathname.startsWith(route)
-  //   )
-  // ) {
-  //   return NextResponse.next();
-  // }
+    if (
+      pathname.startsWith("/seller") &&
+      !["ROLE_SELLER", "ROLE_ADMIN"].includes(userRole)
+    ) {
+      return NextResponse.json(
+        { error: "Forbidden: Seller access required" },
+        { status: 403 }
+      );
+    }
+
+    return NextResponse.next();
+  }
+
+  if (AUTH_ROUTES.includes(pathname)) {
+    if (isAuthenticated) {
+      const dashboardUrl = getDashboardByRole(userRole);
+      return NextResponse.redirect(new URL(dashboardUrl, request.url));
+    }
+    return NextResponse.next();
+  }
+
+  if (TOKEN_REQUIRED_ROUTES.some((route) => pathname.startsWith(route))) {
+    if (!isAuthenticated) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.searchParams.set("redirect", pathname);
+      return NextResponse.redirect(url);
+    }
+    return NextResponse.next();
+  }
 
   return NextResponse.next();
 }
 
-// Cấu hình matcher để middleware chỉ chạy với các routes cần thiết
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public files (images, etc)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };

@@ -7,8 +7,6 @@ import {
   Linkedin, Twitter, Github, Globe, Phone, Sun, Moon
 } from "lucide-react";
 
-// Import các component của shadcn/ui
-// Lưu ý: Đường dẫn import có thể khác tùy vào cấu trúc dự án của bạn (thường là @/components/ui/...)
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,7 +24,6 @@ const PlatformSettings = () => {
   const [theme, setTheme] = useState("light");
   const [isSaving, setIsSaving] = useState(false);
 
-  // Profile State
   const [profile, setProfile] = useState({
     fullName: "Nguyễn Văn An",
     email: "nguyenvanan@example.com",
@@ -40,7 +37,6 @@ const PlatformSettings = () => {
     twitter: "@nguyenvanan",
   });
 
-  // Notification Settings
   const [notifications, setNotifications] = useState({
     emailNews: true,
     emailJobs: true,
@@ -52,7 +48,6 @@ const PlatformSettings = () => {
     jobAlerts: true,
   });
 
-  // Privacy Settings
   const [privacy, setPrivacy] = useState({
     profileVisibility: "public",
     showEmail: false,
@@ -63,10 +58,8 @@ const PlatformSettings = () => {
 
   const handleSave = () => {
     setIsSaving(true);
-    // Giả lập API call
     setTimeout(() => {
       setIsSaving(false);
-      // Bạn có thể dùng toast ở đây: toast({ title: "Đã lưu thay đổi" })
       alert("Đã lưu thay đổi thành công!");
     }, 1000);
   };
@@ -99,10 +92,8 @@ const PlatformSettings = () => {
             <TabsTrigger value="preferences" className="gap-2 py-2"><Monitor size={16} /> Hiển thị</TabsTrigger>
           </TabsList>
 
-          {/* ================= PROFILE TAB ================= */}
           <TabsContent value="profile" className="space-y-6">
             <div className="grid gap-6 md:grid-cols-12">
-                {/* Avatar Column */}
                 <Card className="md:col-span-4 lg:col-span-3 h-fit">
                     <CardHeader>
                         <CardTitle>Ảnh đại diện</CardTitle>
@@ -124,7 +115,6 @@ const PlatformSettings = () => {
                     </CardContent>
                 </Card>
 
-                {/* Form Column */}
                 <div className="md:col-span-8 lg:col-span-9 space-y-6">
                     <Card>
                         <CardHeader>
@@ -194,7 +184,6 @@ const PlatformSettings = () => {
             </div>
           </TabsContent>
 
-          {/* ================= ACCOUNT TAB ================= */}
           <TabsContent value="account" className="space-y-6">
             <Card>
               <CardHeader>
@@ -258,7 +247,6 @@ const PlatformSettings = () => {
             </Card>
           </TabsContent>
 
-          {/* ================= NOTIFICATIONS TAB ================= */}
           <TabsContent value="notifications" className="space-y-6">
             <Card>
                 <CardHeader>
@@ -316,7 +304,6 @@ const PlatformSettings = () => {
             </Card>
           </TabsContent>
 
-          {/* ================= PRIVACY TAB ================= */}
           <TabsContent value="privacy" className="space-y-6">
             <Card>
                 <CardHeader>
@@ -375,11 +362,10 @@ const PlatformSettings = () => {
             </Card>
           </TabsContent>
 
-          {/* ================= PREFERENCES TAB ================= */}
           <TabsContent value="preferences" className="space-y-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>Giao diện & Ngôn ngữ</CardTitle>
+                    <CardTitle>Giao diện</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div className="space-y-3">
@@ -396,7 +382,7 @@ const PlatformSettings = () => {
                                         key={option.value}
                                         onClick={() => setTheme(option.value)}
                                         className={`
-                                            cursor-pointer flex flex-col items-center justify-between rounded-md border-2 p-4 hover:bg-muted hover:text-accent-foreground
+                                            cursor-pointer flex flex-col items-center justify-between rounded-md border-2 p-4 transition-transform duration-200 hover:scale-105 
                                             ${theme === option.value ? 'border-primary bg-primary/5' : 'border-muted bg-transparent'}
                                         `}
                                     >
@@ -405,35 +391,6 @@ const PlatformSettings = () => {
                                     </div>
                                 )
                             })}
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                            <Label>Ngôn ngữ</Label>
-                            <Select defaultValue="vi">
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Chọn ngôn ngữ" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="vi">Tiếng Việt</SelectItem>
-                                    <SelectItem value="en">English</SelectItem>
-                                    <SelectItem value="ja">日本語</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="space-y-2">
-                            <Label>Múi giờ</Label>
-                            <Select defaultValue="hcm">
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Chọn múi giờ" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="hcm">(GMT+7) Hà Nội, Bangkok</SelectItem>
-                                    <SelectItem value="tokyo">(GMT+9) Tokyo, Seoul</SelectItem>
-                                    <SelectItem value="ny">(GMT-5) New York</SelectItem>
-                                </SelectContent>
-                            </Select>
                         </div>
                     </div>
                 </CardContent>

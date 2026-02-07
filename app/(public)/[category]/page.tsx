@@ -14,7 +14,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import EmptyProduct from "@/components/EmptyProduct";
 import { useCategories } from "@/hooks/queries/useCategories";
 const scrollToTop = () => {
   window.scrollTo({
@@ -82,7 +81,7 @@ export default function ToolsPage() {
       </div>
     );
   }
-  if (products?.length === 0) return <EmptyProduct />;
+  
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="hidden sm:block fixed inset-0 bg-gradient-to-br from-brand-primary/5 via-background to-brand-secondary/5 pointer-events-none" />

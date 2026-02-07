@@ -46,7 +46,7 @@ export const mainNavItems: NavItem[] = [
 ];
 
 export const supportNavItems: NavItem[] = [
-  { id: 1, href: "/user/noti", label: "Thông báo", icon: Bell },
+  { id: 1, href: "/user/notification", label: "Thông báo", icon: Bell },
   { id: 2, href: "/user/data", label: "Dữ liệu", icon: UserCircle },
   { id: 3, href: "/user/post/new", label: "Đăng bài", icon: PlusCircle },
   { id: 4, href: "/user/settings", label: "Cài đặt", icon: Settings },

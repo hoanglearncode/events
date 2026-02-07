@@ -4,6 +4,9 @@ import React from "react";
 import { Eye, Globe, Image as ImageEmpty } from "lucide-react";
 import { PAGE_TITLE } from "../../_utils/constants";
 import renderImages from "./RenderImages";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 
 interface PostPreviewProps {
   postContent: string;
@@ -29,7 +32,7 @@ export default function PostPreview({ postContent, images }: PostPreviewProps) {
       >
         <Eye className="w-5 h-5" style={{ color: "var(--accent)" }} />
         <h2 className="text-lg font-bold" style={{ color: "var(--foreground)" }}>
-          Xem trước trên Facebook
+          Xem trước bài đăng
         </h2>
       </div>
 
@@ -70,15 +73,18 @@ export default function PostPreview({ postContent, images }: PostPreviewProps) {
 
           {/* body or skeleton */}
           {postContent ? (
-            <p className="mb-4 whitespace-pre-wrap" style={{ color: "var(--foreground)" }}>
-              {postContent}
-            </p>
+            <div className="mb-4 prose prose-sm max-w-none dark:prose-invert">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {postContent}
+              </ReactMarkdown>
+            </div>
           ) : (
             <div className="mb-4 space-y-2">
               <div className="h-4 rounded w-3/4" style={{ backgroundColor: "var(--border)" }} />
               <div className="h-4 rounded w-1/2" style={{ backgroundColor: "var(--border)" }} />
             </div>
           )}
+
 
           {/* image placeholder */}
           <div
