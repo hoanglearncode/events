@@ -1,374 +1,455 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import NotiDialog from "./_components/NotiDialog";
-import {
-  NotificationResponse,
-  useMyNotifications,
-} from "@/hooks/queries/notiQueries";
-import {
-  useReadNotification,
-  useReadAllNotifications,
-} from "@/hooks/queries/notiQueries";
-import { cn } from "@/lib/utils";
-import {
-  Bell,
-  BellOff,
-  Check,
-  CheckCheck,
-  Filter,
-  Plus,
-  Search,
-  Trash2,
-  Eye,
-  AlertCircle,
-  Info,
-  MessageSquare,
-  ShoppingCart,
-  Package,
-} from "lucide-react";
+import { useState, useMemo } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { NotificationStats } from "./_components/notification-stats"
+import { NotificationFilters } from "./_components/notification-filters"
+import { NotificationTable } from "./_components/notification-table"
+import { NotificationDialog } from "./_components/notification-dialog"
+import { Notification, NotificationStatus } from "./_types/notification"
+import { Bell, Plus } from "lucide-react"
 
-// Notification type icons mapping
-const typeIcons = {
-  order: ShoppingCart,
-  product: Package,
-  system: AlertCircle,
-  info: Info,
-  message: MessageSquare,
-};
+// Sample data
+const initialNotifications: Notification[] = [
+  {
+    id: "1",
+    title: "Bảo trì hệ thống",
+    content: "Hệ thống sẽ được bảo trì vào ngày 10/02/2026 từ 2:00 - 4:00 sáng",
+    type: "warning",
+    status: "scheduled",
+    priority: "high",
+    startDate: "2026-02-10T02:00",
+    endDate: "2026-02-10T04:00",
+    creator: "Admin",
+    isActive: false,
+    createdAt: "2026-02-01T10:00:00",
+    updatedAt: "2026-02-01T10:00:00",
+  },
+  {
+    id: "2",
+    title: "Cập nhật tính năng mới",
+    content: "Chúng tôi vừa ra mắt tính năng xuất báo cáo tự động",
+    type: "success",
+    status: "active",
+    priority: "medium",
+    startDate: "2026-02-01T00:00",
+    endDate: "2026-02-28T23:59",
+    creator: "Admin",
+    isActive: true,
+    createdAt: "2026-02-01T00:00:00",
+    updatedAt: "2026-02-01T00:00:00",
+  },
+  {
+    id: "3",
+    title: "Lỗi đăng nhập",
+    content: "Hệ thống đăng nhập tạm thời gặp lỗi, chúng tôi đang khắc phục",
+    type: "error",
+    status: "active",
+    priority: "high",
+    startDate: "2026-02-08T10:00",
+    endDate: "2026-02-08T18:00",
+    creator: "Support Team",
+    isActive: true,
+    createdAt: "2026-02-08T10:00:00",
+    updatedAt: "2026-02-08T10:00:00",
+  },
+  {
+    id: "4",
+    title: "Chúc mừng năm mới",
+    content: "Chúc toàn thể người dùng một năm mới an khang thịnh vượng",
+    type: "info",
+    status: "expired",
+    priority: "low",
+    startDate: "2026-01-01T00:00",
+    endDate: "2026-01-05T23:59",
+    creator: "Admin",
+    isActive: false,
+    createdAt: "2025-12-30T00:00:00",
+    updatedAt: "2025-12-30T00:00:00",
+  },
+  {
+    id: "5",
+    title: "Khuyến mãi tháng 2",
+    content: "Giảm giá 20% cho tất cả gói dịch vụ trong tháng 2",
+    type: "success",
+    status: "active",
+    priority: "high",
+    startDate: "2026-02-01T00:00",
+    endDate: "2026-02-28T23:59",
+    creator: "Marketing",
+    isActive: true,
+    createdAt: "2026-01-28T00:00:00",
+    updatedAt: "2026-01-28T00:00:00",
+  },
+  {
+    id: "31",
+    title: "Bảo trì hệ thống",
+    content: "Hệ thống sẽ được bảo trì vào ngày 10/02/2026 từ 2:00 - 4:00 sáng",
+    type: "warning",
+    status: "scheduled",
+    priority: "high",
+    startDate: "2026-02-10T02:00",
+    endDate: "2026-02-10T04:00",
+    creator: "Admin",
+    isActive: false,
+    createdAt: "2026-02-01T10:00:00",
+    updatedAt: "2026-02-01T10:00:00",
+  },
+  {
+    id: "22",
+    title: "Cập nhật tính năng mới",
+    content: "Chúng tôi vừa ra mắt tính năng xuất báo cáo tự động",
+    type: "success",
+    status: "active",
+    priority: "medium",
+    startDate: "2026-02-01T00:00",
+    endDate: "2026-02-28T23:59",
+    creator: "Admin",
+    isActive: true,
+    createdAt: "2026-02-01T00:00:00",
+    updatedAt: "2026-02-01T00:00:00",
+  },
+  {
+    id: "23",
+    title: "Lỗi đăng nhập",
+    content: "Hệ thống đăng nhập tạm thời gặp lỗi, chúng tôi đang khắc phục",
+    type: "error",
+    status: "active",
+    priority: "high",
+    startDate: "2026-02-08T10:00",
+    endDate: "2026-02-08T18:00",
+    creator: "Support Team",
+    isActive: true,
+    createdAt: "2026-02-08T10:00:00",
+    updatedAt: "2026-02-08T10:00:00",
+  },
+  {
+    id: "24",
+    title: "Chúc mừng năm mới",
+    content: "Chúc toàn thể người dùng một năm mới an khang thịnh vượng",
+    type: "info",
+    status: "expired",
+    priority: "low",
+    startDate: "2026-01-01T00:00",
+    endDate: "2026-01-05T23:59",
+    creator: "Admin",
+    isActive: false,
+    createdAt: "2025-12-30T00:00:00",
+    updatedAt: "2025-12-30T00:00:00",
+  },
+  {
+    id: "25",
+    title: "Khuyến mãi tháng 2",
+    content: "Giảm giá 20% cho tất cả gói dịch vụ trong tháng 2",
+    type: "success",
+    status: "active",
+    priority: "high",
+    startDate: "2026-02-01T00:00",
+    endDate: "2026-02-28T23:59",
+    creator: "Marketing",
+    isActive: true,
+    createdAt: "2026-01-28T00:00:00",
+    updatedAt: "2026-01-28T00:00:00",
+  },
+  {
+    id: "21",
+    title: "Bảo trì hệ thống",
+    content: "Hệ thống sẽ được bảo trì vào ngày 10/02/2026 từ 2:00 - 4:00 sáng",
+    type: "warning",
+    status: "scheduled",
+    priority: "high",
+    startDate: "2026-02-10T02:00",
+    endDate: "2026-02-10T04:00",
+    creator: "Admin",
+    isActive: false,
+    createdAt: "2026-02-01T10:00:00",
+    updatedAt: "2026-02-01T10:00:00",
+  },
+  {
+    id: "21",
+    title: "Cập nhật tính năng mới",
+    content: "Chúng tôi vừa ra mắt tính năng xuất báo cáo tự động",
+    type: "success",
+    status: "active",
+    priority: "medium",
+    startDate: "2026-02-01T00:00",
+    endDate: "2026-02-28T23:59",
+    creator: "Admin",
+    isActive: true,
+    createdAt: "2026-02-01T00:00:00",
+    updatedAt: "2026-02-01T00:00:00",
+  },
+  {
+    id: "31",
+    title: "Lỗi đăng nhập",
+    content: "Hệ thống đăng nhập tạm thời gặp lỗi, chúng tôi đang khắc phục",
+    type: "error",
+    status: "active",
+    priority: "high",
+    startDate: "2026-02-08T10:00",
+    endDate: "2026-02-08T18:00",
+    creator: "Support Team",
+    isActive: true,
+    createdAt: "2026-02-08T10:00:00",
+    updatedAt: "2026-02-08T10:00:00",
+  },
+  {
+    id: "41",
+    title: "Chúc mừng năm mới",
+    content: "Chúc toàn thể người dùng một năm mới an khang thịnh vượng",
+    type: "info",
+    status: "expired",
+    priority: "low",
+    startDate: "2026-01-01T00:00",
+    endDate: "2026-01-05T23:59",
+    creator: "Admin",
+    isActive: false,
+    createdAt: "2025-12-30T00:00:00",
+    updatedAt: "2025-12-30T00:00:00",
+  },
+  {
+    id: "51",
+    title: "Khuyến mãi tháng 2",
+    content: "Giảm giá 20% cho tất cả gói dịch vụ trong tháng 2",
+    type: "success",
+    status: "active",
+    priority: "high",
+    startDate: "2026-02-01T00:00",
+    endDate: "2026-02-28T23:59",
+    creator: "Marketing",
+    isActive: true,
+    createdAt: "2026-01-28T00:00:00",
+    updatedAt: "2026-01-28T00:00:00",
+  },
+  {
+    id: "11",
+    title: "Bảo trì hệ thống",
+    content: "Hệ thống sẽ được bảo trì vào ngày 10/02/2026 từ 2:00 - 4:00 sáng",
+    type: "warning",
+    status: "scheduled",
+    priority: "high",
+    startDate: "2026-02-10T02:00",
+    endDate: "2026-02-10T04:00",
+    creator: "Admin",
+    isActive: false,
+    createdAt: "2026-02-01T10:00:00",
+    updatedAt: "2026-02-01T10:00:00",
+  },
+  {
+    id: "12",
+    title: "Cập nhật tính năng mới",
+    content: "Chúng tôi vừa ra mắt tính năng xuất báo cáo tự động",
+    type: "success",
+    status: "active",
+    priority: "medium",
+    startDate: "2026-02-01T00:00",
+    endDate: "2026-02-28T23:59",
+    creator: "Admin",
+    isActive: true,
+    createdAt: "2026-02-01T00:00:00",
+    updatedAt: "2026-02-01T00:00:00",
+  },
+  {
+    id: "13",
+    title: "Lỗi đăng nhập",
+    content: "Hệ thống đăng nhập tạm thời gặp lỗi, chúng tôi đang khắc phục",
+    type: "error",
+    status: "active",
+    priority: "high",
+    startDate: "2026-02-08T10:00",
+    endDate: "2026-02-08T18:00",
+    creator: "Support Team",
+    isActive: true,
+    createdAt: "2026-02-08T10:00:00",
+    updatedAt: "2026-02-08T10:00:00",
+  },
+  {
+    id: "14",
+    title: "Chúc mừng năm mới",
+    content: "Chúc toàn thể người dùng một năm mới an khang thịnh vượng",
+    type: "info",
+    status: "expired",
+    priority: "low",
+    startDate: "2026-01-01T00:00",
+    endDate: "2026-01-05T23:59",
+    creator: "Admin",
+    isActive: false,
+    createdAt: "2025-12-30T00:00:00",
+    updatedAt: "2025-12-30T00:00:00",
+  },
+  {
+    id: "15",
+    title: "Khuyến mãi tháng 21",
+    content: "Giảm giá 20% cho tất cả gói dịch vụ trong tháng 2",
+    type: "success",
+    status: "active",
+    priority: "high",
+    startDate: "2026-02-01T00:00",
+    endDate: "2026-02-28T23:59",
+    creator: "Marketing",
+    isActive: true,
+    createdAt: "2026-01-28T00:00:00",
+    updatedAt: "2026-01-28T00:00:00",
+  },
+]
 
-// Notification type colors
-const typeColors = {
-  order: "bg-brand-primary/10 text-brand-primary border-brand-primary/20",
-  product: "bg-brand-success/10 text-brand-success border-brand-success/20",
-  system: "bg-brand-error/10 text-brand-error border-brand-error/20",
-  info: "bg-brand-accent/10 text-brand-accent border-brand-accent/20",
-  message: "bg-brand-warning/10 text-brand-warning border-brand-warning/20",
-};
+export default function NotificationsPage() {
+  const [notifications, setNotifications] = useState<Notification[]>(initialNotifications)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [typeFilter, setTypeFilter] = useState<string>("all")
+  const [statusFilter, setStatusFilter] = useState("all")
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [editingNotification, setEditingNotification] = useState<Notification | null>(null)
 
-export default function AdminNotificationsPage() {
-  const [open, setOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filterType, setFilterType] = useState<string>("all");
-  const [activeTab, setActiveTab] = useState<string>("all");
+  const filteredNotifications = useMemo(() => {
+    return notifications.filter((notification) => {
+      const matchesSearch =
+        notification.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        notification.content.toLowerCase().includes(searchTerm.toLowerCase())
+      const matchesType = typeFilter === "all" || notification.type === typeFilter
+      const matchesStatus = statusFilter === "all" || notification.status === statusFilter
 
-  const { data, isLoading } = useMyNotifications();
-  const readOneMutation = useReadNotification();
-  const readAllMutation = useReadAllNotifications();
+      return matchesSearch && matchesType && matchesStatus
+    })
+  }, [notifications, searchTerm, typeFilter, statusFilter])
 
-  const onReadOne = async (id: number) => {
-    await readOneMutation.mutateAsync(id);
-  };
+  const handleReset = () => {
+    setSearchTerm("")
+    setTypeFilter("all")
+    setStatusFilter("all")
+  }
 
-  const onReadAll = async () => {
-    await readAllMutation.mutateAsync();
-  };
+  const handleCreate = () => {
+    setEditingNotification(null)
+    setDialogOpen(true)
+  }
 
-  // Filter notifications
-  const filteredNotifications = data?.filter((notification: NotificationResponse) => {
-    const matchesSearch =
-      notification.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      notification.message.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesType = filterType === "all" || notification.type === filterType;
-    
-    const matchesTab =
-      activeTab === "all" ||
-      (activeTab === "unread" && !notification.read) ||
-      (activeTab === "read" && notification.read);
+  const handleEdit = (notification: Notification) => {
+    setEditingNotification(notification)
+    setDialogOpen(true)
+  }
 
-    return matchesSearch && matchesType && matchesTab;
-  });
+  const handleDelete = (id: string) => {
+    if (confirm("Bạn có chắc chắn muốn xóa thông báo này?")) {
+      setNotifications(notifications.filter((n) => n.id !== id))
+    }
+  }
 
-  const unreadCount = data?.filter((n: NotificationResponse) => !n.read).length || 0;
-  const readCount = data?.filter((n: NotificationResponse) => n.read).length || 0;
+  const handleSave = (data: Partial<Notification>) => {
+    // Determine status based on dates
+    const now = new Date()
+    const start = new Date(data.startDate!)
+    const end = data.endDate ? new Date(data.endDate) : null
+
+    let status: NotificationStatus = "active"
+    if (now < start) {
+      status = "scheduled"
+    } else if (end && now > end) {
+      status = "expired"
+    } else {
+      status = data.isActive ? "active" : "scheduled"
+    }
+
+    if (editingNotification) {
+      // Update existing
+      setNotifications(
+        notifications.map((n) =>
+          n.id === editingNotification.id
+            ? {
+                ...n,
+                ...data,
+                status,
+                updatedAt: new Date().toISOString(),
+              }
+            : n
+        )
+      )
+    } else {
+      // Create new
+      const newNotification: Notification = {
+        id: String(Date.now()),
+        title: data.title!,
+        content: data.content!,
+        type: data.type!,
+        status,
+        priority: data.priority!,
+        startDate: data.startDate!,
+        endDate: data.endDate,
+        creator: "Admin",
+        isActive: data.isActive!,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+      setNotifications([...notifications, newNotification])
+    }
+
+    setDialogOpen(false)
+    setEditingNotification(null)
+  }
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* HEADER */}
+      <div className="container mx-auto p-6 space-y-6">
         <div className="mb-8">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-2xl shadow-lg">
-                <Bell className="w-8 h-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-4xl font-bold text-foreground">
-                  Quản lý thông báo
-                </h1>
-                <p className="text-muted-foreground mt-1">
-                  Theo dõi & quản lý thông báo hệ thống
-                </p>
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2.5 bg-primary rounded-xl shadow-lg shadow-brand-primary/20">
+                  <Bell className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold tracking-tight text-foreground">
+                    System Configuration
+                  </h1>
+                  <p className="text-muted-foreground text-sm mt-0.5">Platform Administration & Settings</p>
+                </div>
               </div>
             </div>
-
-            <div className="flex flex-wrap gap-3">
-              <Button
-                variant="outline"
-                onClick={onReadAll}
-                disabled={readAllMutation.isPending || unreadCount === 0}
-                className="gap-2 bg-card hover:bg-muted"
-              >
-                <CheckCheck className="w-4 h-4" />
-                Đọc tất cả ({unreadCount})
-              </Button>
-
-              <Button
-                onClick={() => setOpen(true)}
-                className="gap-2 bg-brand-primary hover:bg-brand-primary/90 shadow-lg shadow-brand-primary/30"
-              >
-                <Plus className="w-4 h-4" />
-                Tạo thông báo
-              </Button>
-            </div>
+            
+            <div className="flex items-center gap-3">
+                <Button 
+                  onClick={handleCreate}
+                  className="bg-primary hover:from-brand-primary/90 hover:to-brand-secondary/90 text-white shadow-lg shadow-brand-primary/20 min-w-[140px] transition-all duration-200"
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Thêm thông báo mới
+                </Button>
+              </div>
           </div>
-
-          {/* STATS */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            <Card className="border-border shadow-md glass-dark">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-brand-accent/20 rounded-lg">
-                    <Bell className="w-5 h-5 text-brand-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Tổng số</p>
-                    <p className="text-2xl font-bold text-foreground">{data?.length || 0}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border shadow-md glass-dark">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-brand-warning/20 rounded-lg">
-                    <AlertCircle className="w-5 h-5 text-brand-warning" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Chưa đọc</p>
-                    <p className="text-2xl font-bold text-foreground">{unreadCount}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border shadow-md glass-dark">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-brand-success/20 rounded-lg">
-                    <CheckCheck className="w-5 h-5 text-brand-success" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Đã đọc</p>
-                    <p className="text-2xl font-bold text-foreground">{readCount}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <NotificationStats notifications={notifications} />
         </div>
 
-        {/* FILTERS & TABS */}
-        <Card className="border-border shadow-xl glass-dark">
-          <CardHeader className="border-b border-border bg-muted/30">
-            <div className="flex flex-col lg:flex-row gap-4">
-              {/* Search */}
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  placeholder="Tìm kiếm thông báo..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-card border-border"
-                />
-              </div>
-
-              {/* Type Filter */}
-              <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4 text-muted-foreground" />
-                <Select value={filterType} onValueChange={setFilterType}>
-                  <SelectTrigger className="w-[180px] bg-card border-border">
-                    <SelectValue placeholder="Loại thông báo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Tất cả loại</SelectItem>
-                    <SelectItem value="order">Đơn hàng</SelectItem>
-                    <SelectItem value="product">Sản phẩm</SelectItem>
-                    <SelectItem value="system">Hệ thống</SelectItem>
-                    <SelectItem value="info">Thông tin</SelectItem>
-                    <SelectItem value="message">Tin nhắn</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </CardHeader>
-
-          <CardContent className="p-0">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="border-b border-border px-6 bg-muted/20">
-                <TabsList className="bg-transparent h-12">
-                  <TabsTrigger
-                    value="all"
-                    className="data-[state=active]:bg-card data-[state=active]:shadow-sm"
-                  >
-                    Tất cả ({data?.length || 0})
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="unread"
-                    className="data-[state=active]:bg-card data-[state=active]:shadow-sm"
-                  >
-                    <div className="flex items-center gap-2">
-                      Chưa đọc
-                      {unreadCount > 0 && (
-                        <Badge className="bg-brand-warning hover:bg-brand-warning/90">
-                          {unreadCount}
-                        </Badge>
-                      )}
-                    </div>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="read"
-                    className="data-[state=active]:bg-card data-[state=active]:shadow-sm"
-                  >
-                    Đã đọc ({readCount})
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-
-              <TabsContent value={activeTab} className="m-0">
-                {isLoading && (
-                  <div className="p-12 text-center">
-                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-muted border-t-brand-primary"></div>
-                    <p className="mt-4 text-muted-foreground">Đang tải thông báo...</p>
-                  </div>
-                )}
-
-                {!isLoading && filteredNotifications?.length === 0 && (
-                  <div className="p-12 text-center">
-                    <BellOff className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
-                    <p className="text-foreground font-medium">
-                      Không tìm thấy thông báo nào
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Thử thay đổi bộ lọc hoặc tìm kiếm khác
-                    </p>
-                  </div>
-                )}
-
-                <div className="divide-y divide-border">
-                  {filteredNotifications?.map((notification: NotificationResponse) => {
-                    const isUnread = !notification.read;
-                    const TypeIcon =
-                      typeIcons[notification.type as keyof typeof typeIcons] ||
-                      Bell;
-                    const typeColorClass =
-                      typeColors[notification.type as keyof typeof typeColors] ||
-                      "bg-muted text-muted-foreground border-border";
-
-                    return (
-                      <div
-                        key={notification.id}
-                        className={cn(
-                          "flex items-start gap-4 p-5 transition-all hover:bg-muted/50",
-                          isUnread && "bg-brand-accent/5 border-l-4 border-l-brand-primary"
-                        )}
-                      >
-                        {/* TYPE ICON */}
-                        <div
-                          className={cn(
-                            "w-12 h-12 rounded-xl border-2 flex items-center justify-center flex-shrink-0",
-                            typeColorClass
-                          )}
-                        >
-                          <TypeIcon className="w-5 h-5" />
-                        </div>
-
-                        {/* CONTENT */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-3 mb-2">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <h3 className="font-semibold text-foreground">
-                                {notification.title}
-                              </h3>
-                              <Badge
-                                variant="outline"
-                                className="text-xs capitalize border-border"
-                              >
-                                {notification.type}
-                              </Badge>
-                              {isUnread && (
-                                <Badge className="bg-brand-primary hover:bg-brand-primary/90 text-xs">
-                                  Mới
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-
-                          <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                            {notification.message}
-                          </p>
-
-                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Eye className="w-3 h-3" />
-                              {new Date(notification.createdAt).toLocaleString(
-                                "vi-VN",
-                                {
-                                  dateStyle: "short",
-                                  timeStyle: "short",
-                                }
-                              )}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* ACTIONS */}
-                        <div className="flex flex-col gap-2 flex-shrink-0">
-                          {isUnread && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => onReadOne(notification.id)}
-                              disabled={readOneMutation.isPending}
-                              className="gap-2 hover:bg-brand-accent/20 hover:text-brand-primary"
-                            >
-                              <Check className="w-4 h-4" />
-                              Đánh dấu đã đọc
-                            </Button>
-                          )}
-                          {notification.read && (
-                            <div className="flex items-center gap-2 text-xs text-brand-success px-3 py-2 bg-brand-success/10 rounded-lg">
-                              <CheckCheck className="w-4 h-4" />
-                              Đã đọc
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </TabsContent>
-            </Tabs>
+        {/* Filters */}
+        <Card>
+          <CardContent className="">
+            <NotificationFilters
+              searchTerm={searchTerm}
+              typeFilter={typeFilter}
+              statusFilter={statusFilter}
+              onSearchChange={setSearchTerm}
+              onTypeChange={setTypeFilter}
+              onStatusChange={setStatusFilter}
+              onReset={handleReset}
+            />
           </CardContent>
         </Card>
-      </main>
 
-      {/* ADMIN DIALOG */}
-      <NotiDialog open={open} onOpenChange={setOpen} />
+        {/* Table */}
+        <NotificationTable
+          notifications={filteredNotifications}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+
+        {/* Dialog */}
+        <NotificationDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onSave={handleSave}
+          notification={editingNotification}
+        />
+      </div>
     </div>
-  );
+  )
 }
