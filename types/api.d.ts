@@ -23,11 +23,9 @@ export interface ExtraResponse {
 }
 
 export interface ApiResponse<T = any> {
-  _status: number;
-  _success: boolean;
-  _messages: string[] | null | object | string;
-  _data: T | null;
-  _extra: ExtraResponse | null;
+  code: number;
+  message: string;
+  result: T
 }
 
 export interface ApiDataResponse<T = any> {

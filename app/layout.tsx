@@ -7,6 +7,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster as SonnerToaster } from "sonner";
 import { I18nProvider } from "@/providers/i18n-provider";
 import { AuthProvider } from "@/providers/auth-provider";
+import RefreshTokenProvider from "@/components/refreshToken";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -54,6 +55,7 @@ export default function RootLayout({
           </QueryProvider>
         </NuqsAdapter>
         <SonnerToaster richColors closeButton />
+        <RefreshTokenProvider />
       </body>
     </html>
   );

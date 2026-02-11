@@ -57,6 +57,7 @@ function getDashboardByRole(role: string): string {
 
 async function refreshAccessToken(
   refreshToken: string,
+  accessToken: string,
 ): Promise<{ accessToken: string; refreshToken: string } | null> {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -65,8 +66,9 @@ async function refreshAccessToken(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
       },
-      body: JSON.stringify({ refreshToken }),
+      body: JSON.stringify({ token: refreshToken }),
     });
 
     if (!response.ok) {
@@ -130,7 +132,7 @@ export async function middleware(request: NextRequest) {
     if (decodedToken) {
       if (isTokenExpired(decodedToken.exp)) {
         if (refreshToken) {
-          const newTokens = await refreshAccessToken(refreshToken);
+          const newTokens = await refreshAccessToken(refreshToken, accessToken);
           
           if (newTokens) {
             decodedToken = decodeToken(newTokens.accessToken);

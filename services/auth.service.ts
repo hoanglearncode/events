@@ -19,26 +19,13 @@ import {
   REFRESH_TOKEN,
 } from "@/shared/const/cookie";
 
-/**
- * Auth Service - Direct API calls (không qua RTK Query)
- * Sử dụng api (apiClient) - api trả về `data` trực tiếp (thông qua response interceptor)
- */
 export class AuthService {
-  /**
-   * Login user
-   * - Trả về LoginResponse (shape tuỳ backend)
-   * - Không tự động set cookie ở đây (nếu backend trả token, bạn có thể set ở chỗ gọi)
-   */
   static async login(credentials: LoginFormData): Promise<LoginResponse> {
     try {
       const data = await api.post<LoginResponse>(
         API_ENDPOINTS.AUTH.LOGIN,
         credentials
       );
-
-      // Nếu backend trả { code, message, data } hoặc khác shape,
-      // bạn có thể điều chỉnh condition dưới đây dựa trên API thực tế.
-      // Giữ logic cũ: kiểm tra code === 200 nếu có.
       if ((data as any).code && (data as any).code !== 200) {
         throw new Error(
           typeof (data as any).message === "string"
@@ -49,7 +36,6 @@ export class AuthService {
 
       return data;
     } catch (err: any) {
-      // ném lại Error với message rõ ràng
       throw new Error(
         err?.message || "Đăng nhập thất bại — có lỗi khi gọi API"
       );
@@ -64,11 +50,8 @@ export class AuthService {
     }
   }
 
-  /**
-   * Clear all authentication-related data
-   */
+
   static clearAllAuthData(): void {
-    // Clear auth store
     const { clearAuth } = useAuthStore.getState();
     clearAuth();
 
@@ -83,14 +66,11 @@ export class AuthService {
     }
   }
 
-  /**
-   * Get user profile
-   */
+  
   static async getProfile(): Promise<User> {
     try {
       const data = await api.get<User>(API_ENDPOINTS.AUTH.PROFILE);
 
-      // data là object User theo interceptor
       if (!data) {
         throw new Error("Không thể lấy thông tin người dùng");
       }
@@ -234,7 +214,7 @@ export class AuthService {
     try {
       const res = await api.put<User>(
         // sử dụng endpoint users (tương đương "/users")
-        API_ENDPOINTS.USERS.LIST,
+        "API_ENDPOINTS.USERS.LIST",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" } as any,

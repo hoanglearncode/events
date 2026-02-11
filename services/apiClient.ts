@@ -258,8 +258,8 @@ apiClient.interceptors.response.use(
 
 // ---------- Thin wrapper API ----------
 export const api = {
-  get: <T = any>(url: string, config?: AxiosRequestConfig) =>
-    apiClient.get<T>(url, config),
+  get: <T = any>(url: string, config?: AxiosRequestConfig): Promise<T> =>
+    apiClient.get<T, T>(url, config),
 
   post: <T = any>(
     url: string,

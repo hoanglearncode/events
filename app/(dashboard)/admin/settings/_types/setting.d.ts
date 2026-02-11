@@ -11,24 +11,23 @@ export interface General {
 export interface Recruitment {
     timeReset: string;
     freeCounter: number;
-    isViewProfile: boolean;
-    isApproval: boolean;
+    viewProfile: boolean;
+    approval: boolean;
 }
 
 export interface Content {
     allowComment: boolean;
-    blackListKey: string[];
+    blacklistKeywords: string[];
 }
 
 export interface Authentication {
     twoFactor: boolean;
     emailVerification: boolean;
-    lifeTimeOfToken: string;
+    tokenLifetime: string;
 }
 
 export interface PaymentGatewayConfig {
-  key: string;
-  name: string;
+  gatewayCode: string;
   enabled: boolean;
   isDefault: boolean;
 }
@@ -75,4 +74,22 @@ export interface Integration {
   analytics: AnalyticsIntegration;
   oauth: OAuthIntegration;
   meta: IntegrationMeta;
+}
+
+export interface SystemSetting {
+  id: number;
+  version: string;
+  active: boolean;
+  note: string;
+  createdBy: string;
+  createdAt: string; 
+  general: General;
+  recruitment: Recruitment;
+  content: Content;
+  authentication: Authentication;
+  paymentGateways: PaymentGateway[];
+  oauthProviders: OAuthProviderItem[];
+  email: EmailIntegration;
+  analytics: Analytics;
+  integrationMeta: IntegrationMeta;
 }

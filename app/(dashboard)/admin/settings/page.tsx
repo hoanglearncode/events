@@ -25,7 +25,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { platformSettingSchema } from "./_helper/validation";
 import { ZodError } from "zod";
 import { toast } from "sonner";
+import { useSettingDetailQuery } from "@/hooks/query/setting";
 
+import { PlatformSettingsSkeleton } from "./_components/Loading"
 
 const listOfDate = ["1", "5", "10", "15", "20", "30", "60", "90"]
 
@@ -52,15 +54,15 @@ const PlatformAdminSettings = () => {
   });
 
   const [recruitment, setRecruitment] = useState<Recruitment>({
-    isViewProfile: true,
-    isApproval: true,
+    viewProfile: true,
+    approval: true,
     freeCounter: 10,
     timeReset: "30"
   })
 
   const [content, setContent] = useState<Content>({
     allowComment: true,
-    blackListKey: []
+    blacklistKeywords : []
   });
 
   const [paymentConfig, setPaymentConfig] = useState<{gateways : PaymentGatewayConfig[]} >({
@@ -104,12 +106,28 @@ const PlatformAdminSettings = () => {
   const [auth, setAuth] = useState<Authentication>({
     twoFactor: true,
     emailVerification: true,
-    lifeTimeOfToken: "30"
+    tokenLifetime: "30"
   });
 
+  const { data, isLoading, error } = useSettingDetailQuery();
+
   useEffect(()=> {
-    
-  }, [])
+    if(!data) return;
+    console.log(data)
+    setGeneral(data.general);
+    setRecruitment(data.recruitment);
+    setContent({
+      allowComment: data.content.allowComment,
+      blacklistKeywords : data.content.blacklistKeywords ?? [],
+    });
+
+    setPaymentConfig({
+      gateways: data.paymentGateways,
+    });
+
+    setAuth(data.authentication);
+
+  }, [data])
 
   const handleSave = () => {
     try {
@@ -151,15 +169,14 @@ const PlatformAdminSettings = () => {
     setPaymentConfig(prev => ({
       gateways: prev.gateways.map(g => ({
         ...g,
-        isDefault: g.key === key,
+        isDefault: g.gatewayCode === key,
       })),
     }));
   };
 
   const addGateway = () => {
     const newGateway: PaymentGatewayConfig = {
-      key: "zalopay",
-      name: "ZaloPay",
+      gatewayCode: "zalopay",
       enabled: false,
       isDefault: false,
     };
@@ -172,7 +189,7 @@ const PlatformAdminSettings = () => {
   const toggleGateway = (key: string) => {
     setPaymentConfig(prev => ({
       gateways: prev.gateways.map(g =>
-        g.key === key
+        g.gatewayCode === key
           ? { ...g, enabled: !g.enabled, isDefault: g.enabled ? false : g.isDefault }
           : g
       ),
@@ -211,6 +228,9 @@ const PlatformAdminSettings = () => {
       },
     }));
   }
+
+  if(isLoading) return <PlatformSettingsSkeleton />
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -293,7 +313,7 @@ const PlatformAdminSettings = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Payment Gateway</p>
-                    <p className="text-lg font-bold text-foreground uppercase">{paymentConfig.gateways.find(i => i.isDefault)?.name}</p>
+                    <p className="text-lg font-bold text-foreground uppercase">{paymentConfig.gateways.find(i => i.isDefault)?.gatewayCode}</p>
                   </div>
                   <div className="p-2.5 bg-brand-secondary/10 rounded-lg">
                     <CreditCard className="w-5 h-5 text-brand-secondary" />
@@ -481,35 +501,6 @@ const PlatformAdminSettings = () => {
                       </div>
                     </CardContent>
                   </Card>
-
-                  <Card className="border-border shadow-sm">
-                    <CardHeader className="border-b border-border">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-muted rounded-lg">
-                          <Database className="w-4 h-4 text-muted-foreground" />
-                        </div>
-                        <CardTitle className="text-foreground text-base">Thông tin hệ thống</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-4">
-                      <div className="space-y-3 text-sm">
-                        <div className="flex justify-between items-center">
-                          <span className="text-muted-foreground">Version</span>
-                          <span className="font-mono font-medium text-foreground">v2.4.1</span>
-                        </div>
-                        <Separator />
-                        <div className="flex justify-between items-center">
-                          <span className="text-muted-foreground">Database</span>
-                          <Badge variant="outline" className="font-mono text-xs">PostgreSQL 15</Badge>
-                        </div>
-                        <Separator />
-                        <div className="flex justify-between items-center">
-                          <span className="text-muted-foreground">Uptime</span>
-                          <span className="font-medium text-brand-success">99.8%</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
                 </div>
               </div>
             </TabsContent>
@@ -545,8 +536,8 @@ const PlatformAdminSettings = () => {
                       </p>
                     </div>
                     <Switch 
-                      checked={recruitment.isApproval}
-                      onCheckedChange={(c) => setRecruitment({...recruitment, isApproval: c})}
+                      checked={recruitment.approval}
+                      onCheckedChange={(c) => setRecruitment({...recruitment, approval: c})}
                       className="data-[state=checked]:bg-primary bg-gray-400"
                     />
                   </div>
@@ -627,8 +618,8 @@ const PlatformAdminSettings = () => {
                       Từ khóa cấm (Blacklist)
                     </Label>
                     <Textarea 
-                      value={content.blackListKey.join(', ').toString()}
-                      onChange={(e) => setContent({...content, blackListKey: e.target.value.toString().split(',').map(i => i.trim())})}
+                      value={content.blacklistKeywords .join(', ').toString()}
+                      onChange={(e) => setContent({...content, blacklistKeywords : e.target.value.toString().split(',').map(i => i.trim())})}
                       className="min-h-[120px] border-border focus:border-brand-error focus:ring-brand-error/20 text-sm" 
                       placeholder="lừa đảo, cờ bạc, cheat, hack, spam..."
                     />
@@ -740,12 +731,12 @@ const PlatformAdminSettings = () => {
                       <CardContent className="space-y-3 px-1">
                         {paymentConfig.gateways.map((g) => (
                           <div
-                            key={g.key}
+                            key={g.gatewayCode}
                             className="flex items-center justify-between rounded-lg border p-4 transition-colors"
                           >
                             {/* LEFT */}
                             <div>
-                              <p className="font-medium">{g.name}</p>
+                              <p className="font-medium">{g.gatewayCode}</p>
                               <p className="text-xs text-muted-foreground">
                                 {g.enabled ? "Đang hoạt động" : "Chưa kích hoạt"}
                               </p>
@@ -763,7 +754,7 @@ const PlatformAdminSettings = () => {
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  onClick={() => setDefaultGateway(g.key)}
+                                  onClick={() => setDefaultGateway(g.gatewayCode)}
                                 >
                                   Đặt mặc định
                                 </Button>
@@ -772,7 +763,7 @@ const PlatformAdminSettings = () => {
                               {/* TOGGLE ENABLE */}
                               <Switch
                                 checked={g.enabled}
-                                onCheckedChange={() => toggleGateway(g.key)}
+                                onCheckedChange={() => toggleGateway(g.gatewayCode)}
                               />
                             </div>
                           </div>
@@ -823,8 +814,8 @@ const PlatformAdminSettings = () => {
                     <Label className="text-sm font-medium text-foreground">Session Timeout (phút)</Label>
                     <Input 
                       type="number" 
-                      value={auth.lifeTimeOfToken}
-                      onChange={(e)=> setAuth({...auth, lifeTimeOfToken: e.target.value})}
+                      value={auth.tokenLifetime}
+                      onChange={(e)=> setAuth({...auth, tokenLifetime: e.target.value})}
                       className="max-w-xs border-border focus:border-brand-error focus:ring-brand-error/20"
                     />
                     <p className="text-xs text-muted-foreground">Tự động đăng xuất sau khoảng thời gian không hoạt động</p>
