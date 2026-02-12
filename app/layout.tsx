@@ -55,7 +55,6 @@ export default function RootLayout({
           </QueryProvider>
         </NuqsAdapter>
         <SonnerToaster richColors closeButton />
-        <RefreshTokenProvider />
       </body>
     </html>
   );

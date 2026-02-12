@@ -8,7 +8,7 @@ import type { JWTToken, User } from "@/types/auth";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/shared/const/cookie";
 import { computeCookieExpiry } from "@/shared/lib/utils";
 import { API_ENDPOINTS, API_CONFIG } from "@/shared/const/api";
-import { AuthService } from "@/services/auth.service";
+import RefreshTokenProvider from "@/components/refreshToken";
 import axios from "axios";
 
 interface AuthProviderProps {
@@ -114,7 +114,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         Cookies.remove(ACCESS_TOKEN);
         Cookies.remove(REFRESH_TOKEN);
         clearAuth();
-        window.location.href = "/login";
       },
     });
   }, [clearAuth]);
@@ -128,5 +127,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [profile, user, setUser]);
 
-  return <>{children}</>;
+  return (
+    <>
+      <RefreshTokenProvider />
+      {children}
+    </>
+  );
 }

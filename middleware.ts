@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import Cookies from "js-cookie";
 const ACCESS_TOKEN = "access_token";
 const REFRESH_TOKEN = "refresh_token";
 const REQUIRE_VERIFY_EMAIL = "require_verify_email";
@@ -55,67 +54,15 @@ function getDashboardByRole(role: string): string {
   return roleMap[role] || "/website";
 }
 
-async function refreshAccessToken(
-  refreshToken: string,
-  accessToken: string,
-): Promise<{ accessToken: string; refreshToken: string } | null> {
-  try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    
-    const response = await fetch(`${apiUrl}/api/auth/refresh`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${accessToken}`
-      },
-      body: JSON.stringify({ token: refreshToken }),
-    });
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const data = await response.json();
-    return {
-      accessToken: data.accessToken || data.access_token,
-      refreshToken: data.refreshToken || data.refresh_token || refreshToken,
-    };
-  } catch (error) {
-    return null;
-  }
-}
-
 function clearAuthCookies(response: NextResponse): void {
   response.cookies.delete(ACCESS_TOKEN);
   response.cookies.delete(REFRESH_TOKEN);
   response.cookies.delete(REQUIRE_VERIFY_EMAIL);
 }
 
-function setAuthCookies(
-  accessToken: string,
-  refreshToken: string
-): void {
-  const isProduction = process.env.NODE_ENV === "production";
-  
-  Cookies.set(ACCESS_TOKEN, accessToken, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: "lax",
-    maxAge: 60 * 15, // 15 minutes
-    path: "/",
-  });
-
-  // Refresh token - longer lived (7 days typical)
-  Cookies.set(REFRESH_TOKEN, refreshToken, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
-    path: "/",
-  });
-}
 
 export async function middleware(request: NextRequest) {
+  
   const { pathname } = request.nextUrl;
   
   const accessToken = request.cookies.get(ACCESS_TOKEN)?.value;
@@ -131,23 +78,6 @@ export async function middleware(request: NextRequest) {
     
     if (decodedToken) {
       if (isTokenExpired(decodedToken.exp)) {
-        if (refreshToken) {
-          const newTokens = await refreshAccessToken(refreshToken, accessToken);
-          
-          if (newTokens) {
-            decodedToken = decodeToken(newTokens.accessToken);
-            isAuthenticated = true;
-            userRole = decodedToken?.role || "user";
-            
-            const response = NextResponse.next();
-            setAuthCookies(newTokens.accessToken, newTokens.refreshToken);
-            return response;
-          } else {
-            const response = NextResponse.redirect(new URL("/login", request.url));
-            clearAuthCookies(response);
-            return response;
-          }
-        }
       } else {
         isAuthenticated = true;
         userRole = decodedToken.role;

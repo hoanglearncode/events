@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Settings, Building2, FileText, CreditCard, Shield, 
   Globe, Mail, Server, Save, Loader2, AlertTriangle,
@@ -127,31 +127,38 @@ const PlatformAdminSettings = () => {
 
     setAuth(data.authentication);
 
-  }, [data])
+  }, [data]);
+
+  const settingsPayload = useMemo(() => {
+    return {
+      general,
+      recruitment,
+      content,
+      paymentGateways: paymentConfig.gateways,
+      authentication: auth,
+      integration,
+    };
+  }, [general, recruitment, content, paymentConfig, auth, integration]);
 
   const handleSave = () => {
     try {
       setIsSaving(true);
 
-      platformSettingSchema.parse({
-        general,
-        recruitment,
-        content,
-        auth,
-        integration,
-      });
+      platformSettingSchema.parse(settingsPayload);
+
+      console.log("=== SETTINGS PAYLOAD ===");
+      console.log(settingsPayload);
 
       setTimeout(() => {
         setIsSaving(false);
-        toast.success("Cập nhật thành công!")
+        toast.success("Cập nhật thành công!");
       }, 1000);
 
     } catch (error) {
       setIsSaving(false);
 
       if (error instanceof ZodError) {
-        const firstError = error.errors[0];
-        toast.error(`Lỗi ${firstError.message}`);
+        toast.error(`Lỗi ${error.errors[0].message}`);
         return;
       }
 

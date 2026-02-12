@@ -51,6 +51,7 @@ export const useLogin = () => {
       return AuthService.login(data);
     },
     onSuccess: (response) => {
+      window.dispatchEvent(new Event("auth-changed"));
       if (true) {
         Cookies.set(ACCESS_TOKEN, response.result.token, {
           expires: new Date(Date.now() + HOURS),
