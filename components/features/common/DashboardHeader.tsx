@@ -117,14 +117,6 @@ export function DashboardHeader({ onOpenMobileMenu }: DashboardHeaderProps) {
                   <Button
                     variant="ghost"
                     className="w-full justify-between"
-                    onClick={() => handleNavigate("/profile")}
-                  >
-                    Hồ sơ
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-between"
                     onClick={() => handleNavigate("/website")}
                   >
                     Trang chủ
