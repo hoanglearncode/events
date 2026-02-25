@@ -604,7 +604,7 @@ const PlatformAdminSettings = () => {
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-5 pt-6">
+                    <CardContent className="space-y-5 pt-2">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="space-y-2">
                           <Label className="text-sm font-medium text-foreground">
@@ -853,7 +853,7 @@ const PlatformAdminSettings = () => {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-6 pt-6">
+                <CardContent className="space-y-6 pt-2">
                   <div className="flex items-start justify-between p-5 border-2 border-dashed border-border rounded-xl bg-muted/10 hover:border-brand-accent/30 hover:bg-brand-accent/5 transition-all duration-200">
                     <div className="space-y-1 flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -962,7 +962,7 @@ const PlatformAdminSettings = () => {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-6 pt-6">
+                <CardContent className="space-y-6 pt-2">
                   <div className="flex items-start justify-between p-5 border border-border rounded-xl hover:border-brand-success/30 transition-all duration-200">
                     <div className="space-y-1 flex-1">
                       <Label className="text-base font-semibold text-foreground">

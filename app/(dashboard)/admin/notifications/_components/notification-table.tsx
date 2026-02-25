@@ -23,6 +23,7 @@ import {
   NotificationType,
   NotificationStatus,
 } from "../_types/notification";
+import { NOTIFICATION_TYPES, PRIORITIES, TYPE_ICONS } from "./notification-dialog";
 
 /* =======================
    Props
@@ -93,6 +94,7 @@ export function NotificationTable({ notifications, onEdit, onDelete }: Props) {
             <TableRow className="px-2">
               <TableHead>Tiêu đề</TableHead>
               <TableHead>Loại</TableHead>
+              <TableHead>Độ ưu tiên</TableHead>
               <TableHead>Trạng thái</TableHead>
               <TableHead>Bắt đầu</TableHead>
               <TableHead>Kết thúc</TableHead>
@@ -112,11 +114,43 @@ export function NotificationTable({ notifications, onEdit, onDelete }: Props) {
                 </TableCell>
 
                 <TableCell>
-                  <Badge variant="outline">{typeLabels[n.type]}</Badge>
+                  <div className="inline-flex items-center gap-1">
+                    <span
+                      className={`inline-flex items-center justify-center h-5 w-5 rounded-full text-xs font-bold ${
+                        NOTIFICATION_TYPES.find((t) => t.value === n.type)?.active
+                      }`}
+                    >
+                      {TYPE_ICONS[n.type]}
+                    </span>
+                    <span className="text-sm font-medium">
+                      {typeLabels[n.type]}
+                    </span>
+                  </div>
+                </TableCell>
+                
+                <TableCell>
+                  <span
+                    className={`inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-full ${
+                      PRIORITIES.find((p) => p.value === n.priority)?.activeClass
+                    }`}
+                  >
+                    {n.priority.charAt(0).toUpperCase() + n.priority.slice(1)}
+                  </span>
                 </TableCell>
 
                 <TableCell>
-                  <Badge variant="outline">{statusLabels[n.status]}</Badge>
+                  <Badge
+                    variant="outline"
+                    className={
+                      n.status === "active"
+                        ? "border-emerald-500 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300"
+                        : n.status === "scheduled"
+                        ? "border-amber-500 bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300"
+                        : "border-red-500 bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-300"
+                    }
+                  >
+                    {statusLabels[n.status]}
+                  </Badge>
                 </TableCell>
 
                 <TableCell>{formatDate(n.startDate)}</TableCell>
