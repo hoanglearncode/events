@@ -11,7 +11,6 @@ import {
   Loader2,
 } from "lucide-react";
 import ProductCard from "./ToolCard";
-import ProductService from "@/services/product.service"; // Adjust path as needed
 
 export const FeaturedSection = () => {
   const { t } = useTranslation();
@@ -27,11 +26,9 @@ export const FeaturedSection = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await ProductService.listPopular();
 
         // Adjust based on your API response structure
-        const products = response?.result;
-        setTools(products);
+        const products ={};
       } catch (err: any) {
         console.error("Error fetching popular products:", err);
         setError(err?.message || "Không thể tải sản phẩm nổi bật");
@@ -190,7 +187,7 @@ export const FeaturedSection = () => {
                           animationFillMode: "backwards",
                         }}
                       >
-                        <ProductCard product={tool} isFeatured />
+                        <ProductCard product={tool}  />
                       </div>
                     ))}
                 </div>

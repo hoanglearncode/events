@@ -172,26 +172,7 @@ export function TablePagination({
           <ChevronLeft className="h-4 w-4" />
         </Button>
 
-        {/* Pages */}
-        {pageNumbers.map((p, i) =>
-          p === "..." ? (
-            <span key={i} className="px-2 text-muted-foreground">
-              …
-            </span>
-          ) : (
-            <Button
-              key={p}
-              type="button"
-              size="sm"
-              className="min-w-9"
-              variant={p === current_page ? "default" : "outline"}
-              disabled={p === current_page}
-              onClick={() => goToPage(p)}
-            >
-              {p}
-            </Button>
-          )
-        )}
+        
 
         {/* Next */}
         <Button

@@ -77,7 +77,8 @@ const contents = [
     thumbnail: "/images/coffee-guide.jpg",
     featured: true,
     tags: ["pha chế", "người mới", "hướng dẫn"],
-    excerpt: "Hướng dẫn chi tiết các phương pháp pha cà phê đơn giản, dễ thực hiện với dụng cụ có sẵn tại nhà...",
+    excerpt:
+      "Hướng dẫn chi tiết các phương pháp pha cà phê đơn giản, dễ thực hiện với dụng cụ có sẵn tại nhà...",
   },
   {
     id: "POST002",
@@ -93,7 +94,8 @@ const contents = [
     thumbnail: "/images/arabica-robusta.jpg",
     featured: false,
     tags: ["kiến thức", "arabica", "robusta"],
-    excerpt: "Tìm hiểu sự khác biệt giữa hai loại cà phê phổ biến nhất và cách lựa chọn phù hợp với khẩu vị...",
+    excerpt:
+      "Tìm hiểu sự khác biệt giữa hai loại cà phê phổ biến nhất và cách lựa chọn phù hợp với khẩu vị...",
   },
   {
     id: "POST003",
@@ -109,7 +111,8 @@ const contents = [
     thumbnail: "/images/latte-art.jpg",
     featured: true,
     tags: ["latte art", "video", "tutorial"],
-    excerpt: "Học cách tạo những họa tiết cơ bản trên bề mặt cappuccino và latte một cách dễ dàng...",
+    excerpt:
+      "Học cách tạo những họa tiết cơ bản trên bề mặt cappuccino và latte một cách dễ dàng...",
   },
   {
     id: "POST004",
@@ -125,7 +128,8 @@ const contents = [
     thumbnail: "/images/exhibition.jpg",
     featured: false,
     tags: ["sự kiện", "triển lãm", "2024"],
-    excerpt: "Sự kiện lớn nhất năm tại Hà Nội với hơn 200 gian hàng từ các nhà rang xay hàng đầu...",
+    excerpt:
+      "Sự kiện lớn nhất năm tại Hà Nội với hơn 200 gian hàng từ các nhà rang xay hàng đầu...",
   },
   {
     id: "POST005",
@@ -141,7 +145,8 @@ const contents = [
     thumbnail: "/images/storage.jpg",
     featured: false,
     tags: ["bảo quản", "hướng dẫn"],
-    excerpt: "Những lưu ý quan trọng khi bảo quản cà phê hạt và cà phê bột để duy trì chất lượng tối ưu...",
+    excerpt:
+      "Những lưu ý quan trọng khi bảo quản cà phê hạt và cà phê bột để duy trì chất lượng tối ưu...",
   },
   {
     id: "POST006",
@@ -157,7 +162,8 @@ const contents = [
     thumbnail: "/images/coffee-machine.jpg",
     featured: true,
     tags: ["review", "máy pha", "2024"],
-    excerpt: "Đánh giá chi tiết 5 dòng máy pha cà phê được ưa chuộng nhất với đầy đủ ưu nhược điểm...",
+    excerpt:
+      "Đánh giá chi tiết 5 dòng máy pha cà phê được ưa chuộng nhất với đầy đủ ưu nhược điểm...",
   },
   {
     id: "POST007",
@@ -173,7 +179,8 @@ const contents = [
     thumbnail: "/images/ethiopia.jpg",
     featured: false,
     tags: ["câu chuyện", "ethiopia", "nguồn gốc"],
-    excerpt: "Hành trình khám phá vùng đất được coi là cái nôi của cà phê trên thế giới...",
+    excerpt:
+      "Hành trình khám phá vùng đất được coi là cái nôi của cà phê trên thế giới...",
   },
   {
     id: "POST008",
@@ -189,7 +196,8 @@ const contents = [
     thumbnail: "/images/infographic.jpg",
     featured: false,
     tags: ["infographic", "việt nam", "kiến thức"],
-    excerpt: "Hình ảnh minh họa trực quan về các loại cà phê được yêu thích nhất tại Việt Nam...",
+    excerpt:
+      "Hình ảnh minh họa trực quan về các loại cà phê được yêu thích nhất tại Việt Nam...",
   },
   {
     id: "POST009",
@@ -205,17 +213,43 @@ const contents = [
     thumbnail: "/images/cold-brew.jpg",
     featured: false,
     tags: ["cold brew", "iced coffee", "kiến thức"],
-    excerpt: "Phân tích chi tiết sự khác biệt giữa hai phương pháp pha cà phê lạnh phổ biến...",
+    excerpt:
+      "Phân tích chi tiết sự khác biệt giữa hai phương pháp pha cà phê lạnh phổ biến...",
   },
 ];
 
 const typeConfig = {
-  article: { label: "Bài viết", icon: FileText, color: "bg-brand-primary/10 text-brand-primary border-brand-primary/20" },
-  video: { label: "Video", icon: Video, color: "bg-brand-error/10 text-brand-error border-brand-error/20" },
-  news: { label: "Tin tức", icon: Newspaper, color: "bg-brand-secondary/10 text-brand-secondary border-brand-secondary/20" },
-  review: { label: "Review", icon: Star, color: "bg-brand-warning/10 text-brand-warning border-brand-warning/20" },
-  blog: { label: "Blog", icon: BookOpen, color: "bg-brand-accent/10 text-brand-accent border-brand-accent/20" },
-  infographic: { label: "Infographic", icon: ImageIcon, color: "bg-brand-success/10 text-brand-success border-brand-success/20" },
+  article: {
+    label: "Bài viết",
+    icon: FileText,
+    color: "bg-brand-primary/10 text-brand-primary border-brand-primary/20",
+  },
+  video: {
+    label: "Video",
+    icon: Video,
+    color: "bg-brand-error/10 text-brand-error border-brand-error/20",
+  },
+  news: {
+    label: "Tin tức",
+    icon: Newspaper,
+    color:
+      "bg-brand-secondary/10 text-brand-secondary border-brand-secondary/20",
+  },
+  review: {
+    label: "Review",
+    icon: Star,
+    color: "bg-brand-warning/10 text-brand-warning border-brand-warning/20",
+  },
+  blog: {
+    label: "Blog",
+    icon: BookOpen,
+    color: "bg-brand-accent/10 text-brand-accent border-brand-accent/20",
+  },
+  infographic: {
+    label: "Infographic",
+    icon: ImageIcon,
+    color: "bg-brand-success/10 text-brand-success border-brand-success/20",
+  },
 };
 
 const categoryLabels = {
@@ -228,9 +262,21 @@ const categoryLabels = {
 };
 
 const statusConfig = {
-  published: { label: "Đã xuất bản", color: "bg-brand-success/10 text-brand-success border-brand-success/20", icon: CheckCircle2 },
-  draft: { label: "Bản nháp", color: "bg-brand-warning/10 text-brand-warning border-brand-warning/20", icon: Edit },
-  archived: { label: "Lưu trữ", color: "bg-muted text-muted-foreground border-border", icon: XCircle },
+  published: {
+    label: "Đã xuất bản",
+    color: "bg-brand-success/10 text-brand-success border-brand-success/20",
+    icon: CheckCircle2,
+  },
+  draft: {
+    label: "Bản nháp",
+    color: "bg-brand-warning/10 text-brand-warning border-brand-warning/20",
+    icon: Edit,
+  },
+  archived: {
+    label: "Lưu trữ",
+    color: "bg-muted text-muted-foreground border-border",
+    icon: XCircle,
+  },
 };
 
 export default function ContentManagement() {
@@ -248,11 +294,15 @@ export default function ContentManagement() {
     const matchesSearch =
       content.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       content.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      content.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      content.tags.some((tag) =>
+        tag.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
     const matchesType = filterType === "all" || content.type === filterType;
-    const matchesCategory = filterCategory === "all" || content.category === filterCategory;
-    const matchesStatus = filterStatus === "all" || content.status === filterStatus;
+    const matchesCategory =
+      filterCategory === "all" || content.category === filterCategory;
+    const matchesStatus =
+      filterStatus === "all" || content.status === filterStatus;
 
     const matchesTab =
       activeTab === "all" ||
@@ -260,7 +310,13 @@ export default function ContentManagement() {
       (activeTab === "draft" && content.status === "draft") ||
       (activeTab === "featured" && content.featured);
 
-    return matchesSearch && matchesType && matchesCategory && matchesStatus && matchesTab;
+    return (
+      matchesSearch &&
+      matchesType &&
+      matchesCategory &&
+      matchesStatus &&
+      matchesTab
+    );
   });
 
   const handleEdit = (content: any) => {
@@ -347,7 +403,9 @@ export default function ContentManagement() {
                     <FileText className="w-4 h-4 text-brand-primary" />
                     <p className="text-sm text-muted-foreground">Tổng số</p>
                   </div>
-                  <p className="text-3xl font-bold text-foreground">{contentStats.totalPosts}</p>
+                  <p className="text-3xl font-bold text-foreground">
+                    {contentStats.totalPosts}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -359,7 +417,9 @@ export default function ContentManagement() {
                     <CheckCircle2 className="w-4 h-4 text-brand-success" />
                     <p className="text-sm text-muted-foreground">Đã xuất bản</p>
                   </div>
-                  <p className="text-3xl font-bold text-brand-success">{contentStats.published}</p>
+                  <p className="text-3xl font-bold text-brand-success">
+                    {contentStats.published}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -371,7 +431,9 @@ export default function ContentManagement() {
                     <Edit className="w-4 h-4 text-brand-warning" />
                     <p className="text-sm text-muted-foreground">Bản nháp</p>
                   </div>
-                  <p className="text-3xl font-bold text-brand-warning">{contentStats.draft}</p>
+                  <p className="text-3xl font-bold text-brand-warning">
+                    {contentStats.draft}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -395,9 +457,13 @@ export default function ContentManagement() {
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2 mb-1">
                     <Star className="w-4 h-4 text-brand-warning" />
-                    <p className="text-sm text-muted-foreground">Tương tác TB</p>
+                    <p className="text-sm text-muted-foreground">
+                      Tương tác TB
+                    </p>
                   </div>
-                  <p className="text-3xl font-bold text-foreground">{contentStats.avgEngagement}</p>
+                  <p className="text-3xl font-bold text-foreground">
+                    {contentStats.avgEngagement}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -407,7 +473,9 @@ export default function ContentManagement() {
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2 mb-1">
                     <TrendingUp className="w-4 h-4 text-brand-success" />
-                    <p className="text-sm text-muted-foreground">Top danh mục</p>
+                    <p className="text-sm text-muted-foreground">
+                      Top danh mục
+                    </p>
                   </div>
                   <p className="text-xs font-medium text-foreground leading-tight mt-2">
                     {contentStats.topCategory}
@@ -450,7 +518,10 @@ export default function ContentManagement() {
                   </SelectContent>
                 </Select>
 
-                <Select value={filterCategory} onValueChange={setFilterCategory}>
+                <Select
+                  value={filterCategory}
+                  onValueChange={setFilterCategory}
+                >
                   <SelectTrigger className="w-[180px] bg-card border-border">
                     <SelectValue placeholder="Danh mục" />
                   </SelectTrigger>
@@ -484,7 +555,11 @@ export default function ContentManagement() {
         {/* TABS & CONTENT */}
         <Card className="border-border shadow-xl glass-dark">
           <CardContent className="p-0">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
               <div className="border-b border-border px-6 bg-muted/20">
                 <TabsList className="bg-transparent h-12">
                   <TabsTrigger
@@ -497,7 +572,8 @@ export default function ContentManagement() {
                     value="published"
                     className="data-[state=active]:bg-card data-[state=active]:shadow-sm"
                   >
-                    Đã xuất bản ({contents.filter(c => c.status === "published").length})
+                    Đã xuất bản (
+                    {contents.filter((c) => c.status === "published").length})
                   </TabsTrigger>
                   <TabsTrigger
                     value="draft"
@@ -506,7 +582,7 @@ export default function ContentManagement() {
                     <div className="flex items-center gap-2">
                       Bản nháp
                       <Badge className="bg-brand-warning hover:bg-brand-warning/90">
-                        {contents.filter(c => c.status === "draft").length}
+                        {contents.filter((c) => c.status === "draft").length}
                       </Badge>
                     </div>
                   </TabsTrigger>
@@ -516,7 +592,7 @@ export default function ContentManagement() {
                   >
                     <div className="flex items-center gap-2">
                       <Star className="w-4 h-4" />
-                      Nổi bật ({contents.filter(c => c.featured).length})
+                      Nổi bật ({contents.filter((c) => c.featured).length})
                     </div>
                   </TabsTrigger>
                 </TabsList>
@@ -526,7 +602,9 @@ export default function ContentManagement() {
                 {filteredContents.length === 0 ? (
                   <div className="p-12 text-center">
                     <FileText className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
-                    <p className="text-foreground font-medium">Không tìm thấy nội dung nào</p>
+                    <p className="text-foreground font-medium">
+                      Không tìm thấy nội dung nào
+                    </p>
                     <p className="text-sm text-muted-foreground mt-1">
                       Thử thay đổi bộ lọc hoặc tìm kiếm khác
                     </p>
@@ -534,8 +612,13 @@ export default function ContentManagement() {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
                     {filteredContents.map((content) => {
-                      const TypeIcon = typeConfig[content.type as keyof typeof typeConfig].icon;
-                      const StatusIcon = statusConfig[content.status as keyof typeof statusConfig].icon;
+                      const TypeIcon =
+                        typeConfig[content.type as keyof typeof typeConfig]
+                          .icon;
+                      const StatusIcon =
+                        statusConfig[
+                          content.status as keyof typeof statusConfig
+                        ].icon;
 
                       return (
                         <Card
@@ -545,7 +628,7 @@ export default function ContentManagement() {
                           {/* Thumbnail */}
                           <div className="relative h-48 bg-muted overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 to-transparent z-10" />
-                            
+
                             {/* Featured Star */}
                             {content.featured && (
                               <div className="absolute top-3 left-3 z-20">
@@ -558,17 +641,37 @@ export default function ContentManagement() {
 
                             {/* Type Badge */}
                             <div className="absolute top-3 right-3 z-20">
-                              <Badge className={typeConfig[content.type as keyof typeof typeConfig].color}>
+                              <Badge
+                                className={
+                                  typeConfig[
+                                    content.type as keyof typeof typeConfig
+                                  ].color
+                                }
+                              >
                                 <TypeIcon className="w-3 h-3 mr-1" />
-                                {typeConfig[content.type as keyof typeof typeConfig].label}
+                                {
+                                  typeConfig[
+                                    content.type as keyof typeof typeConfig
+                                  ].label
+                                }
                               </Badge>
                             </div>
 
                             {/* Status Badge */}
                             <div className="absolute bottom-3 left-3 z-20">
-                              <Badge className={statusConfig[content.status as keyof typeof statusConfig].color}>
+                              <Badge
+                                className={
+                                  statusConfig[
+                                    content.status as keyof typeof statusConfig
+                                  ].color
+                                }
+                              >
                                 <StatusIcon className="w-3 h-3 mr-1" />
-                                {statusConfig[content.status as keyof typeof statusConfig].label}
+                                {
+                                  statusConfig[
+                                    content.status as keyof typeof statusConfig
+                                  ].label
+                                }
                               </Badge>
                             </div>
 
@@ -625,7 +728,13 @@ export default function ContentManagement() {
 
                               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                 <Tag className="w-3 h-3" />
-                                <span>{categoryLabels[content.category as keyof typeof categoryLabels]}</span>
+                                <span>
+                                  {
+                                    categoryLabels[
+                                      content.category as keyof typeof categoryLabels
+                                    ]
+                                  }
+                                </span>
                               </div>
                             </div>
 
@@ -715,11 +824,31 @@ export default function ContentManagement() {
                       <Badge variant="outline" className="border-border">
                         {selectedContent.id}
                       </Badge>
-                      <Badge className={typeConfig[selectedContent.type as keyof typeof typeConfig].color}>
-                        {typeConfig[selectedContent.type as keyof typeof typeConfig].label}
+                      <Badge
+                        className={
+                          typeConfig[
+                            selectedContent.type as keyof typeof typeConfig
+                          ].color
+                        }
+                      >
+                        {
+                          typeConfig[
+                            selectedContent.type as keyof typeof typeConfig
+                          ].label
+                        }
                       </Badge>
-                      <Badge className={statusConfig[selectedContent.status as keyof typeof statusConfig].color}>
-                        {statusConfig[selectedContent.status as keyof typeof statusConfig].label}
+                      <Badge
+                        className={
+                          statusConfig[
+                            selectedContent.status as keyof typeof statusConfig
+                          ].color
+                        }
+                      >
+                        {
+                          statusConfig[
+                            selectedContent.status as keyof typeof statusConfig
+                          ].label
+                        }
                       </Badge>
                       {selectedContent.featured && (
                         <Badge className="bg-brand-warning hover:bg-brand-warning/90">
@@ -759,7 +888,11 @@ export default function ContentManagement() {
                         Danh mục
                       </div>
                       <p className="font-medium">
-                        {categoryLabels[selectedContent.category as keyof typeof categoryLabels]}
+                        {
+                          categoryLabels[
+                            selectedContent.category as keyof typeof categoryLabels
+                          ]
+                        }
                       </p>
                     </CardContent>
                   </Card>
@@ -771,7 +904,9 @@ export default function ContentManagement() {
                           <Calendar className="w-4 h-4" />
                           Ngày xuất bản
                         </div>
-                        <p className="font-medium">{selectedContent.publishedDate}</p>
+                        <p className="font-medium">
+                          {selectedContent.publishedDate}
+                        </p>
                       </CardContent>
                     </Card>
                   )}
@@ -801,7 +936,9 @@ export default function ContentManagement() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm leading-relaxed">{selectedContent.excerpt}</p>
+                    <p className="text-sm leading-relaxed">
+                      {selectedContent.excerpt}
+                    </p>
                   </CardContent>
                 </Card>
 
@@ -814,15 +951,17 @@ export default function ContentManagement() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
-                      {selectedContent.tags.map((tag: string, index: number) => (
-                        <Badge
-                          key={index}
-                          variant="outline"
-                          className="border-border"
-                        >
-                          #{tag}
-                        </Badge>
-                      ))}
+                      {selectedContent.tags.map(
+                        (tag: string, index: number) => (
+                          <Badge
+                            key={index}
+                            variant="outline"
+                            className="border-border"
+                          >
+                            #{tag}
+                          </Badge>
+                        )
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -855,7 +994,8 @@ export default function ContentManagement() {
           <DialogHeader>
             <DialogTitle>Xác nhận xóa nội dung</DialogTitle>
             <DialogDescription>
-              Bạn có chắc chắn muốn xóa "{selectedContent?.title}"? Hành động này không thể hoàn tác.
+              Bạn có chắc chắn muốn xóa "{selectedContent?.title}"? Hành động
+              này không thể hoàn tác.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

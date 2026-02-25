@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { User } from "@/types/auth";
+import type { User, UserProfile } from "@/types/auth";
 
 // Auth State Interface
 interface AuthState {
   // State
-  user: User | null;
+  user: UserProfile | null;
 
   // Actions
-  setUser: (user: User) => void;
+  setUser: (user: UserProfile) => void;
   clearAuth: () => void;
 }
 
@@ -16,7 +16,6 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      // Initial state
       user: null,
 
       // Actions

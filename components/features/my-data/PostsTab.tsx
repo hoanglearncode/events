@@ -27,7 +27,6 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
-import { BlogService, BlogPostResponse } from "@/services/blog.service";
 import { toast } from "sonner";
 
 export default function PostsTab() {
@@ -35,7 +34,7 @@ export default function PostsTab() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(0);
   const [size] = useState(12);
-  const [posts, setPosts] = useState<BlogPostResponse[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
   const [totalPosts, setTotalPosts] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,9 +49,6 @@ export default function PostsTab() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await BlogService.getMyPosts(searchTerm, page, size);
-      setPosts(response?.result || []);
-      setTotalPosts(response?.total || 0);
     } catch (e: any) {
       console.error("Error fetching posts:", e);
       setError(e?.message || "Lỗi tải bài viết");
@@ -64,11 +60,6 @@ export default function PostsTab() {
 
   const handleDeletePost = async (id: string) => {
     try {
-      await BlogService.deletePost(id);
-      toast.success("Xóa bài viết thành công!");
-      setPosts((prev) => prev.filter((p) => p.id !== id));
-      setTotalPosts((prev) => prev - 1);
-      setDeleteId(null);
     } catch (e: any) {
       console.error("Error deleting post:", e);
       toast.error(e?.message || "Không thể xóa bài viết");

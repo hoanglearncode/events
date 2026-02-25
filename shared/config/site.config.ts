@@ -1,13 +1,11 @@
-export const metaConfig = {
-  siteName: "VolHub",
-  siteUrl: "https://volhub.com",
-  siteDescription: "Your gateway to volunteering opportunities worldwide.",
-  siteLocale: "en-US",
-  siteImage: "https://volhub.com/og-image.png",
-  siteAuthor: "VolHub Team",
+import { General } from "@/app/(dashboard)/admin/settings/_types/setting";
 
-
-
-  subscribeTitle: "Subscribe to our Newsletter",
-  newsDescription: "Latest updates and stories from VolHub.",
-}
+export const defaultGeneralConfig: General = {
+  systemName: "Event Platform",
+  systemLogo: "/event_logo.jpg",
+  systemEmail: "admin@system",
+  systemTitle: "Event Platform - Updated",
+  systemDescription: "Event management platform",
+  maintainMode: false,
+  allowRegister: true,
+};

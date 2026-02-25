@@ -2,18 +2,18 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { 
-  Calendar, 
-  Clock, 
-  Bookmark, 
-  Share2, 
-  MessageCircle, 
+import {
+  Calendar,
+  Clock,
+  Bookmark,
+  Share2,
+  MessageCircle,
   ChevronLeft,
   Send,
   CheckCircle2,
   ExternalLink,
   TrendingUp,
-  ArrowRight
+  ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,7 +28,7 @@ const featuredPosts = [
     date: "15 Tháng 1, 2026",
     deadline: "28 Tháng 2, 2026",
     image: "/scholarship-1.jpg",
-    isHot: true
+    isHot: true,
   },
   {
     id: 2,
@@ -37,7 +37,7 @@ const featuredPosts = [
     date: "10 Tháng 1, 2026",
     deadline: "5 Tháng 3, 2026",
     image: "/scholarship-2.jpg",
-    isHot: true
+    isHot: true,
   },
   {
     id: 3,
@@ -46,7 +46,7 @@ const featuredPosts = [
     date: "8 Tháng 1, 2026",
     deadline: "20 Tháng 2, 2026",
     image: "/scholarship-3.jpg",
-    isHot: false
+    isHot: false,
   },
   {
     id: 4,
@@ -55,8 +55,8 @@ const featuredPosts = [
     date: "5 Tháng 1, 2026",
     deadline: "15 Tháng 3, 2026",
     image: "/scholarship-4.jpg",
-    isHot: false
-  }
+    isHot: false,
+  },
 ];
 
 export default function PostDetail() {
@@ -67,24 +67,30 @@ export default function PostDetail() {
       {/* Navigation Bar - Không sticky */}
       <div className="w-full border-b border-border bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl h-14 sm:h-16 flex items-center justify-between">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="text-muted-foreground hover:text-primary -ml-2"
           >
-            <ChevronLeft className="mr-1 h-4 w-4" /> 
+            <ChevronLeft className="mr-1 h-4 w-4" />
             <span className="hidden sm:inline">Quay lại</span>
           </Button>
           <div className="flex items-center gap-1 sm:gap-2">
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               className="rounded-full h-9 w-9 sm:h-10 sm:w-10"
               onClick={() => setBookmarked(!bookmarked)}
             >
-              <Bookmark className={`h-4 w-4 sm:h-5 sm:w-5 ${bookmarked ? 'fill-current text-brand-primary' : ''}`} />
+              <Bookmark
+                className={`h-4 w-4 sm:h-5 sm:w-5 ${bookmarked ? "fill-current text-brand-primary" : ""}`}
+              />
             </Button>
-            <Button variant="ghost" size="icon" className="rounded-full h-9 w-9 sm:h-10 sm:w-10">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full h-9 w-9 sm:h-10 sm:w-10"
+            >
               <Share2 className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
           </div>
@@ -98,7 +104,10 @@ export default function PostDetail() {
             {/* Header Section */}
             <header className="space-y-4 sm:space-y-6 mb-6 sm:mb-10">
               <div className="space-y-3 sm:space-y-4">
-                <Badge variant="outline" className="text-brand-secondary border-brand-secondary/30 bg-brand-secondary/5 px-2.5 sm:px-3 py-1 rounded-full uppercase tracking-widest text-[9px] sm:text-[10px] font-bold">
+                <Badge
+                  variant="outline"
+                  className="text-brand-secondary border-brand-secondary/30 bg-brand-secondary/5 px-2.5 sm:px-3 py-1 rounded-full uppercase tracking-widest text-[9px] sm:text-[10px] font-bold"
+                >
                   học bổng 2025-2026
                 </Badge>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-foreground tracking-tight">
@@ -110,11 +119,15 @@ export default function PostDetail() {
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-brand-accent flex-shrink-0">
                     <AvatarImage src="/avatar-placeholder.png" />
-                    <AvatarFallback className="bg-brand-primary text-white text-sm">H</AvatarFallback>
+                    <AvatarFallback className="bg-brand-primary text-white text-sm">
+                      H
+                    </AvatarFallback>
                   </Avatar>
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-sm truncate">Học bổng cho sinh viên</span>
+                      <span className="font-bold text-sm truncate">
+                        Học bổng cho sinh viên
+                      </span>
                       <CheckCircle2 className="h-4 w-4 text-blue-500 fill-current flex-shrink-0" />
                     </div>
                     <div className="flex items-center gap-2 sm:gap-3 text-xs text-muted-foreground mt-0.5 flex-wrap">
@@ -150,8 +163,12 @@ export default function PostDetail() {
               <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/20 to-brand-secondary/20" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center space-y-2 p-4">
-                  <div className="text-4xl sm:text-6xl font-bold text-white">🎓</div>
-                  <div className="text-lg sm:text-2xl font-bold text-white">Marvell Scholarship</div>
+                  <div className="text-4xl sm:text-6xl font-bold text-white">
+                    🎓
+                  </div>
+                  <div className="text-lg sm:text-2xl font-bold text-white">
+                    Marvell Scholarship
+                  </div>
                 </div>
               </div>
             </div>
@@ -159,26 +176,38 @@ export default function PostDetail() {
             {/* Content Section */}
             <div className="space-y-6 sm:space-y-8">
               <div className="prose prose-sm sm:prose-base prose-stone dark:prose-invert max-w-none">
-                <h2 className="text-xl sm:text-2xl font-bold text-brand-primary">Thông tin chung</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-brand-primary">
+                  Thông tin chung
+                </h2>
                 <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
-                  Marvell Vietnam tự hào thông báo chương trình học bổng <strong>Excellence Scholarship 2026</strong>. 
-                  Đây là cơ hội vàng dành cho các bạn sinh viên tài năng thuộc khối ngành Kỹ thuật Điện tử, Công nghệ thông tin và Khoa học máy tính...
+                  Marvell Vietnam tự hào thông báo chương trình học bổng{" "}
+                  <strong>Excellence Scholarship 2026</strong>. Đây là cơ hội
+                  vàng dành cho các bạn sinh viên tài năng thuộc khối ngành Kỹ
+                  thuật Điện tử, Công nghệ thông tin và Khoa học máy tính...
                 </p>
-                
+
                 <div className="p-4 sm:p-6 bg-muted/50 rounded-xl sm:rounded-2xl border border-border space-y-3 sm:space-y-4 my-6">
                   <h3 className="font-bold text-base sm:text-lg flex items-center gap-2">
-                    <Badge className="bg-brand-secondary text-xs">Gói học bổng</Badge>
+                    <Badge className="bg-brand-secondary text-xs">
+                      Gói học bổng
+                    </Badge>
                   </h3>
                   <ul className="list-disc pl-5 space-y-2 text-muted-foreground text-sm sm:text-base">
                     <li>30 suất học bổng tổng trị giá $30,000 USD.</li>
-                    <li>Cơ hội thực tập và làm việc tại các dự án Chip hàng đầu.</li>
+                    <li>
+                      Cơ hội thực tập và làm việc tại các dự án Chip hàng đầu.
+                    </li>
                     <li>Được dẫn dắt bởi các chuyên gia (Mentorship).</li>
                   </ul>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl font-bold text-brand-primary pt-4 sm:pt-6">Yêu cầu hồ sơ</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-brand-primary pt-4 sm:pt-6">
+                  Yêu cầu hồ sơ
+                </h2>
                 <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
-                  Ứng viên cần chuẩn bị CV tiếng Anh, bảng điểm học tập gần nhất và một bài luận ngắn (Statement of Purpose) nói về định hướng nghề nghiệp trong ngành bán dẫn.
+                  Ứng viên cần chuẩn bị CV tiếng Anh, bảng điểm học tập gần nhất
+                  và một bài luận ngắn (Statement of Purpose) nói về định hướng
+                  nghề nghiệp trong ngành bán dẫn.
                 </p>
               </div>
 
@@ -189,27 +218,50 @@ export default function PostDetail() {
                 </h4>
                 <div className="space-y-4 text-sm">
                   <div className="flex flex-col gap-1">
-                    <span className="text-muted-foreground text-xs">Phụ trách chương trình</span>
-                    <span className="font-semibold text-foreground italic">Mr. Hieu Phung</span>
+                    <span className="text-muted-foreground text-xs">
+                      Phụ trách chương trình
+                    </span>
+                    <span className="font-semibold text-foreground italic">
+                      Mr. Hieu Phung
+                    </span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className="text-muted-foreground text-xs">Website chính thức</span>
-                    <a href="#" className="text-brand-secondary flex items-center gap-1 hover:underline text-sm">
+                    <span className="text-muted-foreground text-xs">
+                      Website chính thức
+                    </span>
+                    <a
+                      href="#"
+                      className="text-brand-secondary flex items-center gap-1 hover:underline text-sm"
+                    >
                       marvell.com/vietnam <ExternalLink className="h-3 w-3" />
                     </a>
                   </div>
                 </div>
 
                 <div className="mt-6 pt-6 border-t border-border">
-                  <p className="text-xs text-muted-foreground mb-3">Chia sẻ bài viết:</p>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Chia sẻ bài viết:
+                  </p>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="icon" className="rounded-lg h-10 w-10">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-lg h-10 w-10"
+                    >
                       <MessageCircle size={18} />
                     </Button>
-                    <Button variant="outline" size="icon" className="rounded-lg h-10 w-10 text-blue-500">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-lg h-10 w-10 text-blue-500"
+                    >
                       <Send size={18} />
                     </Button>
-                    <Button variant="outline" size="icon" className="rounded-lg h-10 w-10 text-brand-primary">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-lg h-10 w-10 text-brand-primary"
+                    >
                       <Share2 size={18} />
                     </Button>
                   </div>
@@ -219,14 +271,17 @@ export default function PostDetail() {
               {/* Bottom Apply Section */}
               <div className="p-6 sm:p-8 rounded-xl sm:rounded-2xl lg:rounded-[2rem] bg-brand-primary text-white flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
                 <div className="space-y-2 text-center sm:text-left">
-                  <h3 className="text-lg sm:text-xl font-bold">Sẵn sàng để bứt phá?</h3>
+                  <h3 className="text-lg sm:text-xl font-bold">
+                    Sẵn sàng để bứt phá?
+                  </h3>
                   <p className="text-white/70 text-xs sm:text-sm">
-                    Hãy nộp hồ sơ trước ngày 22/02/2026 để không bỏ lỡ cơ hội này.
+                    Hãy nộp hồ sơ trước ngày 22/02/2026 để không bỏ lỡ cơ hội
+                    này.
                   </p>
                 </div>
-                <Button 
-                  size="lg" 
-                  variant="secondary" 
+                <Button
+                  size="lg"
+                  variant="secondary"
                   className="bg-white text-brand-primary hover:bg-white/90 font-bold px-8 sm:px-10 rounded-xl w-full sm:w-auto"
                 >
                   Nộp hồ sơ ngay
@@ -244,27 +299,50 @@ export default function PostDetail() {
               </h4>
               <div className="space-y-4 text-sm">
                 <div className="flex flex-col gap-1">
-                  <span className="text-muted-foreground text-xs">Phụ trách chương trình</span>
-                  <span className="font-semibold text-foreground italic">Mr. Hieu Phung</span>
+                  <span className="text-muted-foreground text-xs">
+                    Phụ trách chương trình
+                  </span>
+                  <span className="font-semibold text-foreground italic">
+                    Mr. Hieu Phung
+                  </span>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="text-muted-foreground text-xs">Website chính thức</span>
-                  <a href="#" className="text-brand-secondary flex items-center gap-1 hover:underline">
+                  <span className="text-muted-foreground text-xs">
+                    Website chính thức
+                  </span>
+                  <a
+                    href="#"
+                    className="text-brand-secondary flex items-center gap-1 hover:underline"
+                  >
                     marvell.com/vietnam <ExternalLink className="h-3 w-3" />
                   </a>
                 </div>
               </div>
 
               <div className="mt-8 pt-6 border-t border-border">
-                <p className="text-xs text-muted-foreground mb-4">Chia sẻ bài viết:</p>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Chia sẻ bài viết:
+                </p>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="icon" className="rounded-lg h-10 w-10">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-lg h-10 w-10"
+                  >
                     <MessageCircle size={18} />
                   </Button>
-                  <Button variant="outline" size="icon" className="rounded-lg h-10 w-10 text-blue-500">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-lg h-10 w-10 text-blue-500"
+                  >
                     <Send size={18} />
                   </Button>
-                  <Button variant="outline" size="icon" className="rounded-lg h-10 w-10 text-brand-primary">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="rounded-lg h-10 w-10 text-brand-primary"
+                  >
                     <Share2 size={18} />
                   </Button>
                 </div>
@@ -300,9 +378,12 @@ export default function PostDetail() {
                           </div>
                         )}
                       </div>
-                      
+
                       <div className="flex-1 min-w-0 space-y-1.5">
-                        <Badge variant="outline" className="text-[9px] px-2 py-0.5 h-auto">
+                        <Badge
+                          variant="outline"
+                          className="text-[9px] px-2 py-0.5 h-auto"
+                        >
                           {post.category}
                         </Badge>
                         <h5 className="font-semibold text-sm leading-tight line-clamp-2 group-hover:text-brand-primary transition-colors">
@@ -324,8 +405,8 @@ export default function PostDetail() {
                 ))}
               </div>
 
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="w-full mt-4 rounded-lg group"
               >
                 Xem tất cả

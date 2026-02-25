@@ -3,7 +3,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-
 :root {
   /* Brand Colors */
   --brand-primary: #624a2b; /* Coffee Bean */
@@ -87,13 +86,32 @@
 }
 
 /* editor styling kept (no change) */
-.ck-theme-wrapper .ck-editor { border-radius: var(--radius); }
-.ck-theme-wrapper .ck-toolbar { border-radius: var(--radius) var(--radius) 0 0; border-color: var(--border); }
-.ck-theme-wrapper .ck-editor__editable { background: var(--card); color: var(--foreground); min-height: 160px; padding: 1rem; border-radius: 0 0 var(--radius) var(--radius); }
-.ck-theme-wrapper .ck-editor__editable:focus { box-shadow: 0 0 0 2px var(--ring); }
-.ck-theme-wrapper .ck-editor__editable.ck-placeholder::before { color: var(--muted-foreground); }
-.ck-theme-wrapper .ck-button { border-radius: calc(var(--radius) - 2px); }
-.dark .ck-theme-wrapper { --ck-color-shadow-drop: rgba(0, 0, 0, 0.4); }
+.ck-theme-wrapper .ck-editor {
+  border-radius: var(--radius);
+}
+.ck-theme-wrapper .ck-toolbar {
+  border-radius: var(--radius) var(--radius) 0 0;
+  border-color: var(--border);
+}
+.ck-theme-wrapper .ck-editor__editable {
+  background: var(--card);
+  color: var(--foreground);
+  min-height: 160px;
+  padding: 1rem;
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+.ck-theme-wrapper .ck-editor__editable:focus {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+.ck-theme-wrapper .ck-editor__editable.ck-placeholder::before {
+  color: var(--muted-foreground);
+}
+.ck-theme-wrapper .ck-button {
+  border-radius: calc(var(--radius) - 2px);
+}
+.dark .ck-theme-wrapper {
+  --ck-color-shadow-drop: rgba(0, 0, 0, 0.4);
+}
 
 /* =============
    DARK THEME
@@ -116,7 +134,7 @@
   --secondary: #ab936c;
   --secondary-foreground: #14120f;
 
-  --muted: #2a2623; 
+  --muted: #2a2623;
   --muted-foreground: #cfc5b8;
 
   --accent: #9c620f;
@@ -209,29 +227,65 @@
 
 /* Utilities (kept from your original) */
 @layer utilities {
-  .text-brand-primary { color: var(--brand-primary); }
-  .bg-brand-primary { background-color: var(--brand-primary); }
-  .border-brand-primary { border-color: var(--brand-primary); }
+  .text-brand-primary {
+    color: var(--brand-primary);
+  }
+  .bg-brand-primary {
+    background-color: var(--brand-primary);
+  }
+  .border-brand-primary {
+    border-color: var(--brand-primary);
+  }
 
-  .text-brand-secondary { color: var(--brand-secondary); }
-  .bg-brand-secondary { background-color: var(--brand-secondary); }
-  .border-brand-secondary { border-color: var(--brand-secondary); }
+  .text-brand-secondary {
+    color: var(--brand-secondary);
+  }
+  .bg-brand-secondary {
+    background-color: var(--brand-secondary);
+  }
+  .border-brand-secondary {
+    border-color: var(--brand-secondary);
+  }
 
-  .text-brand-accent { color: var(--brand-accent); }
-  .bg-brand-accent { background-color: var(--brand-accent); }
-  .border-brand-accent { border-color: var(--brand-accent); }
+  .text-brand-accent {
+    color: var(--brand-accent);
+  }
+  .bg-brand-accent {
+    background-color: var(--brand-accent);
+  }
+  .border-brand-accent {
+    border-color: var(--brand-accent);
+  }
 
-  .text-brand-success { color: var(--brand-success); }
-  .bg-brand-success { background-color: var(--brand-success); }
+  .text-brand-success {
+    color: var(--brand-success);
+  }
+  .bg-brand-success {
+    background-color: var(--brand-success);
+  }
 
-  .text-brand-warning { color: var(--brand-warning); }
-  .bg-brand-warning { background-color: var(--brand-warning); }
+  .text-brand-warning {
+    color: var(--brand-warning);
+  }
+  .bg-brand-warning {
+    background-color: var(--brand-warning);
+  }
 
-  .text-brand-error { color: var(--brand-error); }
-  .bg-brand-error { background-color: var(--brand-error); }
+  .text-brand-error {
+    color: var(--brand-error);
+  }
+  .bg-brand-error {
+    background-color: var(--brand-error);
+  }
 
-  .glass-dark { @apply bg-card/50 backdrop-blur-xl border-border; }
+  .glass-dark {
+    @apply bg-card/50 backdrop-blur-xl border-border;
+  }
 
-  .card-elevated { @apply bg-card border-border shadow-lg; }
-  .card-flat { @apply bg-card border-border; }
+  .card-elevated {
+    @apply bg-card border-border shadow-lg;
+  }
+  .card-flat {
+    @apply bg-card border-border;
+  }
 }

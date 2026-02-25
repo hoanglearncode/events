@@ -50,7 +50,6 @@ export class AuthService {
     }
   }
 
-
   static clearAllAuthData(): void {
     const { clearAuth } = useAuthStore.getState();
     clearAuth();
@@ -66,7 +65,6 @@ export class AuthService {
     }
   }
 
-  
   static async getProfile(): Promise<User> {
     try {
       const data = await api.get<User>(API_ENDPOINTS.AUTH.PROFILE);

@@ -55,11 +55,7 @@ const typeLabels: Record<NotificationType, string> = {
    Component
 ======================= */
 
-export function NotificationTable({
-  notifications,
-  onEdit,
-  onDelete,
-}: Props) {
+export function NotificationTable({ notifications, onEdit, onDelete }: Props) {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
 
@@ -120,9 +116,7 @@ export function NotificationTable({
                 </TableCell>
 
                 <TableCell>
-                  <Badge variant="outline">
-                    {statusLabels[n.status]}
-                  </Badge>
+                  <Badge variant="outline">{statusLabels[n.status]}</Badge>
                 </TableCell>
 
                 <TableCell>{formatDate(n.startDate)}</TableCell>
@@ -154,7 +148,6 @@ export function NotificationTable({
           </TableBody>
         </Table>
       </div>
-
 
       {/* ===== Pagination ===== */}
       <TablePagination

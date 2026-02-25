@@ -24,12 +24,6 @@ import { PaymentMethodSelector } from "./PaymentMethodSelector";
 import { WalletBalance } from "./WalletBalance";
 import { PaymentInfoForm } from "./PaymentInfoForm";
 import { PaymentResult } from "./PaymentResult";
-import {
-  useWallets,
-  useCreatePayment,
-  useTransaction,
-} from "@/hooks/usePayment";
-import type { PaymentModalProps, PaymentProvider } from "@/types/payment.types";
 import { cn } from "@/lib/utils";
 
 export function PaymentModal({
@@ -39,24 +33,15 @@ export function PaymentModal({
   onClose,
   onSuccess,
   onError,
-}: PaymentModalProps) {
+}: any) {
   const [step, setStep] = useState<
     "select" | "confirm" | "processing" | "result"
   >("select");
   const [selectedProvider, setSelectedProvider] =
-    useState<PaymentProvider>("PAYOS");
+    useState<any>("PAYOS");
   const [transactionId, setTransactionId] = useState<string | null>(null);
 
-  const { data: wallets, isLoading: walletsLoading } = useWallets(
-    userId,
-    isOpen
-  );
-  const createPayment = useCreatePayment();
-  const { data: transaction } = useTransaction(
-    transactionId || "",
-    !!transactionId
-  );
-
+  
   // Reset state when modal closes
   useEffect(() => {
     if (!isOpen) {
@@ -71,36 +56,12 @@ export function PaymentModal({
     setStep("processing");
 
     try {
-      const result = await createPayment.mutateAsync({
-        provider: selectedProvider,
-        request: {
-          userId,
-          amount: invoice.total,
-          currency: invoice.currency,
-          description:
-            invoice.description || `Thanh toán hóa đơn #${invoice.id}`,
-        },
-      });
-
-      setTransactionId(result.transactionId);
-      setStep("result");
-
-      // Auto-redirect for payment
-      if (result.checkoutUrl) {
-        window.open(result.checkoutUrl, "_blank");
-      }
+      
     } catch (error) {
       setStep("result");
       onError?.(error as Error);
     }
   };
-
-  // Handle transaction status
-  useEffect(() => {
-    if (transaction?.status === "COMPLETED") {
-      onSuccess?.(transaction);
-    }
-  }, [transaction, onSuccess]);
 
   const renderStep = () => {
     switch (step) {
@@ -111,7 +72,7 @@ export function PaymentModal({
             <div className="rounded-lg border border-border bg-card p-4">
               <h3 className="mb-3 font-semibold">Chi tiết hóa đơn</h3>
               <div className="space-y-2 text-sm">
-                {invoice.items.map((item) => (
+                {invoice.items.map((item : any) => (
                   <div key={item.id} className="flex justify-between">
                     <span className="text-muted-foreground">
                       {item.name} × {item.quantity}
@@ -144,8 +105,6 @@ export function PaymentModal({
               </div>
             </div>
 
-            {/* Wallet Balance */}
-            <WalletBalance wallets={wallets || []} isLoading={walletsLoading} />
 
             {/* Payment Method Selection */}
             <div>
@@ -205,17 +164,8 @@ export function PaymentModal({
               </button>
               <button
                 onClick={handleCreatePayment}
-                disabled={createPayment.isPending}
                 className="flex-1 rounded-lg bg-brand-primary px-4 py-2.5 font-medium text-white transition-colors hover:opacity-90 disabled:opacity-50"
               >
-                {createPayment.isPending ? (
-                  <>
-                    <Loader2 className="mr-2 inline h-4 w-4 animate-spin" />
-                    Đang xử lý...
-                  </>
-                ) : (
-                  "Xác nhận thanh toán"
-                )}
               </button>
             </div>
           </div>
@@ -233,17 +183,6 @@ export function PaymentModal({
             </p>
           </div>
         );
-
-      case "result":
-        return (
-          <PaymentResult
-            transaction={transaction || null}
-            isLoading={!transaction}
-            onClose={onClose}
-            onRetry={() => setStep("select")}
-          />
-        );
-
       default:
         return null;
     }

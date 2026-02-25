@@ -6,11 +6,8 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { AdminProduct } from "@/hooks/queries/useProductsQuery";
-import { useProducts } from "@/hooks/feature/useProducts";
 import ProductTableSeller from "./ProductTableSeller";
 import ProductActionDialogSeller from "./ProductActionDialogSeller";
-import { TablePagination } from "../../TablePagination";
 
 type FilterTab = "all" | "pending" | "approved" | "rejected";
 
@@ -18,53 +15,15 @@ export default function ProductManagementSeller() {
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState<AdminProduct | null>(
+  const [currentProduct, setCurrentProduct] = useState<any | null>(
     null
   );
 
-  const {
-    products,
-    pagination,
-    isLoading,
-    setPage,
-    setPerPage,
-    setQuery,
-    setMode,
-    deleteMutation,
-  } = useProducts();
-
-  /* ======================
-   * INIT: chỉ lấy sản phẩm của tôi
-   ====================== */
-  useEffect(() => {
-    setMode("my");
-  }, [setMode]);
-
-  /* ======================
-   * FILTER
-   ====================== */
-  const filteredProducts = useMemo(() => {
-    let filtered = [...products];
-
-    switch (activeTab) {
-      case "pending":
-        filtered = filtered.filter((p) => p.status === "Submitted");
-        break;
-      case "approved":
-        filtered = filtered.filter((p) => p.status === "Active");
-        break;
-      case "rejected":
-        filtered = filtered.filter((p) => p.status === "Rejected");
-        break;
-    }
-
-    return filtered;
-  }, [products, activeTab, searchQuery]);
 
   /* ======================
    * ACTIONS
    ====================== */
-  const handleOpenAction = (product: AdminProduct) => {
+  const handleOpenAction = (product: any) => {
     setCurrentProduct(product);
     setDialogOpen(true);
   };
@@ -73,7 +32,6 @@ export default function ProductManagementSeller() {
     if (!currentProduct) return;
 
     try {
-      await deleteMutation.mutateAsync(currentProduct.id);
     } finally {
       setDialogOpen(false);
       setCurrentProduct(null);
@@ -82,7 +40,6 @@ export default function ProductManagementSeller() {
 
   const handleSearch = (value: string) => {
     setSearchQuery(value);
-    setQuery(value);
   };
 
   return (
@@ -103,33 +60,6 @@ export default function ProductManagementSeller() {
         className="max-w-md"
       />
 
-      {isLoading ? (
-        <div className="py-24 text-center text-muted-foreground">
-          Đang tải dữ liệu...
-        </div>
-      ) : filteredProducts.length === 0 ? (
-        <div className="py-24 text-center text-muted-foreground">
-          {searchQuery
-            ? "Không tìm thấy sản phẩm nào"
-            : "Bạn chưa có sản phẩm nào"}
-        </div>
-      ) : (
-        <>
-          <ProductTableSeller
-            products={filteredProducts}
-            onAction={handleOpenAction}
-            onViewDetail={(product) => window.open(`/${product.id}`, "_blank")}
-          />
-
-          {pagination && (
-            <TablePagination
-              pagination={pagination}
-              onPageChange={setPage}
-              onPerPageChange={setPerPage}
-            />
-          )}
-        </>
-      )}
 
       <ProductActionDialogSeller
         open={dialogOpen}

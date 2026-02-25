@@ -1,4 +1,15 @@
-import { AlignLeft, Calendar, Circle, Clock, ClipboardList, ChevronDown, FileText, LayoutDashboard, List, Square } from "lucide-react";
+import {
+  AlignLeft,
+  Calendar,
+  Circle,
+  Clock,
+  ClipboardList,
+  ChevronDown,
+  FileText,
+  LayoutDashboard,
+  List,
+  Square,
+} from "lucide-react";
 
 // ─── Tab ─────────────────────────────────────────────────────────────────────
 
@@ -36,8 +47,6 @@ export interface QuestionTypeOption {
   icon: React.ReactNode;
 }
 
-
-
 // ─── Tabs ─────────────────────────────────────────────────────────────────────
 
 export const TABS: Tab[] = [
@@ -58,11 +67,31 @@ export const TABS: Tab[] = [
 // ─── Question Types ───────────────────────────────────────────────────────────
 
 export const QUESTION_TYPES: QuestionTypeOption[] = [
-  { value: "short", label: "Câu trả lời ngắn", icon: <AlignLeft className="w-4 h-4" /> },
-  { value: "paragraph", label: "Đoạn văn", icon: <FileText className="w-4 h-4" /> },
-  { value: "multiple", label: "Trắc nghiệm", icon: <Circle className="w-4 h-4" /> },
-  { value: "checkbox", label: "Hộp kiểm", icon: <Square className="w-4 h-4" /> },
-  { value: "dropdown", label: "Danh sách thả xuống", icon: <List className="w-4 h-4" /> },
+  {
+    value: "short",
+    label: "Câu trả lời ngắn",
+    icon: <AlignLeft className="w-4 h-4" />,
+  },
+  {
+    value: "paragraph",
+    label: "Đoạn văn",
+    icon: <FileText className="w-4 h-4" />,
+  },
+  {
+    value: "multiple",
+    label: "Trắc nghiệm",
+    icon: <Circle className="w-4 h-4" />,
+  },
+  {
+    value: "checkbox",
+    label: "Hộp kiểm",
+    icon: <Square className="w-4 h-4" />,
+  },
+  {
+    value: "dropdown",
+    label: "Danh sách thả xuống",
+    icon: <List className="w-4 h-4" />,
+  },
   { value: "date", label: "Ngày", icon: <Calendar className="w-4 h-4" /> },
   { value: "time", label: "Thời gian", icon: <Clock className="w-4 h-4" /> },
 ];

@@ -29,7 +29,6 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import PublicHeader from "@/components/features/common/publicHeader";
 import PublicFooter from "@/components/features/common/publicFooter";
-import { generateSlug } from "@/hooks/queries/useCategories";
 import Cookies from "js-cookie";
 import { ACCESS_TOKEN } from "@/shared/const/cookie";
 import { useParams, useRouter } from "next/navigation";
@@ -410,7 +409,7 @@ export default function Page() {
   const handleFieldChange = (field: keyof FormValues, value: any) => {
     setFormValues((prev) => ({ ...prev, [field]: value }));
     if (field === "title" && !blogId) {
-      setFormValues((prev) => ({ ...prev, slug: generateSlug(value) }));
+     
     }
     setValidationErrors((prev) => ({ ...prev, [field]: undefined }));
   };

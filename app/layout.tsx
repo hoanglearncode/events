@@ -7,7 +7,9 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster as SonnerToaster } from "sonner";
 import { I18nProvider } from "@/providers/i18n-provider";
 import { AuthProvider } from "@/providers/auth-provider";
-import RefreshTokenProvider from "@/components/refreshToken";
+import { SettingProvider } from "@/providers/setting-provider";
+import { getSettingGeneral } from "@/services/setting.service";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -18,14 +20,27 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "VolHub – Nền tảng sự kiện & tuyển dụng hàng đầu cho sinh viên và doanh nghiệp",
-  description:
-    "VolHub kết nối sinh viên, tình nguyện viên và doanh nghiệp thông qua các sự kiện tuyển dụng, hoạt động cộng đồng và cơ hội nghề nghiệp uy tín trên toàn quốc.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSettingGeneral();
 
+  return {
+    title:
+      settings?.systemTitle ??
+      "VolHub – Nền tảng sự kiện & tuyển dụng hàng đầu cho sinh viên và doanh nghiệp",
+    description:
+      settings?.systemDescription ??
+      "VolHub kết nối sinh viên, tình nguyện viên và doanh nghiệp thông qua các sự kiện tuyển dụng, hoạt động cộng đồng và cơ hội nghề nghiệp uy tín trên toàn quốc.",
+    // Nếu có logo từ API
+    ...(settings?.systemLogo && {
+      icons: { icon: settings.systemLogo },
+      openGraph: {
+        images: [settings.systemLogo],
+      },
+    }),
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -33,7 +48,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" type="image/svg+xml" href="/manix-log.svg" />
+        <link rel="icon" type="image/svg+xml" href="/event_logo.jpg" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -48,7 +63,7 @@ export default function RootLayout({
                   enableSystem
                   disableTransitionOnChange={false}
                 >
-                  {children}
+                  <SettingProvider>{children}</SettingProvider>
                 </ThemeProvider>
               </I18nProvider>
             </AuthProvider>

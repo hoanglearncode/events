@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     domains: ["res.cloudinary.com", "via.placeholder.com"],
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
 };
 

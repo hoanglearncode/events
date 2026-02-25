@@ -28,7 +28,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCreateUser } from "@/hooks/queries/useUserMutations";
 import { toast } from "sonner";
 import { useState } from "react";
 import { CheckCircle2, Copy, Mail, Key, Plus, X } from "lucide-react";
@@ -70,30 +69,9 @@ export function CreateUserDialog({
     password: string;
   } | null>(null);
 
-  const { mutate: createUser, isPending } = useCreateUser({
-    onSuccess: (res) => {
-      toast.success("Tạo tài khoản thành công");
-
-      setCreatedUser({
-        email: res.email,
-        password: res.password,
-      });
-
-      onSuccess({
-        email: res.email,
-        fullName: res.fullName,
-        role: res.role,
-      });
-
-      form.reset();
-    },
-    onError: (err: any) => {
-      toast.error(err?.message || "Tạo tài khoản thất bại");
-    },
-  });
 
   const handleSubmit = (data: CreateUserFormData) => {
-    createUser(data);
+  
   };
 
   const copy = (value: string) => {
@@ -215,9 +193,6 @@ export function CreateUserDialog({
                 <div className="flex justify-end gap-2 pt-4">
                   <Button type="button" variant="outline" onClick={handleClose}>
                     Hủy
-                  </Button>
-                  <Button type="submit" disabled={isPending}>
-                    {isPending ? "Đang tạo..." : "Tạo tài khoản"}
                   </Button>
                 </div>
               </form>

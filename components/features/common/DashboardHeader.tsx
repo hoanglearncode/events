@@ -29,10 +29,10 @@ import { Search, Menu, LogOut, ChevronRight } from "lucide-react";
 
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ACCESS_TOKEN } from "@/shared/const/cookie";
-import { validateUser } from "@/shared/validation/user.schemas";
 import { useProfileDetails } from "@/hooks/queries/profileQueries";
-import type { ProfileDetailData } from "@/types/profile";
+import type { UserProfile } from "@/types/auth";
 import { SearchDialog } from "./SearchResult";
+import { useAuthStore } from "@/store/auth.store";
 
 interface DashboardHeaderProps {
   onOpenMobileMenu?: () => void;
@@ -42,18 +42,13 @@ export function DashboardHeader({ onOpenMobileMenu }: DashboardHeaderProps) {
   const router = useRouter();
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   // ===== Auth =====
   const token = Cookies.get(ACCESS_TOKEN);
-  const validate = validateUser(token);
-  const enabled = Boolean(token) && validate.isValid;
+  const { user } = useAuthStore();
 
-  const { data: profileResponse, isLoading: isProfileLoading } =
-    useProfileDetails(enabled);
-
-  const normalizeProfile = (raw: any): ProfileDetailData | null => {
+  const normalizeProfile = (raw: any): UserProfile | null => {
     if (!raw) return null;
     if (raw.data?.result) return raw.data.result;
     if (raw.result) return raw.result;
@@ -61,10 +56,10 @@ export function DashboardHeader({ onOpenMobileMenu }: DashboardHeaderProps) {
     return raw;
   };
 
-  const profile = useMemo<ProfileDetailData | null>(() => {
-    if (!enabled) return null;
-    return normalizeProfile(profileResponse);
-  }, [profileResponse, enabled]);
+  const profile = useMemo<UserProfile | null>(() => {
+    if (!user) return null;
+    return normalizeProfile(user);
+  }, [user]);
 
   const displayName = profile?.fullname || "User";
   const displayEmail = profile?.email || "";
@@ -86,7 +81,7 @@ export function DashboardHeader({ onOpenMobileMenu }: DashboardHeaderProps) {
         <div className="flex items-center gap-4 ml-auto">
           <ThemeToggle />
           <div className="h-6 w-px bg-border" />
-          {isProfileLoading ? (
+          {!user ? (
             <Skeleton className="h-9 w-9 rounded-lg" />
           ) : (
             <Sheet open={isUserMenuOpen} onOpenChange={setIsUserMenuOpen}>

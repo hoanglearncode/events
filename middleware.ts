@@ -1,142 +1,126 @@
+// middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { verifyToken } from "@/lib/auth";
+import { ALLOWED_REGISTER } from "./shared/const/cookie";
+
+// ─── Config tập trung ────────────────────────────────────────────────────────
+
 const ACCESS_TOKEN = "access_token";
-const REFRESH_TOKEN = "refresh_token";
 const REQUIRE_VERIFY_EMAIL = "require_verify_email";
 
-const PROTECTED_ROUTES = ["/admin", "/user"];
-const AUTH_ROUTES = ["/login", "/register", "/forgot-password"];
-const TOKEN_REQUIRED_ROUTES = ["/login/verify", "/change-password"];
+/**
+ * protected: yêu cầu đăng nhập + đúng role
+ * authOnly:  chỉ truy cập khi CHƯA đăng nhập (login, register...)
+ * tokenRequired: cần đăng nhập, không cần role cụ thể
+ */
+const ROUTE_CONFIG = {
+  protected: {
+    "/admin": ["ROLE_ADMIN"],
+  },
+  authOnly: ["/login", "/register", "/forgot-password"],
+  tokenRequired: ["/change-password", "/profile", "/my-data", "/notification"],
+} as const;
 
-interface JWTPayload {
-  userId: string;
-  email: string;
-  role: string;
-  exp: number;
-  iat: number;
-  status?: string;
+const ROLE_DASHBOARD: Record<string, string> = {
+  ROLE_ADMIN: "/admin",
+  ROLE_USER: "/website",
+};
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function redirectTo(url: string, request: NextRequest) {
+  return NextResponse.redirect(new URL(url, request.url));
 }
 
-export function decodeToken(token: string): JWTPayload | null {
-  try {
-    const parts = token.split(".");
-    if (parts.length !== 3) return null;
-
-    const payload = JSON.parse(
-      Buffer.from(parts[1], "base64").toString("utf-8")
-    );
-
-    return {
-      userId: payload.userId || payload.sub,
-      email: payload.email || payload.sub,
-      role: payload.role || payload.scope || "user",
-      exp: payload.exp,
-      iat: payload.iat,
-      status: payload.status,
-    };
-  } catch (error) {
-    console.error("Token decode error:", error);
-    return null;
-  }
+/** Chỉ cho phép redirect nội bộ, chặn open redirect */
+function getSafeRedirect(redirect: string | null): string {
+  if (!redirect || !redirect.startsWith("/")) return "/website";
+  // Chặn protocol-relative URL: //evil.com
+  if (redirect.startsWith("//")) return "/website";
+  return redirect;
 }
 
-export function isTokenExpired(exp: number): boolean {
-  return Date.now() >= exp * 1000;
+function getDashboard(role: string): string {
+  return ROLE_DASHBOARD[role] ?? "/website";
 }
 
-function getDashboardByRole(role: string): string {
-  const roleMap: Record<string, string> = {
-    ROLE_ADMIN: "/admin",
-    ROLE_USER: "/website",
-    admin: "/admin",
-    user: "/website",
-  };
-  return roleMap[role] || "/website";
-}
-
-function clearAuthCookies(response: NextResponse): void {
+function clearAuthCookies(response: NextResponse): NextResponse {
   response.cookies.delete(ACCESS_TOKEN);
-  response.cookies.delete(REFRESH_TOKEN);
   response.cookies.delete(REQUIRE_VERIFY_EMAIL);
+  return response;
 }
 
+// ─── Middleware ───────────────────────────────────────────────────────────────
 
 export async function middleware(request: NextRequest) {
-  
-  const { pathname } = request.nextUrl;
-  
-  const accessToken = request.cookies.get(ACCESS_TOKEN)?.value;
-  const refreshToken = request.cookies.get(REFRESH_TOKEN)?.value;
-  const emailValidate = request.cookies.get(REQUIRE_VERIFY_EMAIL)?.value;
+  const { pathname, searchParams } = request.nextUrl;
 
-  let decodedToken: JWTPayload | null = null;
-  let userRole = "user";
-  let isAuthenticated = false;
+  const token = request.cookies.get(ACCESS_TOKEN)?.value;
+  const requireVerifyEmail = request.cookies.get(REQUIRE_VERIFY_EMAIL)?.value;
+  const allowedRegister = request.cookies.get(ALLOWED_REGISTER)?.value;
 
-  if (accessToken) {
-    decodedToken = decodeToken(accessToken);
-    
-    if (decodedToken) {
-      if (isTokenExpired(decodedToken.exp)) {
-      } else {
-        isAuthenticated = true;
-        userRole = decodedToken.role;
-      }
-    }
+  // Verify token — jose tự reject expired/invalid
+  const decoded = token ? await verifyToken(token) : null;
+  const isAuthenticated = !!decoded;
+  const userRole = decoded?.scope ?? "";
+
+  if (!!allowedRegister && pathname.startsWith("/register")) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
+  // ── 1. Protected routes (yêu cầu login + role) ──────────────────────────
+  const protectedEntry = Object.entries(ROUTE_CONFIG.protected).find(
+    ([route]) => pathname.startsWith(route)
+  );
 
-  if (PROTECTED_ROUTES.some((route) => pathname.startsWith(route))) {
+  if (protectedEntry) {
+    const [, allowedRoles] = protectedEntry;
+
     if (!isAuthenticated) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      url.searchParams.set("redirect", pathname);
-      return NextResponse.redirect(url);
+      const url = new URL("/login", request.url);
+      url.searchParams.set("redirect", getSafeRedirect(pathname));
+      return clearAuthCookies(NextResponse.redirect(url));
     }
 
-    if (emailValidate && decodedToken?.status !== "VERIFIED") {
+    // Chặn user chưa verify email
+    if (requireVerifyEmail && decoded?.status !== "VERIFIED") {
       const url = new URL("/login/verify", request.url);
-      url.searchParams.set("email", btoa(emailValidate));
-      return NextResponse.redirect(url);
+      url.searchParams.set("email", btoa(requireVerifyEmail));
+      return redirectTo(url.toString(), request);
     }
 
-    if (pathname.startsWith("/admin") && userRole !== "ROLE_ADMIN") {
-      return NextResponse.json(
-        { error: "Forbidden: Admin access required" },
-        { status: 403 }
-      );
-    }
-
-    if (
-      pathname.startsWith("/seller") &&
-      !["ROLE_SELLER", "ROLE_ADMIN"].includes(userRole)
-    ) {
-      return NextResponse.json(
-        { error: "Forbidden: Seller access required" },
-        { status: 403 }
-      );
+    // Kiểm tra role
+    if (!(allowedRoles as readonly string[]).includes(userRole)) {
+      // Redirect về dashboard của role hiện tại thay vì trả JSON 403
+      return redirectTo(getDashboard(userRole), request);
     }
 
     return NextResponse.next();
   }
 
-  if (AUTH_ROUTES.includes(pathname)) {
+  // ── 2. Auth-only routes (chỉ cho user chưa đăng nhập) ───────────────────
+  if (ROUTE_CONFIG.authOnly.some((r) => pathname.startsWith(r))) {
     if (isAuthenticated) {
-      const dashboardUrl = getDashboardByRole(userRole);
-      return NextResponse.redirect(new URL(dashboardUrl, request.url));
+      const redirect = getSafeRedirect(searchParams.get("redirect"));
+      return redirectTo(
+        redirect !== "/website" ? redirect : getDashboard(userRole),
+        request
+      );
     }
     return NextResponse.next();
   }
 
-  if (TOKEN_REQUIRED_ROUTES.some((route) => pathname.startsWith(route))) {
+  // ── 3. Token required (cần login, không cần role cụ thể) ─────────────────
+  if (ROUTE_CONFIG.tokenRequired.some((r) => pathname.startsWith(r))) {
     if (!isAuthenticated) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      url.searchParams.set("redirect", pathname);
-      return NextResponse.redirect(url);
+      const url = new URL("/login", request.url);
+      url.searchParams.set("redirect", getSafeRedirect(pathname));
+      return clearAuthCookies(NextResponse.redirect(url));
     }
     return NextResponse.next();
   }
 
+  // ── 4. Public routes ──────────────────────────────────────────────────────
   return NextResponse.next();
 }
 

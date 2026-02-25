@@ -196,18 +196,36 @@ export default function DataPage() {
 
   const StatusBadge = ({ status }: { status: string }) => {
     const statusConfig = {
-      published: { label: "Đã xuất bản", color: "bg-brand-success/10 text-brand-success" },
+      published: {
+        label: "Đã xuất bản",
+        color: "bg-brand-success/10 text-brand-success",
+      },
       draft: { label: "Nháp", color: "bg-muted text-muted-foreground" },
-      pending: { label: "Chờ duyệt", color: "bg-brand-warning/10 text-brand-warning" },
-      reviewed: { label: "Đã xem", color: "bg-brand-secondary/10 text-brand-secondary" },
-      approved: { label: "Đã duyệt", color: "bg-brand-success/10 text-brand-success" },
-      rejected: { label: "Từ chối", color: "bg-brand-error/10 text-brand-error" },
+      pending: {
+        label: "Chờ duyệt",
+        color: "bg-brand-warning/10 text-brand-warning",
+      },
+      reviewed: {
+        label: "Đã xem",
+        color: "bg-brand-secondary/10 text-brand-secondary",
+      },
+      approved: {
+        label: "Đã duyệt",
+        color: "bg-brand-success/10 text-brand-success",
+      },
+      rejected: {
+        label: "Từ chối",
+        color: "bg-brand-error/10 text-brand-error",
+      },
     };
 
-    const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
+    const config =
+      statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
 
     return (
-      <span className={`px-3 py-1 rounded-full text-xs font-medium ${config.color}`}>
+      <span
+        className={`px-3 py-1 rounded-full text-xs font-medium ${config.color}`}
+      >
         {config.label}
       </span>
     );
@@ -236,8 +254,12 @@ export default function DataPage() {
                     <FileText className="w-5 h-5 text-brand-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Tổng bài viết</p>
-                    <p className="text-2xl font-bold text-foreground">{myPosts.length}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Tổng bài viết
+                    </p>
+                    <p className="text-2xl font-bold text-foreground">
+                      {myPosts.length}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -483,7 +505,9 @@ export default function DataPage() {
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
               <div className="bg-card border border-border rounded-lg p-4">
-                <p className="text-sm text-muted-foreground mb-1">Tổng số form</p>
+                <p className="text-sm text-muted-foreground mb-1">
+                  Tổng số form
+                </p>
                 <p className="text-2xl font-bold text-foreground">
                   {formSubmissions.length}
                 </p>
@@ -497,13 +521,19 @@ export default function DataPage() {
               <div className="bg-card border border-border rounded-lg p-4">
                 <p className="text-sm text-muted-foreground mb-1">Đã duyệt</p>
                 <p className="text-2xl font-bold text-brand-success">
-                  {formSubmissions.filter((f) => f.status === "approved").length}
+                  {
+                    formSubmissions.filter((f) => f.status === "approved")
+                      .length
+                  }
                 </p>
               </div>
               <div className="bg-card border border-border rounded-lg p-4">
                 <p className="text-sm text-muted-foreground mb-1">Đã xem</p>
                 <p className="text-2xl font-bold text-brand-secondary">
-                  {formSubmissions.filter((f) => f.status === "reviewed").length}
+                  {
+                    formSubmissions.filter((f) => f.status === "reviewed")
+                      .length
+                  }
                 </p>
               </div>
             </div>

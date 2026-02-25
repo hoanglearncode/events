@@ -81,7 +81,7 @@ export default function ToolsPage() {
       </div>
     );
   }
-  
+
   // return (
   //   <div className="min-h-screen bg-background text-foreground">
   //     <div className="hidden sm:block fixed inset-0 bg-gradient-to-br from-brand-primary/5 via-background to-brand-secondary/5 pointer-events-none" />
@@ -209,7 +209,7 @@ export default function ToolsPage() {
 
   //               <button
   //                 onClick={() => setSearchQuery("")}
-  //                 className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 
+  //                 className="mt-4 inline-flex items-center gap-2 px-5 py-2.5
   //                bg-brand-primary hover:bg-brand-primary-dark
   //                text-white rounded-lg text-sm font-semibold
   //                transition-all active:scale-95"

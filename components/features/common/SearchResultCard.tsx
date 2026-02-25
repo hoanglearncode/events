@@ -18,10 +18,10 @@ function getSchemaImage(result: any): string | null {
   if (!schema?.schema || !schema?.data) return null;
 
   for (const block of schema.schema) {
-    const imageField = block.fields?.find((f) => f.type === "image");
+    const imageField = block.fields?.find((f : any) => f.type === "image");
     if (!imageField) continue;
 
-    const dataItem = schema.data.find((d) => d.frameId === block.id);
+    const dataItem = schema.data.find((d : any) => d.frameId === block.id);
     if (!dataItem) continue;
 
     const value = dataItem.values?.[imageField.id];

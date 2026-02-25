@@ -74,12 +74,15 @@ export const API_ENDPOINTS = {
       content: "/setting/content",
       recruitment: "/setting/recruitment",
       integration: "/setting/integration",
-    }, 
+    },
     admin: {
       detail: "/setting/detail",
+      version: "/setting/version",
+      rollback: (id: number) => `/setting/rollback?id=${id}`,
+      delete: (id: number) => `/setting/delete?id=${id}`,
       update: "/setting/update",
-    }
-  }
+    },
+  },
 } as const;
 
 // Content Types

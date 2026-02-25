@@ -32,6 +32,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import RegisterComponent from "@/components/features/auth/sign-form";
+import { useSettingStore } from "@/store/setting.store";
 
 function SocialButton({
   label,
@@ -56,6 +57,7 @@ function SocialButton({
 }
 
 export default function RegisterPage() {
+  const general = useSettingStore((state) => state.general);
   return (
     <div className="min-h-screen grid lg:grid-cols-2 bg-background">
       <aside className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-tr from-secondary/10 via-background to-primary/10 border-r border-border relative overflow-hidden">
@@ -67,15 +69,15 @@ export default function RegisterPage() {
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-8">
             <Image
-              src="/event_logo.jpg"
-              alt="Nhà Có Event logo"
+              src={general?.systemLogo || "/event_logo.jpg"}
+              alt={general?.systemName ? `${general.systemName} logo` : "logo"}
               width={55}
               height={55}
               priority
               className="rounded-md"
             />
             <span className="text-2xl font-bold tracking-tight">
-              Nhà Có Event
+              {general?.systemName || "Nhà Có Event"}
             </span>
           </div>
 
@@ -88,8 +90,8 @@ export default function RegisterPage() {
 
           <div className="space-y-6 max-w-lg">
             <p className="text-lg text-muted-foreground">
-              Nơi kết nối Ban Tổ chức, Doanh nghiệp với Nhân sự,
-              Cộng tác viên và Tình nguyện viên sự kiện trên toàn quốc.
+              Nơi kết nối Ban Tổ chức, Doanh nghiệp với Nhân sự, Cộng tác viên
+              và Tình nguyện viên sự kiện trên toàn quốc.
             </p>
 
             <ul className="space-y-4">

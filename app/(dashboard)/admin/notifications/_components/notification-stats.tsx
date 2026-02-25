@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Bell, CheckCircle, Clock, XCircle } from "lucide-react"
-import { Notification } from "../_types/notification"
+import { Card, CardContent } from "@/components/ui/card";
+import { Bell, CheckCircle, Clock, XCircle } from "lucide-react";
+import { Notification } from "../_types/notification";
 
 interface NotificationStatsProps {
-  notifications: Notification[]
+  notifications: Notification[];
 }
 
 export function NotificationStats({ notifications }: NotificationStatsProps) {
   const stats = {
     total: notifications.length,
-    active: notifications.filter(n => n.status === "active").length,
-    scheduled: notifications.filter(n => n.status === "scheduled").length,
-    expired: notifications.filter(n => n.status === "expired").length,
-  }
+    active: notifications.filter((n) => n.status === "active").length,
+    scheduled: notifications.filter((n) => n.status === "scheduled").length,
+    expired: notifications.filter((n) => n.status === "expired").length,
+  };
 
   const statCards = [
     {
@@ -45,12 +45,15 @@ export function NotificationStats({ notifications }: NotificationStatsProps) {
       color: "text-gray-500",
       bgColor: "bg-gray-100 dark:bg-gray-800/50",
     },
-  ]
+  ];
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {statCards.map((stat, index) => (
-        <Card key={index} className="overflow-hidden transition-all hover:shadow-md">
+        <Card
+          key={index}
+          className="overflow-hidden transition-all hover:shadow-md"
+        >
           <CardContent className="">
             <div className="flex items-center justify-between">
               <div>
@@ -67,5 +70,5 @@ export function NotificationStats({ notifications }: NotificationStatsProps) {
         </Card>
       ))}
     </div>
-  )
+  );
 }

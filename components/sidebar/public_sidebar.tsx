@@ -40,9 +40,9 @@ type NavItem = {
 };
 
 export const mainNavItems: NavItem[] = [
-  { id: 1, href: "/post", label: "Bài viết", icon: LayoutDashboard },
-  { id: 2, href: "/project", label: "Dự án", icon: Package },
-  { id: 3, href: "/hiring", label: "Đang tuyển", icon: Users },
+  { id: 1, href: "/bai-viet", label: "Bài viết", icon: LayoutDashboard },
+  { id: 2, href: "/du-an", label: "Dự án", icon: Package },
+  { id: 3, href: "/dang-tuyen", label: "Đang tuyển", icon: Users },
 ];
 
 export const supportNavItems: NavItem[] = [
@@ -56,7 +56,7 @@ export function UserSidebar() {
   const pathname = usePathname();
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
-  
+
   const token = Cookies.get(ACCESS_TOKEN);
 
   return (
@@ -128,7 +128,10 @@ export function UserSidebar() {
                         isActive={isActive(item.href)}
                         tooltip={item.label}
                       >
-                        <Link href={item.href} className="flex items-center gap-3">
+                        <Link
+                          href={item.href}
+                          className="flex items-center gap-3"
+                        >
                           <item.icon className="size-5" />
                           <span>{item.label}</span>
                         </Link>
@@ -137,14 +140,12 @@ export function UserSidebar() {
                   ))}
                 </SidebarMenu>
               </SidebarGroupContent>
-            </SidebarGroup>     
+            </SidebarGroup>
           </>
         )}
 
-
         <Separator />
         <RecentPostsSidebar />
-
       </SidebarContent>
 
       <SidebarFooter className="border-t">

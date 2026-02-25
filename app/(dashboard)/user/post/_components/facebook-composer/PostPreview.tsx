@@ -7,7 +7,6 @@ import renderImages from "./RenderImages";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-
 interface PostPreviewProps {
   postContent: string;
   images?: File[];
@@ -31,7 +30,10 @@ export default function PostPreview({ postContent, images }: PostPreviewProps) {
         }}
       >
         <Eye className="w-5 h-5" style={{ color: "var(--accent)" }} />
-        <h2 className="text-lg font-bold" style={{ color: "var(--foreground)" }}>
+        <h2
+          className="text-lg font-bold"
+          style={{ color: "var(--foreground)" }}
+        >
           Xem trước bài đăng
         </h2>
       </div>
@@ -52,12 +54,18 @@ export default function PostPreview({ postContent, images }: PostPreviewProps) {
                 className="w-10 h-10 rounded-full flex items-center justify-center"
                 style={{ backgroundColor: "var(--primary)" }}
               >
-                <span style={{ color: "var(--primary-foreground)" }} className="font-bold text-sm">
+                <span
+                  style={{ color: "var(--primary-foreground)" }}
+                  className="font-bold text-sm"
+                >
                   N
                 </span>
               </div>
               <div>
-                <h3 className="font-bold" style={{ color: "var(--foreground)" }}>
+                <h3
+                  className="font-bold"
+                  style={{ color: "var(--foreground)" }}
+                >
                   {PAGE_TITLE}
                 </h3>
                 <div
@@ -80,11 +88,16 @@ export default function PostPreview({ postContent, images }: PostPreviewProps) {
             </div>
           ) : (
             <div className="mb-4 space-y-2">
-              <div className="h-4 rounded w-3/4" style={{ backgroundColor: "var(--border)" }} />
-              <div className="h-4 rounded w-1/2" style={{ backgroundColor: "var(--border)" }} />
+              <div
+                className="h-4 rounded w-3/4"
+                style={{ backgroundColor: "var(--border)" }}
+              />
+              <div
+                className="h-4 rounded w-1/2"
+                style={{ backgroundColor: "var(--border)" }}
+              />
             </div>
           )}
-
 
           {/* image placeholder */}
           <div
@@ -95,11 +108,13 @@ export default function PostPreview({ postContent, images }: PostPreviewProps) {
               renderImages(images)
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <ImageEmpty className="w-12 h-12" style={{ color: "var(--muted-foreground)" }} />
+                <ImageEmpty
+                  className="w-12 h-12"
+                  style={{ color: "var(--muted-foreground)" }}
+                />
               </div>
             )}
           </div>
-
 
           {/* action bar */}
           <div
@@ -112,10 +127,12 @@ export default function PostPreview({ postContent, images }: PostPreviewProps) {
                 className="px-4 py-2 rounded-lg transition-all text-sm font-medium"
                 style={{ color: "var(--muted-foreground)" }}
                 onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.backgroundColor = "var(--border)")
+                  ((e.currentTarget as HTMLElement).style.backgroundColor =
+                    "var(--border)")
                 }
                 onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.backgroundColor = "transparent")
+                  ((e.currentTarget as HTMLElement).style.backgroundColor =
+                    "transparent")
                 }
               >
                 {label}

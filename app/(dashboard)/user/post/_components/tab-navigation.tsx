@@ -16,14 +16,21 @@ interface TabNavigationProps {
   setActiveTab: (id: TabId) => void;
 }
 
-export default function TabNavigation({ activeTab, setActiveTab }: TabNavigationProps) {
+export default function TabNavigation({
+  activeTab,
+  setActiveTab,
+}: TabNavigationProps) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const activeItem = TABS.find((t) => t.id === activeTab) ?? TABS[0];
 
   useEffect(() => {
     const onMouseDown = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) setOpen(false);
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      )
+        setOpen(false);
     };
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
@@ -52,7 +59,12 @@ export default function TabNavigation({ activeTab, setActiveTab }: TabNavigation
             aria-expanded={open}
           >
             <span>{activeItem.label}</span>
-            <ChevronDown className={cn("w-4 h-4 ml-1 transition-transform", open && "rotate-180")} />
+            <ChevronDown
+              className={cn(
+                "w-4 h-4 ml-1 transition-transform",
+                open && "rotate-180"
+              )}
+            />
           </Button>
         </PopoverTrigger>
 
@@ -75,7 +87,9 @@ export default function TabNavigation({ activeTab, setActiveTab }: TabNavigation
                   <span
                     className={cn(
                       "inline-flex items-center justify-center w-7 h-7 rounded-sm text-sm",
-                      isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground"
                     )}
                   >
                     {tab.icon}
@@ -83,7 +97,11 @@ export default function TabNavigation({ activeTab, setActiveTab }: TabNavigation
 
                   <div className="flex flex-col text-left leading-tight">
                     <span className="font-medium">{tab.label}</span>
-                    {tab.description && <span className="text-xs mt-0.5 text-muted-foreground">{tab.description}</span>}
+                    {tab.description && (
+                      <span className="text-xs mt-0.5 text-muted-foreground">
+                        {tab.description}
+                      </span>
+                    )}
                   </div>
 
                   {isActive && (

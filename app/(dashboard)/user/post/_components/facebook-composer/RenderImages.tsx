@@ -1,4 +1,4 @@
-import React from "react";  
+import React from "react";
 import Image from "next/image";
 
 const renderImages = (images: File[]) => {
@@ -9,12 +9,7 @@ const renderImages = (images: File[]) => {
   if (count === 1) {
     return (
       <div className="w-full h-full">
-        <Image
-          src={urls[0]}
-          alt=""
-          fill
-          className="object-cover rounded-xl"
-        />
+        <Image src={urls[0]} alt="" fill className="object-cover rounded-xl" />
       </div>
     );
   }

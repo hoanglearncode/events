@@ -11,13 +11,12 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import type { AdminProduct } from "@/hooks/queries/useProductsQuery";
 
 type ActionType = "approve" | "reject" | "feature" | "delete";
 
 type ProductActionDialogProps = {
   open: boolean;
-  product: AdminProduct | null;
+  product: any | null;
   onClose: () => void;
   onConfirm: (action: ActionType) => void;
 };

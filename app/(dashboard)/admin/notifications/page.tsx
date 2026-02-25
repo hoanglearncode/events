@@ -1,73 +1,81 @@
-"use client"
+"use client";
 
-import { useState, useMemo, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { NotificationStats } from "./_components/notification-stats"
-import { NotificationFilters } from "./_components/notification-filters"
-import { NotificationTable } from "./_components/notification-table"
-import { NotificationDialog } from "./_components/notification-dialog"
-import { Notification, NotificationStatus } from "./_types/notification"
-import { Bell, Plus } from "lucide-react"
-
+import { useState, useMemo, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { NotificationStats } from "./_components/notification-stats";
+import { NotificationFilters } from "./_components/notification-filters";
+import { NotificationTable } from "./_components/notification-table";
+import { NotificationDialog } from "./_components/notification-dialog";
+import { Notification, NotificationStatus } from "./_types/notification";
+import { Bell, Plus } from "lucide-react";
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [searchTerm, setSearchTerm] = useState("")
-  const [typeFilter, setTypeFilter] = useState<string>("all")
-  const [statusFilter, setStatusFilter] = useState("all")
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [editingNotification, setEditingNotification] = useState<Notification | null>(null)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingNotification, setEditingNotification] =
+    useState<Notification | null>(null);
 
   const filteredNotifications = useMemo(() => {
     return notifications.filter((notification) => {
       const matchesSearch =
         notification.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        notification.content.toLowerCase().includes(searchTerm.toLowerCase())
-      const matchesType = typeFilter === "all" || notification.type === typeFilter
-      const matchesStatus = statusFilter === "all" || notification.status === statusFilter
+        notification.content.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesType =
+        typeFilter === "all" || notification.type === typeFilter;
+      const matchesStatus =
+        statusFilter === "all" || notification.status === statusFilter;
 
-      return matchesSearch && matchesType && matchesStatus
-    })
-  }, [notifications, searchTerm, typeFilter, statusFilter])
+      return matchesSearch && matchesType && matchesStatus;
+    });
+  }, [notifications, searchTerm, typeFilter, statusFilter]);
 
-  useEffect(()=> {},[]);
+  useEffect(() => {}, []);
 
   const handleReset = () => {
-    setSearchTerm("")
-    setTypeFilter("all")
-    setStatusFilter("all")
-  }
+    setSearchTerm("");
+    setTypeFilter("all");
+    setStatusFilter("all");
+  };
 
   const handleCreate = () => {
-    setEditingNotification(null)
-    setDialogOpen(true)
-  }
+    setEditingNotification(null);
+    setDialogOpen(true);
+  };
 
   const handleEdit = (notification: Notification) => {
-    setEditingNotification(notification)
-    setDialogOpen(true)
-  }
+    setEditingNotification(notification);
+    setDialogOpen(true);
+  };
 
   const handleDelete = (id: string) => {
     if (confirm("Bạn có chắc chắn muốn xóa thông báo này?")) {
-      setNotifications(notifications.filter((n) => n.id !== id))
+      setNotifications(notifications.filter((n) => n.id !== id));
     }
-  }
+  };
 
   const handleSave = (data: Partial<Notification>) => {
     // Determine status based on dates
-    const now = new Date()
-    const start = new Date(data.startDate!)
-    const end = data.endDate ? new Date(data.endDate) : null
+    const now = new Date();
+    const start = new Date(data.startDate!);
+    const end = data.endDate ? new Date(data.endDate) : null;
 
-    let status: NotificationStatus = "active"
+    let status: NotificationStatus = "active";
     if (now < start) {
-      status = "scheduled"
+      status = "scheduled";
     } else if (end && now > end) {
-      status = "expired"
+      status = "expired";
     } else {
-      status = data.isActive ? "active" : "scheduled"
+      status = data.isActive ? "active" : "scheduled";
     }
 
     if (editingNotification) {
@@ -83,7 +91,7 @@ export default function NotificationsPage() {
               }
             : n
         )
-      )
+      );
     } else {
       // Create new
       const newNotification: Notification = {
@@ -99,13 +107,13 @@ export default function NotificationsPage() {
         isActive: data.isActive!,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-      }
-      setNotifications([...notifications, newNotification])
+      };
+      setNotifications([...notifications, newNotification]);
     }
 
-    setDialogOpen(false)
-    setEditingNotification(null)
-  }
+    setDialogOpen(false);
+    setEditingNotification(null);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -121,20 +129,22 @@ export default function NotificationsPage() {
                   <h1 className="text-3xl font-bold tracking-tight text-foreground">
                     System Configuration
                   </h1>
-                  <p className="text-muted-foreground text-sm mt-0.5">Platform Administration & Settings</p>
+                  <p className="text-muted-foreground text-sm mt-0.5">
+                    Platform Administration & Settings
+                  </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-3">
-                <Button 
-                  onClick={handleCreate}
-                  className="bg-primary hover:from-brand-primary/90 hover:to-brand-secondary/90 text-white shadow-lg shadow-brand-primary/20 min-w-[140px] transition-all duration-200"
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Thêm thông báo mới
-                </Button>
-              </div>
+              <Button
+                onClick={handleCreate}
+                className="bg-primary hover:from-brand-primary/90 hover:to-brand-secondary/90 text-white shadow-lg shadow-brand-primary/20 min-w-[140px] transition-all duration-200"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Thêm thông báo mới
+              </Button>
+            </div>
           </div>
           <NotificationStats notifications={notifications} />
         </div>
@@ -166,9 +176,8 @@ export default function NotificationsPage() {
           open={dialogOpen}
           onOpenChange={setDialogOpen}
           onSave={handleSave}
-          notification={editingNotification}
         />
       </div>
     </div>
-  )
+  );
 }

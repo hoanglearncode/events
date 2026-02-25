@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import { Button } from "@/components/ui/button"
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,25 +9,24 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Notification } from "@/types/notification"
-import { useState } from "react"
+} from "@/components/ui/select";
+import { useState } from "react";
 
 interface NotificationDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onSave: (notification: Partial<Notification>) => void
-  notification?: Notification | null
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSave: (notification: Partial<Notification>) => void;
+  notification?: Notification | null;
 }
 
 export function NotificationDialog({
@@ -36,7 +35,7 @@ export function NotificationDialog({
   onSave,
   notification,
 }: NotificationDialogProps) {
-  const [formData, setFormData] = useState<Partial<Notification>>({
+  const [formData, setFormData] = useState<Partial<any>>({
     title: "",
     content: "",
     type: "info",
@@ -44,11 +43,11 @@ export function NotificationDialog({
     startDate: "",
     endDate: "",
     isActive: true,
-  })
+  });
 
   useEffect(() => {
     if (notification) {
-      setFormData(notification)
+      setFormData(notification);
     } else {
       setFormData({
         title: "",
@@ -58,14 +57,14 @@ export function NotificationDialog({
         startDate: "",
         endDate: "",
         isActive: true,
-      })
+      });
     }
-  }, [notification, open])
+  }, [notification, open]);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSave(formData)
-  }
+    e.preventDefault();
+    onSave(formData);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -201,7 +200,11 @@ export function NotificationDialog({
           </div>
 
           <DialogFooter className="gap-2 sm:gap-0">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
               Hủy
             </Button>
             <Button type="submit">Lưu thông báo</Button>
@@ -209,5 +212,5 @@ export function NotificationDialog({
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

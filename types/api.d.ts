@@ -25,7 +25,7 @@ export interface ExtraResponse {
 export interface ApiResponse<T = any> {
   code: number;
   message: string;
-  result: T
+  result: T;
 }
 
 export interface ApiDataResponse<T = any> {

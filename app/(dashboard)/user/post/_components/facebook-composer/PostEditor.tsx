@@ -29,7 +29,6 @@ import { cn } from "@/lib/utils";
 import MarkdownEditor from "./MarkdownEditor";
 import { useRouter } from "next/navigation";
 
-
 /* ───────────────── types ───────────────── */
 
 type PageStatus = "active" | "inactive" | "pending";
@@ -53,19 +52,23 @@ interface PostEditorProps {
   setImages: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
-
 /* ───────────────── mock data ───────────────── */
 
 const PAGES: PageItem[] = [
-  { id: "3", label: "Website and FanPage", status: "inactive", value: "website-fanpage" },
+  {
+    id: "3",
+    label: "Website and FanPage",
+    status: "inactive",
+    value: "website-fanpage",
+  },
   { id: "1", label: "Website", status: "active", value: "website" },
-  { id: "2", label: "FanPage", status: "inactive", value: "fanpage" }
+  { id: "2", label: "FanPage", status: "inactive", value: "fanpage" },
 ];
 
 const Status: StatusPost[] = [
   { id: "hiring", label: "Đang tuyển" },
   { id: "enough", label: "Đã đủ" },
-  { id: "stop", label: "Dừng tuyển" }
+  { id: "stop", label: "Dừng tuyển" },
 ];
 
 /* ───────────────── component ───────────────── */
@@ -74,13 +77,11 @@ export default function PostEditor({
   postContent,
   images,
   setPostContent,
-  setImages
+  setImages,
 }: PostEditorProps) {
   const router = useRouter();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const [selectedPage, setSelectedPage] = React.useState<PageItem>(
-    PAGES[1]
-  );
+  const [selectedPage, setSelectedPage] = React.useState<PageItem>(PAGES[1]);
   const [status, setStatus] = React.useState<StatusPost>(Status[0]);
   const [postData, setPostData] = React.useState({
     id: "123456",
@@ -116,10 +117,7 @@ export default function PostEditor({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="gap-2 font-semibold"
-              >
+              <Button variant="outline" className="gap-2 font-semibold">
                 {selectedPage.label}
                 <ChevronDown className="w-4 h-4 text-muted-foreground" />
               </Button>
@@ -161,10 +159,7 @@ export default function PostEditor({
         <div className="flex items-start gap-3">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="gap-2 font-semibold"
-              >
+              <Button variant="outline" className="gap-2 font-semibold">
                 {status.label}
                 <ChevronDown className="w-4 h-4 text-muted-foreground" />
               </Button>
@@ -176,9 +171,8 @@ export default function PostEditor({
                   <DropdownMenuItem
                     key={status.id}
                     onSelect={() => {
-                        setStatus(status);
-                      }
-                    }
+                      setStatus(status);
+                    }}
                     className={cn(
                       "flex items-center justify-between",
                       "focus:bg-foreground",
@@ -246,10 +240,7 @@ export default function PostEditor({
         </label>
 
         <div className="relative">
-          <MarkdownEditor
-            value={postContent}
-            onChange={setPostContent}
-          />
+          <MarkdownEditor value={postContent} onChange={setPostContent} />
         </div>
       </CardContent>
 

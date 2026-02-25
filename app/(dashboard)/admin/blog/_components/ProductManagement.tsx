@@ -6,8 +6,6 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { type AdminProduct } from "@/hooks/queries/useProductsQuery";
-import { useProducts } from "@/hooks/feature/useProducts";
 import ProductTable from "./ProductTable";
 import ProductActionDialog from "./ProductActionDialog";
 import { ProductStats } from "./ProductStats";
@@ -19,30 +17,15 @@ export default function ProductManagement() {
   >("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState<AdminProduct | null>(
+  const [currentProduct, setCurrentProduct] = useState<any | null>(
     null
   );
 
-  const {
-    products,
-    pagination,
-    isLoading,
-    mode,
-    setPage,
-    setPerPage,
-    setQuery,
-    setMode,
-    approveMutation,
-    rejectMutation,
-    deleteMutation,
-    updateMutation,
-    featureMutation,
-  } = useProducts();
 
   /* ======================
    * ACTION HANDLERS
    ====================== */
-  const handleOpenAction = (product: AdminProduct) => {
+  const handleOpenAction = (product: any) => {
     setCurrentProduct(product);
     setDialogOpen(true);
   };
@@ -52,51 +35,14 @@ export default function ProductManagement() {
     reason: string
   ) => {
     if (!currentProduct) return;
-
-    try {
-      switch (action) {
-        case "approve":
-          await approveMutation.mutateAsync(currentProduct.id);
-          break;
-
-        case "reject":
-          await rejectMutation.mutateAsync({
-            id: currentProduct.id,
-            reason,
-          });
-          break;
-
-        case "delete":
-          await deleteMutation.mutateAsync(currentProduct.id);
-          break;
-
-        case "feature":
-          await featureMutation.mutateAsync({
-            id: currentProduct.id,
-            featured: !currentProduct.featured,
-          });
-          break;
-      }
-    } finally {
-      setDialogOpen(false);
-      setCurrentProduct(null);
-    }
   };
 
   const handleSearch = (value: string) => {
     setSearchQuery(value);
-    setQuery(value);
   };
 
   const handleTabChange = (value: typeof activeTab) => {
     setActiveTab(value);
-    setPage(0);
-
-    if (value === "my") {
-      setMode("my");
-    } else {
-      setMode("all");
-    }
   };
 
   return (
@@ -112,7 +58,7 @@ export default function ProductManagement() {
 
       <ProductStats />
 
-      <Tabs value={activeTab} onValueChange={handleTabChange}>
+      <Tabs value={activeTab}>
         <TabsList>
           <TabsTrigger value="all">Tất cả</TabsTrigger>
           <TabsTrigger value="pending">Chờ duyệt</TabsTrigger>
@@ -126,31 +72,6 @@ export default function ProductManagement() {
         onChange={(e) => handleSearch(e.target.value)}
         className="max-w-md"
       />
-
-      {isLoading ? (
-        <div className="py-24 text-center text-muted-foreground">
-          Đang tải dữ liệu...
-        </div>
-      ) : (
-        <>
-          <ProductTable
-            products={products}
-            onAction={handleOpenAction}
-            onViewDetail={(product) =>
-              window.open(`/admin/products/${product.id}`, "_blank")
-            }
-          />
-
-          {pagination && (
-            <TablePagination
-              pagination={pagination}
-              onPageChange={setPage}
-              onPerPageChange={setPerPage}
-            />
-          )}
-        </>
-      )}
-
       <ProductActionDialog
         open={dialogOpen}
         product={currentProduct}

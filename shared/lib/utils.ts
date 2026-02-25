@@ -2,33 +2,12 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import Cookies from "js-cookie";
 import { ACCESS_TOKEN } from "../const/cookie";
-import { decodeToken } from "@/middleware";
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export function getAccessToken() {
   return Cookies.get(ACCESS_TOKEN);
-}
-
-/**
- * Lấy userId từ JWT token trong cookie
- * @returns userId hoặc null nếu không tìm thấy
- */
-export function getUserIdFromToken(): string | null {
-  const token = getAccessToken();
-  console.log("[getUserIdFromToken] token exists:", !!token);
-  if (!token) {
-    console.warn("[getUserIdFromToken] No access token found in cookie");
-    return null;
-  }
-
-  const decoded = decodeToken(token);
-  console.log("[getUserIdFromToken] decoded token:", decoded);
-  const userId = decoded?.userId || null;
-  console.log("[getUserIdFromToken] extracted userId:", userId);
-  return userId;
 }
 
 export function computeCookieExpiry(

@@ -3,8 +3,6 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { FormValues, ValidationErrors, PreviewItem } from "../_types/post";
-import { BlockServices } from "@/services/blog.service";
-import { generateSlug } from "@/hooks/queries/useCategories";
 import {
   validateForm,
   prepareSubmissionFormData,
@@ -32,7 +30,6 @@ export const useProductForm = () => {
 
   const createBlockMutation = useMutation({
     mutationFn: async (data: FormData) => {
-      return BlockServices.create(data);
     },
     onSuccess: () => {
       toast.success("Thành công 🎉");
@@ -52,8 +49,6 @@ export const useProductForm = () => {
 
     // Auto-generate slug from title
     if (field === "title" && !formValues.slug) {
-      const slug = generateSlug(value);
-      setFormValues((prev) => ({ ...prev, slug }));
     }
   };
 

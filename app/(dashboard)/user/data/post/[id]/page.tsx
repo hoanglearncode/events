@@ -47,7 +47,7 @@ import {
   Copy,
   Share2,
   ExternalLink,
-  Edit
+  Edit,
 } from "lucide-react";
 
 // Mock initial data (would come from API based on [id])
@@ -72,14 +72,17 @@ const initialPostData = {
 
 <h2>2. Cà phê French Press</h2>
 <p>French Press là công cụ đơn giản nhưng cho ra ly cà phê đậm đà, giữ nguyên hương vị tự nhiên của hạt cà phê...</p>`,
-  excerpt: "Hướng dẫn chi tiết các phương pháp pha cà phê đơn giản, dễ thực hiện với dụng cụ có sẵn tại nhà...",
+  excerpt:
+    "Hướng dẫn chi tiết các phương pháp pha cà phê đơn giản, dễ thực hiện với dụng cụ có sẵn tại nhà...",
   thumbnail: "/images/coffee-guide.jpg",
   thumbnailAlt: "Hướng dẫn pha cà phê",
   featured: true,
   tags: ["pha chế", "người mới", "hướng dẫn", "cà phê tại nhà"],
   metaTitle: "10 Cách pha cà phê ngon cho người mới bắt đầu | Coffee Blog",
-  metaDescription: "Khám phá 10 phương pháp pha cà phê tại nhà đơn giản, dễ thực hiện. Hướng dẫn chi tiết từng bước cho người mới bắt đầu.",
-  metaKeywords: "pha cà phê, cách pha cà phê, cà phê tại nhà, hướng dẫn pha chế",
+  metaDescription:
+    "Khám phá 10 phương pháp pha cà phê tại nhà đơn giản, dễ thực hiện. Hướng dẫn chi tiết từng bước cho người mới bắt đầu.",
+  metaKeywords:
+    "pha cà phê, cách pha cà phê, cà phê tại nhà, hướng dẫn pha chế",
   publishedAt: "2024-02-05 10:30:00",
   createdAt: "2024-02-04 15:20:00",
   updatedAt: "2024-02-06 09:15:00",
@@ -117,10 +120,26 @@ const categoryOptions = [
 ];
 
 const statusOptions = [
-  { value: "draft", label: "Bản nháp", color: "bg-brand-warning/10 text-brand-warning border-brand-warning/20" },
-  { value: "published", label: "Đã xuất bản", color: "bg-brand-success/10 text-brand-success border-brand-success/20" },
-  { value: "scheduled", label: "Đã lên lịch", color: "bg-brand-primary/10 text-brand-primary border-brand-primary/20" },
-  { value: "archived", label: "Lưu trữ", color: "bg-muted text-muted-foreground border-border" },
+  {
+    value: "draft",
+    label: "Bản nháp",
+    color: "bg-brand-warning/10 text-brand-warning border-brand-warning/20",
+  },
+  {
+    value: "published",
+    label: "Đã xuất bản",
+    color: "bg-brand-success/10 text-brand-success border-brand-success/20",
+  },
+  {
+    value: "scheduled",
+    label: "Đã lên lịch",
+    color: "bg-brand-primary/10 text-brand-primary border-brand-primary/20",
+  },
+  {
+    value: "archived",
+    label: "Lưu trữ",
+    color: "bg-muted text-muted-foreground border-border",
+  },
 ];
 
 export default function PostDetailPage({ params }: { params: { id: string } }) {
@@ -142,13 +161,13 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
   }, [params.id]);
 
   const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     setHasChanges(true);
   };
 
   const handleAddTag = () => {
     if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         tags: [...prev.tags, tagInput.trim()],
       }));
@@ -158,19 +177,19 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
   };
 
   const handleRemoveTag = (tagToRemove: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove),
+      tags: prev.tags.filter((tag) => tag !== tagToRemove),
     }));
     setHasChanges(true);
   };
 
-  const handleSave = async (saveType: 'draft' | 'publish' | 'schedule') => {
+  const handleSave = async (saveType: "draft" | "publish" | "schedule") => {
     setIsSaving(true);
-    
+
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
     console.log("Saving post:", saveType, formData);
     setHasChanges(false);
     setIsSaving(false);
@@ -191,7 +210,8 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
   const getSEOScore = () => {
     const score = formData.seo.score;
     if (score >= 80) return { color: "text-brand-success", label: "Tốt" };
-    if (score >= 60) return { color: "text-brand-warning", label: "Trung bình" };
+    if (score >= 60)
+      return { color: "text-brand-warning", label: "Trung bình" };
     return { color: "text-brand-error", label: "Cần cải thiện" };
   };
 
@@ -222,7 +242,10 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                     {formData.title || "Bài viết mới"}
                   </h1>
                   {hasChanges && (
-                    <Badge variant="outline" className="border-brand-warning text-brand-warning">
+                    <Badge
+                      variant="outline"
+                      className="border-brand-warning text-brand-warning"
+                    >
                       Chưa lưu
                     </Badge>
                   )}
@@ -268,7 +291,7 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => handleSave('draft')}
+                onClick={() => handleSave("draft")}
                 disabled={isSaving || !hasChanges}
                 className="gap-2 border-border"
               >
@@ -278,7 +301,7 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
 
               <Button
                 size="sm"
-                onClick={() => handleSave('publish')}
+                onClick={() => handleSave("publish")}
                 disabled={isSaving}
                 className="gap-2 bg-brand-primary hover:bg-brand-primary/90"
               >
@@ -308,8 +331,16 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
               <Card className="border-border shadow-xl glass-dark">
                 <CardHeader className="border-b border-border">
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge className={statusOptions.find(s => s.value === formData.status)?.color}>
-                      {statusOptions.find(s => s.value === formData.status)?.label}
+                    <Badge
+                      className={
+                        statusOptions.find((s) => s.value === formData.status)
+                          ?.color
+                      }
+                    >
+                      {
+                        statusOptions.find((s) => s.value === formData.status)
+                          ?.label
+                      }
                     </Badge>
                     {formData.featured && (
                       <Badge className="bg-brand-warning hover:bg-brand-warning/90">
@@ -330,7 +361,11 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                     </div>
                     <div className="flex items-center gap-2">
                       <Tag className="w-4 h-4" />
-                      {categoryOptions.find(c => c.value === formData.category)?.label}
+                      {
+                        categoryOptions.find(
+                          (c) => c.value === formData.category
+                        )?.label
+                      }
                     </div>
                   </div>
                 </CardHeader>
@@ -342,13 +377,17 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                       </div>
                     </div>
                   )}
-                  <div 
+                  <div
                     className="prose prose-lg max-w-none"
                     dangerouslySetInnerHTML={{ __html: formData.content }}
                   />
                   <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-border">
                     {formData.tags.map((tag, index) => (
-                      <Badge key={index} variant="outline" className="border-border">
+                      <Badge
+                        key={index}
+                        variant="outline"
+                        className="border-border"
+                      >
                         #{tag}
                       </Badge>
                     ))}
@@ -357,7 +396,11 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
               </Card>
             ) : (
               /* EDIT MODE */
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="space-y-6"
+              >
                 <Card className="border-border shadow-xl glass-dark">
                   <CardHeader className="border-b border-border bg-muted/30">
                     <TabsList className="bg-transparent h-12 w-full justify-start">
@@ -397,13 +440,18 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                     <TabsContent value="content" className="space-y-6 mt-0">
                       {/* Title */}
                       <div className="space-y-2">
-                        <Label htmlFor="title" className="text-base font-semibold">
+                        <Label
+                          htmlFor="title"
+                          className="text-base font-semibold"
+                        >
                           Tiêu đề bài viết *
                         </Label>
                         <Input
                           id="title"
                           value={formData.title}
-                          onChange={(e) => handleInputChange('title', e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("title", e.target.value)
+                          }
                           placeholder="Nhập tiêu đề bài viết..."
                           className="text-lg bg-card border-border"
                         />
@@ -411,15 +459,22 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
 
                       {/* Slug */}
                       <div className="space-y-2">
-                        <Label htmlFor="slug" className="text-base font-semibold">
+                        <Label
+                          htmlFor="slug"
+                          className="text-base font-semibold"
+                        >
                           Đường dẫn (Slug)
                         </Label>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">/posts/</span>
+                          <span className="text-sm text-muted-foreground">
+                            /posts/
+                          </span>
                           <Input
                             id="slug"
                             value={formData.slug}
-                            onChange={(e) => handleInputChange('slug', e.target.value)}
+                            onChange={(e) =>
+                              handleInputChange("slug", e.target.value)
+                            }
                             placeholder="duong-dan-bai-viet"
                             className="bg-card border-border"
                           />
@@ -428,13 +483,18 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
 
                       {/* Excerpt */}
                       <div className="space-y-2">
-                        <Label htmlFor="excerpt" className="text-base font-semibold">
+                        <Label
+                          htmlFor="excerpt"
+                          className="text-base font-semibold"
+                        >
                           Mô tả ngắn
                         </Label>
                         <Textarea
                           id="excerpt"
                           value={formData.excerpt}
-                          onChange={(e) => handleInputChange('excerpt', e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("excerpt", e.target.value)
+                          }
                           placeholder="Nhập mô tả ngắn cho bài viết..."
                           className="min-h-[80px] bg-card border-border"
                         />
@@ -445,7 +505,10 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
 
                       {/* Content Editor */}
                       <div className="space-y-2">
-                        <Label htmlFor="content" className="text-base font-semibold">
+                        <Label
+                          htmlFor="content"
+                          className="text-base font-semibold"
+                        >
                           Nội dung bài viết *
                         </Label>
                         <div className="border border-border rounded-lg bg-card">
@@ -477,19 +540,25 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                           <Textarea
                             id="content"
                             value={formData.content}
-                            onChange={(e) => handleInputChange('content', e.target.value)}
+                            onChange={(e) =>
+                              handleInputChange("content", e.target.value)
+                            }
                             placeholder="Nhập nội dung bài viết..."
                             className="min-h-[400px] border-0 focus-visible:ring-0 bg-card"
                           />
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          Gợi ý: Sử dụng rich text editor như CKEditor hoặc TinyMCE để có trải nghiệm tốt hơn
+                          Gợi ý: Sử dụng rich text editor như CKEditor hoặc
+                          TinyMCE để có trải nghiệm tốt hơn
                         </p>
                       </div>
 
                       {/* Tags */}
                       <div className="space-y-2">
-                        <Label htmlFor="tags" className="text-base font-semibold">
+                        <Label
+                          htmlFor="tags"
+                          className="text-base font-semibold"
+                        >
                           Tags
                         </Label>
                         <div className="flex gap-2">
@@ -497,7 +566,10 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                             id="tags"
                             value={tagInput}
                             onChange={(e) => setTagInput(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
+                            onKeyPress={(e) =>
+                              e.key === "Enter" &&
+                              (e.preventDefault(), handleAddTag())
+                            }
                             placeholder="Nhập tag và nhấn Enter..."
                             className="bg-card border-border"
                           />
@@ -535,19 +607,27 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                       {/* Type & Category */}
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="type" className="text-base font-semibold">
+                          <Label
+                            htmlFor="type"
+                            className="text-base font-semibold"
+                          >
                             Loại nội dung *
                           </Label>
                           <Select
                             value={formData.type}
-                            onValueChange={(value) => handleInputChange('type', value)}
+                            onValueChange={(value) =>
+                              handleInputChange("type", value)
+                            }
                           >
                             <SelectTrigger className="bg-card border-border">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                               {typeOptions.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
+                                <SelectItem
+                                  key={option.value}
+                                  value={option.value}
+                                >
                                   {option.label}
                                 </SelectItem>
                               ))}
@@ -556,19 +636,27 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="category" className="text-base font-semibold">
+                          <Label
+                            htmlFor="category"
+                            className="text-base font-semibold"
+                          >
                             Danh mục *
                           </Label>
                           <Select
                             value={formData.category}
-                            onValueChange={(value) => handleInputChange('category', value)}
+                            onValueChange={(value) =>
+                              handleInputChange("category", value)
+                            }
                           >
                             <SelectTrigger className="bg-card border-border">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                               {categoryOptions.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
+                                <SelectItem
+                                  key={option.value}
+                                  value={option.value}
+                                >
                                   {option.label}
                                 </SelectItem>
                               ))}
@@ -579,19 +667,27 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
 
                       {/* Status */}
                       <div className="space-y-2">
-                        <Label htmlFor="status" className="text-base font-semibold">
+                        <Label
+                          htmlFor="status"
+                          className="text-base font-semibold"
+                        >
                           Trạng thái
                         </Label>
                         <Select
                           value={formData.status}
-                          onValueChange={(value) => handleInputChange('status', value)}
+                          onValueChange={(value) =>
+                            handleInputChange("status", value)
+                          }
                         >
                           <SelectTrigger className="bg-card border-border">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
                             {statusOptions.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
                                 {option.label}
                               </SelectItem>
                             ))}
@@ -602,7 +698,10 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                       {/* Featured Toggle */}
                       <div className="flex items-center justify-between p-4 border border-border rounded-lg bg-card">
                         <div className="space-y-0.5">
-                          <Label htmlFor="featured" className="text-base font-semibold cursor-pointer">
+                          <Label
+                            htmlFor="featured"
+                            className="text-base font-semibold cursor-pointer"
+                          >
                             Bài viết nổi bật
                           </Label>
                           <p className="text-sm text-muted-foreground">
@@ -612,7 +711,9 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                         <Switch
                           id="featured"
                           checked={formData.featured}
-                          onCheckedChange={(checked) => handleInputChange('featured', checked)}
+                          onCheckedChange={(checked) =>
+                            handleInputChange("featured", checked)
+                          }
                         />
                       </div>
 
@@ -630,14 +731,20 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                                 </div>
                               </div>
                               <div className="flex gap-2 justify-center">
-                                <Button variant="outline" size="sm" className="border-border">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="border-border"
+                                >
                                   <Upload className="w-4 h-4 mr-2" />
                                   Thay đổi
                                 </Button>
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  onClick={() => handleInputChange('thumbnail', '')}
+                                  onClick={() =>
+                                    handleInputChange("thumbnail", "")
+                                  }
                                   className="border-border text-brand-error hover:text-brand-error"
                                 >
                                   <Trash2 className="w-4 h-4 mr-2" />
@@ -656,7 +763,10 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                                   PNG, JPG, GIF tới 10MB
                                 </p>
                               </div>
-                              <Button variant="outline" className="border-border">
+                              <Button
+                                variant="outline"
+                                className="border-border"
+                              >
                                 Chọn ảnh
                               </Button>
                             </div>
@@ -667,13 +777,18 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                       {/* Thumbnail Alt */}
                       {formData.thumbnail && (
                         <div className="space-y-2">
-                          <Label htmlFor="thumbnailAlt" className="text-base font-semibold">
+                          <Label
+                            htmlFor="thumbnailAlt"
+                            className="text-base font-semibold"
+                          >
                             Mô tả ảnh (Alt text)
                           </Label>
                           <Input
                             id="thumbnailAlt"
                             value={formData.thumbnailAlt}
-                            onChange={(e) => handleInputChange('thumbnailAlt', e.target.value)}
+                            onChange={(e) =>
+                              handleInputChange("thumbnailAlt", e.target.value)
+                            }
                             placeholder="Mô tả ảnh cho SEO và accessibility..."
                             className="bg-card border-border"
                           />
@@ -681,16 +796,21 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                       )}
 
                       {/* Scheduled Date */}
-                      {formData.status === 'scheduled' && (
+                      {formData.status === "scheduled" && (
                         <div className="space-y-2">
-                          <Label htmlFor="scheduledAt" className="text-base font-semibold">
+                          <Label
+                            htmlFor="scheduledAt"
+                            className="text-base font-semibold"
+                          >
                             Lên lịch xuất bản
                           </Label>
                           <Input
                             id="scheduledAt"
                             type="datetime-local"
-                            value={formData.scheduledAt || ''}
-                            onChange={(e) => handleInputChange('scheduledAt', e.target.value)}
+                            value={formData.scheduledAt || ""}
+                            onChange={(e) =>
+                              handleInputChange("scheduledAt", e.target.value)
+                            }
                             className="bg-card border-border"
                           />
                         </div>
@@ -704,26 +824,40 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                         <CardContent className="p-6">
                           <div className="flex items-center justify-between mb-4">
                             <div>
-                              <h3 className="font-semibold text-foreground mb-1">Điểm SEO</h3>
+                              <h3 className="font-semibold text-foreground mb-1">
+                                Điểm SEO
+                              </h3>
                               <p className="text-sm text-muted-foreground">
                                 Đánh giá tổng quan về SEO của bài viết
                               </p>
                             </div>
                             <div className="text-right">
-                              <div className={`text-4xl font-bold ${seoScore.color}`}>
+                              <div
+                                className={`text-4xl font-bold ${seoScore.color}`}
+                              >
                                 {formData.seo.score}
                               </div>
-                              <p className={`text-sm ${seoScore.color}`}>{seoScore.label}</p>
+                              <p className={`text-sm ${seoScore.color}`}>
+                                {seoScore.label}
+                              </p>
                             </div>
                           </div>
                           <div className="space-y-2">
                             <div className="flex items-center justify-between text-sm">
-                              <span className="text-muted-foreground">Độ dễ đọc</span>
-                              <span className="font-medium">{formData.seo.readability}</span>
+                              <span className="text-muted-foreground">
+                                Độ dễ đọc
+                              </span>
+                              <span className="font-medium">
+                                {formData.seo.readability}
+                              </span>
                             </div>
                             <div className="flex items-center justify-between text-sm">
-                              <span className="text-muted-foreground">Mật độ từ khóa</span>
-                              <span className="font-medium">{formData.seo.keywordDensity}%</span>
+                              <span className="text-muted-foreground">
+                                Mật độ từ khóa
+                              </span>
+                              <span className="font-medium">
+                                {formData.seo.keywordDensity}%
+                              </span>
                             </div>
                           </div>
                         </CardContent>
@@ -731,13 +865,18 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
 
                       {/* Meta Title */}
                       <div className="space-y-2">
-                        <Label htmlFor="metaTitle" className="text-base font-semibold">
+                        <Label
+                          htmlFor="metaTitle"
+                          className="text-base font-semibold"
+                        >
                           Meta Title
                         </Label>
                         <Input
                           id="metaTitle"
                           value={formData.metaTitle}
-                          onChange={(e) => handleInputChange('metaTitle', e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("metaTitle", e.target.value)
+                          }
                           placeholder="Tiêu đề hiển thị trên Google..."
                           className="bg-card border-border"
                         />
@@ -748,30 +887,41 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
 
                       {/* Meta Description */}
                       <div className="space-y-2">
-                        <Label htmlFor="metaDescription" className="text-base font-semibold">
+                        <Label
+                          htmlFor="metaDescription"
+                          className="text-base font-semibold"
+                        >
                           Meta Description
                         </Label>
                         <Textarea
                           id="metaDescription"
                           value={formData.metaDescription}
-                          onChange={(e) => handleInputChange('metaDescription', e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("metaDescription", e.target.value)
+                          }
                           placeholder="Mô tả hiển thị trên Google..."
                           className="min-h-[100px] bg-card border-border"
                         />
                         <p className="text-xs text-muted-foreground">
-                          {formData.metaDescription.length}/160 ký tự (tối ưu: 150-160)
+                          {formData.metaDescription.length}/160 ký tự (tối ưu:
+                          150-160)
                         </p>
                       </div>
 
                       {/* Meta Keywords */}
                       <div className="space-y-2">
-                        <Label htmlFor="metaKeywords" className="text-base font-semibold">
+                        <Label
+                          htmlFor="metaKeywords"
+                          className="text-base font-semibold"
+                        >
                           Meta Keywords
                         </Label>
                         <Input
                           id="metaKeywords"
                           value={formData.metaKeywords}
-                          onChange={(e) => handleInputChange('metaKeywords', e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("metaKeywords", e.target.value)
+                          }
                           placeholder="từ khóa 1, từ khóa 2, từ khóa 3..."
                           className="bg-card border-border"
                         />
@@ -786,7 +936,9 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                           <CardContent className="p-4 space-y-2">
                             <div className="flex items-center gap-2 text-xs text-muted-foreground">
                               <ExternalLink className="w-3 h-3" />
-                              <span>https://yourdomain.com/posts/{formData.slug}</span>
+                              <span>
+                                https://yourdomain.com/posts/{formData.slug}
+                              </span>
                             </div>
                             <h3 className="text-brand-primary text-lg font-medium hover:underline cursor-pointer">
                               {formData.metaTitle || formData.title}
@@ -801,7 +953,7 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
 
                     {/* ANALYTICS TAB */}
                     <TabsContent value="analytics" className="space-y-6 mt-0">
-                      {formData.status === 'published' ? (
+                      {formData.status === "published" ? (
                         <>
                           {/* Stats Overview */}
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -811,7 +963,9 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                                 <p className="text-2xl font-bold text-foreground">
                                   {formData.stats.views.toLocaleString()}
                                 </p>
-                                <p className="text-xs text-muted-foreground">Lượt xem</p>
+                                <p className="text-xs text-muted-foreground">
+                                  Lượt xem
+                                </p>
                               </CardContent>
                             </Card>
 
@@ -821,7 +975,9 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                                 <p className="text-2xl font-bold text-foreground">
                                   {formData.stats.likes}
                                 </p>
-                                <p className="text-xs text-muted-foreground">Lượt thích</p>
+                                <p className="text-xs text-muted-foreground">
+                                  Lượt thích
+                                </p>
                               </CardContent>
                             </Card>
 
@@ -831,7 +987,9 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                                 <p className="text-2xl font-bold text-foreground">
                                   {formData.stats.comments}
                                 </p>
-                                <p className="text-xs text-muted-foreground">Bình luận</p>
+                                <p className="text-xs text-muted-foreground">
+                                  Bình luận
+                                </p>
                               </CardContent>
                             </Card>
 
@@ -841,7 +999,9 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                                 <p className="text-2xl font-bold text-foreground">
                                   {formData.stats.shares}
                                 </p>
-                                <p className="text-xs text-muted-foreground">Chia sẻ</p>
+                                <p className="text-xs text-muted-foreground">
+                                  Chia sẻ
+                                </p>
                               </CardContent>
                             </Card>
                           </div>
@@ -849,7 +1009,9 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                           {/* Engagement */}
                           <Card className="border-border bg-muted/30">
                             <CardHeader>
-                              <CardTitle className="text-base">Tương tác</CardTitle>
+                              <CardTitle className="text-base">
+                                Tương tác
+                              </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
                               <div className="flex items-center justify-between">
@@ -865,7 +1027,14 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                                   Tỷ lệ tương tác
                                 </span>
                                 <span className="font-semibold text-brand-success">
-                                  {((formData.stats.likes + formData.stats.comments + formData.stats.shares) / formData.stats.views * 100).toFixed(1)}%
+                                  {(
+                                    ((formData.stats.likes +
+                                      formData.stats.comments +
+                                      formData.stats.shares) /
+                                      formData.stats.views) *
+                                    100
+                                  ).toFixed(1)}
+                                  %
                                 </span>
                               </div>
                             </CardContent>
@@ -874,13 +1043,17 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                           {/* Placeholder for charts */}
                           <Card className="border-border bg-muted/30">
                             <CardHeader>
-                              <CardTitle className="text-base">Lượt xem theo thời gian</CardTitle>
+                              <CardTitle className="text-base">
+                                Lượt xem theo thời gian
+                              </CardTitle>
                             </CardHeader>
                             <CardContent>
                               <div className="h-64 flex items-center justify-center text-muted-foreground">
                                 <div className="text-center">
                                   <BarChart3 className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                                  <p className="text-sm">Biểu đồ lượt xem sẽ hiển thị ở đây</p>
+                                  <p className="text-sm">
+                                    Biểu đồ lượt xem sẽ hiển thị ở đây
+                                  </p>
                                 </div>
                               </div>
                             </CardContent>
@@ -919,18 +1092,26 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                     {formData.author.name.charAt(0)}
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">{formData.author.name}</p>
-                    <p className="text-xs text-muted-foreground">{formData.author.email}</p>
+                    <p className="font-medium text-foreground">
+                      {formData.author.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {formData.author.email}
+                    </p>
                   </div>
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Ngày tạo</span>
-                    <span className="text-foreground">{formData.createdAt}</span>
+                    <span className="text-foreground">
+                      {formData.createdAt}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Cập nhật</span>
-                    <span className="text-foreground">{formData.updatedAt}</span>
+                    <span className="text-foreground">
+                      {formData.updatedAt}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -945,7 +1126,9 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                 <Button
                   variant="outline"
                   className="w-full justify-start gap-2 border-border"
-                  onClick={() => window.open(`/posts/${formData.slug}`, '_blank')}
+                  onClick={() =>
+                    window.open(`/posts/${formData.slug}`, "_blank")
+                  }
                 >
                   <ExternalLink className="w-4 h-4" />
                   Xem bài viết
@@ -985,15 +1168,27 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
               </CardHeader>
               <CardContent className="p-4 space-y-4">
                 <div className="space-y-2">
-                  <Label className="text-sm font-semibold">Trạng thái hiện tại</Label>
-                  <Badge className={statusOptions.find(s => s.value === formData.status)?.color}>
-                    {statusOptions.find(s => s.value === formData.status)?.label}
+                  <Label className="text-sm font-semibold">
+                    Trạng thái hiện tại
+                  </Label>
+                  <Badge
+                    className={
+                      statusOptions.find((s) => s.value === formData.status)
+                        ?.color
+                    }
+                  >
+                    {
+                      statusOptions.find((s) => s.value === formData.status)
+                        ?.label
+                    }
                   </Badge>
                 </div>
 
                 {formData.publishedAt && (
                   <div className="space-y-2">
-                    <Label className="text-sm font-semibold">Ngày xuất bản</Label>
+                    <Label className="text-sm font-semibold">
+                      Ngày xuất bản
+                    </Label>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Calendar className="w-4 h-4" />
                       {formData.publishedAt}
@@ -1002,34 +1197,34 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                 )}
 
                 <div className="pt-4 space-y-2">
-                  {formData.status === 'draft' && (
+                  {formData.status === "draft" && (
                     <Button
                       className="w-full gap-2 bg-brand-primary hover:bg-brand-primary/90"
-                      onClick={() => handleSave('publish')}
+                      onClick={() => handleSave("publish")}
                       disabled={isSaving}
                     >
                       <CheckCircle2 className="w-4 h-4" />
                       Xuất bản ngay
                     </Button>
                   )}
-                  
+
                   <Button
                     variant="outline"
                     className="w-full gap-2 border-border"
                     onClick={() => {
-                      handleInputChange('status', 'scheduled');
-                      setActiveTab('settings');
+                      handleInputChange("status", "scheduled");
+                      setActiveTab("settings");
                     }}
                   >
                     <Clock className="w-4 h-4" />
                     Lên lịch xuất bản
                   </Button>
 
-                  {formData.status === 'published' && (
+                  {formData.status === "published" && (
                     <Button
                       variant="outline"
                       className="w-full gap-2 border-border"
-                      onClick={() => handleInputChange('status', 'draft')}
+                      onClick={() => handleInputChange("status", "draft")}
                     >
                       <EyeOff className="w-4 h-4" />
                       Chuyển về nháp
@@ -1048,22 +1243,34 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                 <div className="flex items-start gap-2">
                   <CheckCircle2 className="w-5 h-5 text-brand-success mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-foreground">Tiêu đề</p>
-                    <p className="text-xs text-muted-foreground">Đã có tiêu đề hấp dẫn</p>
+                    <p className="text-sm font-medium text-foreground">
+                      Tiêu đề
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Đã có tiêu đề hấp dẫn
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle2 className="w-5 h-5 text-brand-success mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-foreground">Nội dung</p>
-                    <p className="text-xs text-muted-foreground">Đã có nội dung đầy đủ</p>
+                    <p className="text-sm font-medium text-foreground">
+                      Nội dung
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Đã có nội dung đầy đủ
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle2 className="w-5 h-5 text-brand-success mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-foreground">Ảnh đại diện</p>
-                    <p className="text-xs text-muted-foreground">Đã có ảnh thumbnail</p>
+                    <p className="text-sm font-medium text-foreground">
+                      Ảnh đại diện
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Đã có ảnh thumbnail
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
@@ -1100,7 +1307,8 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
           <DialogHeader>
             <DialogTitle>Xác nhận xóa bài viết</DialogTitle>
             <DialogDescription>
-              Bạn có chắc chắn muốn xóa bài viết "{formData.title}"? Hành động này không thể hoàn tác.
+              Bạn có chắc chắn muốn xóa bài viết "{formData.title}"? Hành động
+              này không thể hoàn tác.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

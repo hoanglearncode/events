@@ -1,6 +1,8 @@
+'use client';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { profileService } from "@/services/profile.service";
-import { ProfileFormData, ProfileDetailData } from "@/types/profile";
+import { ProfileFormData } from "@/types/profile";
+import { UserProfile } from "@/types/auth";
 import { toast } from "sonner";
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -22,19 +24,18 @@ export function useProfile() {
   });
 }
 
-export function useProfileDetails(enabled: boolean) {
+export function useProfileDetails() {
   return useQuery({
     queryKey: profileKeys.details(),
     queryFn: () => profileService.getDetails(),
     staleTime: 5 * 60 * 1000,
     retry: 1,
-    enabled,
   });
 }
 
 // Hook cập nhật profile
 export function useUpdateProfile(options?: {
-  onSuccess?: (data: ProfileDetailData) => void;
+  onSuccess?: (data: UserProfile) => void;
 }) {
   const queryClient = useQueryClient();
 
@@ -43,7 +44,7 @@ export function useUpdateProfile(options?: {
       profileService.update(data as any),
 
     onSuccess: (response: any) => {
-      const updatedProfile: ProfileDetailData =
+      const updatedProfile: UserProfile =
         response?.result ?? response?.data ?? response;
 
       // 1) Update cache ngay (fast UI)

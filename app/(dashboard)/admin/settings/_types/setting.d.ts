@@ -1,29 +1,30 @@
-
 export interface General {
-    systemName: string;
-    systemEmail: string;
-    systemTitle: string;
-    systemDescription: string;
-    maintainMode: boolean;
-    allowRegister: boolean;
+  systemName: string;
+  systemEmail: string;
+  systemTitle: string;
+  note?: string;
+  systemDescription: string;
+  systemLogo?: string;
+  maintainMode: boolean;
+  allowRegister: boolean;
 }
 
 export interface Recruitment {
-    timeReset: string;
-    freeCounter: number;
-    viewProfile: boolean;
-    approval: boolean;
+  timeReset: string;
+  freeCounter: number;
+  viewProfile: boolean;
+  approval: boolean;
 }
 
 export interface Content {
-    allowComment: boolean;
-    blacklistKeywords: string[];
+  allowComment: boolean;
+  blacklistKeywords: string[];
 }
 
 export interface Authentication {
-    twoFactor: boolean;
-    emailVerification: boolean;
-    tokenLifetime: string;
+  twoFactor: boolean;
+  emailVerification: boolean;
+  tokenLifetime: string;
 }
 
 export interface PaymentGatewayConfig {
@@ -41,12 +42,11 @@ export interface EmailIntegration {
 
 export interface AnalyticsIntegration {
   ga4: {
-    measurementId: string;     // G-XXXXXXXXXX
+    measurementId: string; // G-XXXXXXXXXX
     verified: boolean;
-    verifiedAt?: string;       // ISO date
+    verifiedAt?: string; // ISO date
   };
 }
-
 
 export interface OAuthIntegration {
   google: OAuthProvider;
@@ -54,7 +54,7 @@ export interface OAuthIntegration {
 }
 
 export interface OAuthProvider {
-  clientId: string;      // encrypted
+  clientId: string; // encrypted
   enabled: boolean;
   verified: boolean;
   lastUpdated?: string;
@@ -66,8 +66,6 @@ export interface IntegrationMeta {
   updatedBy?: string;
   updatedAt?: string;
 }
-
-
 
 export interface Integration {
   email: EmailIntegration;
@@ -82,7 +80,7 @@ export interface SystemSetting {
   active: boolean;
   note: string;
   createdBy: string;
-  createdAt: string; 
+  createdAt: string;
   general: General;
   recruitment: Recruitment;
   content: Content;
@@ -92,4 +90,13 @@ export interface SystemSetting {
   email: EmailIntegration;
   analytics: Analytics;
   integrationMeta: IntegrationMeta;
+}
+
+export interface SettingVersion {
+  id: number;
+  version: string;
+  active: boolean;
+  note: string;
+  createdBy: string;
+  createdAt: string;
 }

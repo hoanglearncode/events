@@ -23,6 +23,7 @@ import {
   ForgotPasswordFormData,
   forgotPasswordSchema,
 } from "@/shared/validation/auth.schemas";
+import { useSettingStore } from "@/store/setting.store";
 
 /* -------------------- Page -------------------- */
 export default function ForgotPasswordPage() {
@@ -35,6 +36,7 @@ export default function ForgotPasswordPage() {
     resolver: zodResolver(forgotPasswordSchema),
   });
 
+  const general = useSettingStore((state) => state.general);
   const forgotAction = useForgotPassword();
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
@@ -68,15 +70,15 @@ export default function ForgotPasswordPage() {
           {/* Brand */}
           <div className="flex items-center justify-center gap-3">
             <Image
-              src="/event_logo.jpg"
-              alt="volhub logo"
+              src={general?.systemLogo || "/event_logo.jpg"}
+              alt={general?.systemName ? `${general.systemName} logo` : "logo"}
               width={40}
               height={40}
               priority
               className="rounded-md"
             />
             <span className="text-xl font-bold tracking-tight text-foreground">
-              Volhub
+              {general?.systemName}
             </span>
           </div>
 

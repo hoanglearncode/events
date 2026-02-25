@@ -39,7 +39,6 @@ type TablePaginationProps = {
   maxPageButtons?: number;
 };
 
-
 const safeNumber = (value: any, fallback: number) => {
   const n = Number(value);
   return Number.isFinite(n) && n >= 0 ? n : fallback;
@@ -76,7 +75,6 @@ const normalizePagination = (
     to,
   };
 };
-
 
 export function TablePagination({
   pagination,

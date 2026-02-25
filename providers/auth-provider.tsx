@@ -1,69 +1,52 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { useAuthStore } from "@/store/auth.store";
 import { setAuthHandlers } from "@/services/apiClient";
-import type { JWTToken, User } from "@/types/auth";
+import type { JWTToken } from "@/types/auth";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/shared/const/cookie";
 import { computeCookieExpiry } from "@/shared/lib/utils";
 import { API_ENDPOINTS, API_CONFIG } from "@/shared/const/api";
 import RefreshTokenProvider from "@/components/refreshToken";
 import axios from "axios";
+import { useProfileDetails } from "@/hooks/queries/profileQueries";
+import { useRouter, usePathname } from "next/navigation";
 
 interface AuthProviderProps {
   children: React.ReactNode;
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const { user, setUser, clearAuth } = useAuthStore();
-  const { data: profile } = { data: null };
+  const { setUser, clearAuth } = useAuthStore();
+  const { data: user, isError } = useProfileDetails();
 
-  useEffect(() => {
-    // const refreshToken = async () => {
-    //   try {
-    //     const token =  Cookies.get(REFRESH_TOKEN)
-    //     if(!!token) {
-    //       const newToken = await AuthService.refreshToken(token);
-    //       Cookies.set(ACCESS_TOKEN, newToken);
-    //     }
-    //   } catch (error) {
-    //   }
-    // };
-    // // Refresh ngay lập tức
-    // refreshToken();
-    // // Sau đó refresh mỗi 30 phút
-    // const intervalId = setInterval(refreshToken, 1 * 1000); // 30 phút
-    // // Cleanup khi component unmount
-    // return () => {
-    //   clearInterval(intervalId);
-    // };
-  }, []);
+  const router = useRouter();
+  const pathname = usePathname();
 
+  /** ===== Remember previous token state ===== */
+  const hadTokenRef = useRef<boolean>(
+    Boolean(Cookies.get(ACCESS_TOKEN))
+  );
+
+  /* ================== API AUTH HANDLERS ================== */
   useEffect(() => {
     setAuthHandlers({
-      /** ===== Attach token to request ===== */
-      getAccessToken: () => {
-        return Cookies.get(ACCESS_TOKEN) ?? null;
-      },
+      getAccessToken: () => Cookies.get(ACCESS_TOKEN) ?? null,
 
-      /** ===== Persist new access token ===== */
       setAccessToken: (token: string | null) => {
         if (!token) {
           Cookies.remove(ACCESS_TOKEN);
           return;
         }
 
-        // Nếu backend không trả expired_at cho access token
-        // ta có thể set tạm (ví dụ 15 phút)
         Cookies.set(ACCESS_TOKEN, token, {
-          expires: 1 / 96, // ~15 phút
+          expires: 1 / 96,
           path: "/",
           sameSite: "lax",
         });
       },
 
-      /** ===== Refresh token flow ===== */
       refreshAccessToken: async () => {
         const refreshToken = Cookies.get(REFRESH_TOKEN);
         if (!refreshToken) {
@@ -79,20 +62,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           }
         );
 
-        /**
-         * Giả định backend trả:
-         * {
-         *   accessToken: { token, expired_at },
-         *   refreshToken: { token, expired_at }
-         * }
-         */
-        const {
-          accessToken,
-          refreshToken: newRefreshToken,
-        }: {
-          accessToken: JWTToken;
-          refreshToken: JWTToken;
-        } = res.data;
+        const { accessToken, refreshToken: newRefreshToken } = res.data;
 
         Cookies.set(ACCESS_TOKEN, accessToken.token, {
           expires: computeCookieExpiry(accessToken.expired_at),
@@ -109,7 +79,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return { accessToken: accessToken.token };
       },
 
-      /** ===== Logout handler ===== */
       onLogout: () => {
         Cookies.remove(ACCESS_TOKEN);
         Cookies.remove(REFRESH_TOKEN);
@@ -118,14 +87,50 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
   }, [clearAuth]);
 
-  /**
-   * Hydrate user from profile query
-   */
+  /* ================== SYNC USER ================== */
   useEffect(() => {
-    if (profile && !user) {
-      setUser(profile as User);
+    if (user) {
+      setUser(user);
     }
-  }, [profile, user, setUser]);
+  }, [user, setUser]);
+
+  /* ================== FORCE PASSWORD FLOW ================== */
+  useEffect(() => {
+    if (!user) return;
+
+    if (user.mustChangePassword && pathname !== "/change-password") {
+      router.replace("/change-password");
+    }
+  }, [user, pathname, router]);
+
+  /* ================== TOKEN WATCHER ================== */
+  useEffect(() => {
+    const checkToken = () => {
+      const hasToken = Boolean(Cookies.get(ACCESS_TOKEN));
+
+      // token vừa biến mất
+      if (hadTokenRef.current && !hasToken) {
+        clearAuth();
+      }
+
+      hadTokenRef.current = hasToken;
+    };
+
+    // check ngay khi mount
+    checkToken();
+
+    // poll mỗi 2s (nhẹ, an toàn)
+    const interval = setInterval(checkToken, 2000);
+
+    return () => clearInterval(interval);
+  }, [clearAuth]);
+
+  /* ================== PROFILE 401 SAFETY ================== */
+  useEffect(() => {
+    if (isError) {
+      clearAuth();
+    }
+  }, [isError, clearAuth]);
 
   return (
     <>

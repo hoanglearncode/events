@@ -14,10 +14,13 @@ export default function ScholarshipCard({ product }: Props) {
   const router = useRouter();
 
   // Dữ liệu giả định dựa trên cấu trúc Component cũ của bạn
-  const title = product.name || "Học bổng Marvell Vietnam Excellence Scholarship 2026";
+  const title =
+    product.name || "Học bổng Marvell Vietnam Excellence Scholarship 2026";
   const category = product.categoryName || "hoc bong 2025 2026";
   const thumbnail = product.thumbnailUrl || "/path-to-scholarship-image.jpg";
-  const description = product.seoDescription || "Chương trình hỗ trợ tài năng trẻ ngành công nghệ tại Việt Nam...";
+  const description =
+    product.seoDescription ||
+    "Chương trình hỗ trợ tài năng trẻ ngành công nghệ tại Việt Nam...";
   const date = "thg 1 12, 2026";
 
   return (
@@ -33,7 +36,7 @@ export default function ScholarshipCard({ product }: Props) {
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        
+
         {/* Bookmark - Sử dụng glass-dark utility */}
         <button className="absolute top-4 right-4 z-10 p-2 glass-dark rounded-lg text-foreground/80 hover:text-brand-secondary transition-colors">
           <Bookmark size={20} className="fill-none" />
@@ -41,9 +44,11 @@ export default function ScholarshipCard({ product }: Props) {
 
         {/* Badge nổi trên ảnh - Sử dụng brand-primary */}
         <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-background/80 backdrop-blur-md px-4 py-2 rounded-xl border border-border">
-          <span className="text-foreground text-sm font-medium">Học bổng cho sinh viên</span>
+          <span className="text-foreground text-sm font-medium">
+            Học bổng cho sinh viên
+          </span>
           <div className="w-4 h-4 bg-brand-secondary rounded-full flex items-center justify-center">
-             <CheckCircle2 className="text-white w-3 h-3" />
+            <CheckCircle2 className="text-white w-3 h-3" />
           </div>
         </div>
       </div>
@@ -75,7 +80,9 @@ export default function ScholarshipCard({ product }: Props) {
             <Badge className="bg-brand-success/10 hover:bg-brand-success/20 text-brand-success border-none rounded-md px-2 py-0.5 text-[10px] font-bold uppercase">
               Published
             </Badge>
-            <span className="text-muted-foreground text-xs font-medium italic">{date}</span>
+            <span className="text-muted-foreground text-xs font-medium italic">
+              {date}
+            </span>
           </div>
 
           <button className="text-brand-secondary text-sm font-bold flex items-center gap-0.5 hover:translate-x-1 transition-transform">

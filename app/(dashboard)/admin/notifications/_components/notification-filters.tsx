@@ -94,11 +94,7 @@ export const NotificationFilters = memo(function NotificationFilters({
       </Select>
 
       {/* RESET */}
-      <Button
-        variant="outline"
-        onClick={onReset}
-        className="gap-2 md:ml-auto"
-      >
+      <Button variant="outline" onClick={onReset} className="gap-2 md:ml-auto">
         <RotateCcw className="h-4 w-4" />
         Đặt lại
       </Button>

@@ -25,7 +25,7 @@ export default function AdminLayout({
           <main className="flex-1 overflow-y-auto">
             <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(156,98,15,0.05),transparent_70%)] pointer-events-none"></div>
             <div className="fixed inset-0 bg-[linear-gradient(to_right,rgba(98,74,43,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(98,74,43,0.03)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
-        
+
             <div className="mx-auto w-full max-w-[1600px] px-4 md:px-6 py-6">
               {children}
             </div>

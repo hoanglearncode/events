@@ -63,7 +63,7 @@ export function ComplaintDialog({
             },
             body: JSON.stringify({
               report: values.reason,
-            })
+            }),
           }
         ));
 

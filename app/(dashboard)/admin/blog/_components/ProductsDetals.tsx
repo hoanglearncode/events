@@ -13,7 +13,6 @@ import {
   ImageIcon,
 } from "lucide-react";
 import SchemaViewer from "./ProductViewer";
-import { useProductDetail } from "@/hooks/queries/useProductsQuery";
 import { useRouter } from "next/navigation";
 
 // Image Lightbox Component
@@ -95,28 +94,7 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
   };
 
   const navigateLightbox = (direction: any) => {
-    const images = product.meta.galleryUrls;
-    if (direction === "next") {
-      setLightboxIndex((lightboxIndex + 1) % images.length);
-    } else {
-      setLightboxIndex((lightboxIndex - 1 + images.length) % images.length);
-    }
   };
-
-  const {
-    mutate: getProductDetail,
-    data,
-    isError,
-    error,
-  } = useProductDetail({ slug });
-
-  useEffect(() => {
-    if (slug) {
-      getProductDetail();
-    }
-  }, [slug, getProductDetail]);
-
-  const product = data?.result;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -150,44 +128,19 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                   <span className="text-4xl">{tabs[0].icon}</span>
                   <div className="flex-1">
                     <h1 className="text-3xl font-bold text-foreground mb-2">
-                      {product?.meta?.name}
+                      
                     </h1>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Package size={14} />
-                        {product?.meta.categoryName}
+                       
                       </span>
                       <span className="flex items-center gap-1">
                         <Eye size={14} />
-                        {product?.meta.inventoryType === "UNLIMITED"
-                          ? "Không giới hạn"
-                          : product?.meta.inventoryCount}
                       </span>
                     </div>
                   </div>
                 </div>
-
-                {/* Gallery */}
-                {product?.meta.galleryUrls.length > 0 && (
-                  <div className="grid grid-cols-3 gap-3">
-                    {product?.meta.galleryUrls.map((url, index) => (
-                      <div
-                        key={index}
-                        className="relative aspect-video rounded-lg overflow-hidden border border-border hover:border-brand-primary transition cursor-pointer group"
-                        onClick={() => openLightbox(index)}
-                      >
-                        <img
-                          src={url}
-                          alt={`Gallery ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                          <ImageIcon className="text-foreground" size={24} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
 
               {/* Tabs */}
@@ -218,16 +171,7 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                       Giới thiệu
                     </h2>
                     <p className="text-muted-foreground leading-relaxed">
-                      {product?.meta.seoDescription || "Không có mô tả"}
                     </p>
-                    {product?.meta.detailedDescription && (
-                      <div
-                        className="mt-6 text-muted-foreground"
-                        dangerouslySetInnerHTML={{
-                          __html: product.meta.detailedDescription,
-                        }}
-                      />
-                    )}
                   </div>
                 )}
 
@@ -242,7 +186,7 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                           Trạng thái
                         </div>
                         <div className="text-foreground font-medium capitalize">
-                          {product.status}
+                          
                         </div>
                       </div>
                       <div className="space-y-1">
@@ -250,7 +194,7 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                           Danh mục
                         </div>
                         <div className="text-foreground font-medium">
-                          {product?.meta.categoryName}
+                          
                         </div>
                       </div>
                       <div className="space-y-1">
@@ -258,7 +202,7 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                           Người bán
                         </div>
                         <div className="text-foreground font-medium">
-                          {product?.meta.sellerName}
+                          
                         </div>
                       </div>
                       <div className="space-y-1">
@@ -266,7 +210,7 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                           Hiển thị
                         </div>
                         <div className="text-foreground font-medium capitalize">
-                          {product.meta.visibility}
+                      
                         </div>
                       </div>
                       <div className="space-y-1">
@@ -274,9 +218,7 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                           Ngày tạo
                         </div>
                         <div className="text-foreground font-medium">
-                          {new Date(product.createdAt).toLocaleDateString(
-                            "vi-VN"
-                          )}
+                     
                         </div>
                       </div>
                       <div className="space-y-1">
@@ -284,9 +226,7 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                           Cập nhật
                         </div>
                         <div className="text-foreground font-medium">
-                          {new Date(product.updatedAt).toLocaleDateString(
-                            "vi-VN"
-                          )}
+                         
                         </div>
                       </div>
                     </div>
@@ -298,13 +238,7 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                     <h2 className="text-xl font-semibold text-foreground mb-4">
                       Thông tin Schema
                     </h2>
-                    {product.schema ? (
-                      <SchemaViewer schema={product.schema} />
-                    ) : (
-                      <div className="text-center text-muted-foreground py-8">
-                        Không có thông tin schema
-                      </div>
-                    )}
+                
                   </div>
                 )}
               </div>
@@ -317,34 +251,11 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                 <div className="space-y-2">
                   <div className="flex items-baseline gap-3">
                     <span className="text-4xl font-bold text-foreground">
-                      {formatPrice(product?.meta.prices[0].amount)}
                     </span>
-                    {product?.meta.prices[0].originalAmount && (
-                      <span className="text-lg text-muted-foreground line-through">
-                        {formatPrice(product.meta.prices[0].originalAmount)}
-                      </span>
-                    )}
                   </div>
-                  {product?.meta.prices[0].originalAmount && (
-                    <div className="inline-block bg-brand-error/20 text-brand-error text-xs font-semibold px-2 py-1 rounded">
-                      Giảm{" "}
-                      {Math.round(
-                        (1 -
-                          product.meta.prices[0].amount /
-                            product.meta.prices[0].originalAmount) *
-                          100
-                      )}
-                      %
-                    </div>
-                  )}
                 </div>
 
                 <button
-                  onClick={() => {
-                    router.push(
-                      `/payment?id=${encodeURIComponent(btoa(product.id))}`
-                    );
-                  }}
                   className="w-full bg-brand-primary hover:opacity-90 text-primary-foreground font-semibold py-4 rounded-lg transition flex items-center justify-center gap-2 shadow-lg"
                 >
                   <ShoppingCart size={20} />
@@ -355,9 +266,6 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Package size={16} className="text-brand-success" />
                     <span>
-                      {product?.meta.inventoryType === "UNLIMITED"
-                        ? "Hàng luôn có sẵn"
-                        : `Còn ${product?.meta.inventoryCount} sản phẩm`}
                     </span>
                   </div>
                 </div>
@@ -370,37 +278,20 @@ export default function ProductDetailPage({ slug }: { slug: string }) {
                 </h3>
                 <div className="flex items-start gap-4">
                   <img
-                    src={product?.sellerProfile.avatarUrl}
-                    alt={product?.sellerProfile.fullName}
                     className="w-14 h-14 rounded-full border-2 border-brand-primary/30"
                   />
                   <div className="flex-1 space-y-1">
                     <h4 className="font-semibold text-foreground">
-                      {product?.sellerProfile.shopName}
                     </h4>
                     <p className="text-sm text-muted-foreground">
-                      {product?.sellerProfile.fullName}
                     </p>
                   </div>
                 </div>
-                {product?.sellerProfile.shopDescription && (
-                  <p className="text-sm text-muted-foreground pt-3 border-t border-border">
-                    {product?.sellerProfile.shopDescription}
-                  </p>
-                )}
               </div>
             </aside>
           </div>
         </div>
       </main>
-
-      {/* Lightbox */}
-      <ImageLightbox
-        images={product?.meta.galleryUrls}
-        currentIndex={lightboxIndex}
-        onClose={closeLightbox}
-        onNavigate={navigateLightbox}
-      />
     </div>
   );
 }

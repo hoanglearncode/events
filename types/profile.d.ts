@@ -26,25 +26,6 @@ export interface ProfileFormData {
   dateOfBirth?: string;
 }
 
-export interface ProfileDetailData {
-  phone?: string;
-  bio?: string;
-  address?: string;
-  dateOfBirth?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  emailVerified?: boolean;
-  phoneVerified?: boolean;
-  provider?: string;
-  userId: string;
-  email: string;
-  role?: "USER" | "ADMIN" | "SELLER";
-  fullname: string;
-  avatar: string | null;
-  mustChangePassword: any;
-  email: string;
-}
-
 export interface UpdateAvatarData {
   avatar: File;
 }

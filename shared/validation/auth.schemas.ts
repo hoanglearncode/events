@@ -8,7 +8,10 @@ export const passwordSchema = z
   .regex(/[A-Z]/, "Mật khẩu phải chứa ít nhất 1 ký tự in hoa")
   .regex(/[a-z]/, "Mật khẩu phải chứa ít nhất 1 ký tự thường")
   .regex(/\d/, "Mật khẩu phải chứa ít nhất 1 ký tự số")
-  .regex(/[!@#$%^&*(),.?":{}|<>]/, "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt");
+  .regex(
+    /[!@#$%^&*(),.?":{}|<>]/,
+    "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt"
+  );
 // Email validation
 export const emailSchema = z
   .string()
@@ -26,20 +29,18 @@ export const loginSchema = z.object({
 export const registerSchema = z
   .object({
     fullName: z.string().optional().nullable(),
-    email: z
-      .string()
-      .email("Email không hợp lệ")
-      .min(1, "Email là bắt buộc"),
+    email: z.string().email("Email không hợp lệ").min(1, "Email là bắt buộc"),
     password: z
       .string()
       .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
       .regex(/[A-Z]/, "Mật khẩu phải chứa ít nhất 1 ký tự in hoa")
       .regex(/[a-z]/, "Mật khẩu phải chứa ít nhất 1 ký tự thường")
       .regex(/\d/, "Mật khẩu phải chứa ít nhất 1 ký tự số")
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt"),
-    confirmPassword: z
-      .string()
-      .min(1, "Vui lòng xác nhận mật khẩu"),
+      .regex(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt"
+      ),
+    confirmPassword: z.string().min(1, "Vui lòng xác nhận mật khẩu"),
     agreeToTerms: z.boolean().refine((val) => val === true, {
       message: "Bạn phải đồng ý với Điều khoản dịch vụ và Chính sách bảo mật",
     }),
@@ -88,10 +89,11 @@ export const changePasswordSchema = z
       .regex(/[A-Z]/, "Mật khẩu phải chứa ít nhất 1 ký tự in hoa")
       .regex(/[a-z]/, "Mật khẩu phải chứa ít nhất 1 ký tự thường")
       .regex(/\d/, "Mật khẩu phải chứa ít nhất 1 ký tự số")
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt"),
-    password_confirmation: z
-      .string()
-      .min(1, "Vui lòng xác nhận mật khẩu"),
+      .regex(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt"
+      ),
+    password_confirmation: z.string().min(1, "Vui lòng xác nhận mật khẩu"),
   })
   .refine((data) => data.password === data.password_confirmation, {
     message: "Mật khẩu xác nhận không khớp",

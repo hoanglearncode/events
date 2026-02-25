@@ -37,7 +37,10 @@ const advertisementBanners = [
 
 export function Advertisement() {
   // Randomly select an advertisement banner
-  const randomAd = advertisementBanners[Math.floor(Math.random() * advertisementBanners.length)];
+  const randomAd =
+    advertisementBanners[
+      Math.floor(Math.random() * advertisementBanners.length)
+    ];
 
   return (
     <Card className="hidden lg:block overflow-hidden border-border p-0">

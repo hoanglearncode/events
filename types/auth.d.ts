@@ -1,7 +1,7 @@
 export interface LoginResponse {
   result: {
     token: string;
-    refresh_token: string;
+    refreshToken: string;
   };
   code: number;
   message: string;
@@ -23,4 +23,33 @@ export interface User {
   provider: string | null;
   provider_id: string | null;
   avatar: string | null;
+}
+
+export interface UserProfile extends User {
+  address: string | null;
+  avatar: string | null;
+  bio: string | null;
+
+  createdAt: string;
+  updatedAt: string;
+
+  dateOfBirth: string | null;
+
+  email: string;
+  emailVerified: boolean;
+
+  fullname: string;
+
+  mustChangePassword: boolean;
+
+  phone: string | null;
+  phoneVerified: boolean;
+
+  provider: "LOCAL" | string;
+
+  role: "ADMIN" | "USER" | string;
+
+  sellerStatus: string | null;
+
+  userId: string;
 }

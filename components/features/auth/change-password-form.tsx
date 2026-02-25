@@ -65,7 +65,6 @@ const ChangePasswordForm: React.FC = () => {
     }
   };
 
-
   return (
     <Card className="border-0 shadow-none bg-transparent">
       <CardContent className="px-0">

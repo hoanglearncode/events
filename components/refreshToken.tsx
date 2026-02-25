@@ -97,7 +97,7 @@ export default function RefreshTokenProvider() {
       const expireAt = getTokenExpireTime(accessToken);
       if (!expireAt) return;
 
-      const delay = expireAt - Date.now() - 5000; 
+      const delay = expireAt - Date.now() - 5000;
 
       if (delay <= 0) {
         refreshNow();

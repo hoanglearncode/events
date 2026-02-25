@@ -20,7 +20,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { AdminProduct } from "@/hooks/queries/useProductsQuery";
 import { formatDate } from "@/shared/helpers/date";
 
 /* =======================
@@ -56,7 +55,7 @@ function StatusBadge({ status }: { status?: string }) {
 }
 
 // Lấy giá an toàn
-const getDisplayPrice = (product: AdminProduct) => {
+const getDisplayPrice = (product: any) => {
   const prices = product.meta?.prices;
   if (!Array.isArray(prices) || prices.length === 0) return "—";
 
@@ -67,11 +66,11 @@ const getDisplayPrice = (product: AdminProduct) => {
 };
 
 // Lấy tên sản phẩm
-const getProductName = (product: AdminProduct) =>
+const getProductName = (product: any) =>
   product.meta?.name?.trim() || product.meta?.slug || `Sản phẩm #${product.id}`;
 
 // Lấy avatar
-const getThumbnail = (product: AdminProduct) =>
+const getThumbnail = (product: any) =>
   product.meta?.thumbnailUrl || product.meta?.galleryUrls?.[0] || undefined;
 
 /* =======================
@@ -79,9 +78,9 @@ const getThumbnail = (product: AdminProduct) =>
 ======================= */
 
 type ProductTableProps = {
-  products: AdminProduct[];
-  onAction: (product: AdminProduct) => void;
-  onViewDetail?: (product: AdminProduct) => void;
+  products: any[];
+  onAction: (product: any) => void;
+  onViewDetail?: (product: any) => void;
 };
 
 export default function ProductTable({

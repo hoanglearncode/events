@@ -5,16 +5,23 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Zap, Send, CheckCircle2,  Twitter,
+import {
+  Zap,
+  Send,
+  CheckCircle2,
+  Twitter,
   Facebook,
   Linkedin,
   Youtube,
-  Instagram, } from "lucide-react";
+  Instagram,
+} from "lucide-react";
 
 import TikTokIcon from "@/components/icon/Tiktok";
 import ThreadsIcon from "@/components/icon/Threads";
 
-import { metaConfig } from "@/shared/config/site.config";
+import { useSettingStore } from "@/store/setting.store";
+
+import Image from "next/image";
 
 export default function PublicFooter() {
   const { t } = useTranslation();
@@ -23,12 +30,30 @@ export default function PublicFooter() {
   const [isLoading, setIsLoading] = useState(false);
 
   const socialLinks = [
-    { icon: ThreadsIcon, href: "https://www.threads.com/@nhacoevent", label: "Threads" },
-    { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61552728892066", label: "Facebook" },
-    { icon: Instagram, href: "https://www.instagram.com/nhacoevent/", label: "Instagram" },
+    {
+      icon: ThreadsIcon,
+      href: "https://www.threads.com/@nhacoevent",
+      label: "Threads",
+    },
+    {
+      icon: Facebook,
+      href: "https://www.facebook.com/profile.php?id=61552728892066",
+      label: "Facebook",
+    },
+    {
+      icon: Instagram,
+      href: "https://www.instagram.com/nhacoevent/",
+      label: "Instagram",
+    },
     { icon: Youtube, href: "https://www.youtube.com/", label: "YouTube" },
-    { icon: TikTokIcon, href: "https://www.tiktok.com/@nhacoevent", label: "TikTok" },
+    {
+      icon: TikTokIcon,
+      href: "https://www.tiktok.com/@nhacoevent",
+      label: "TikTok",
+    },
   ];
+
+  const general = useSettingStore((state) => state.general);
   const handleSubscribe = () => {
     if (!email) return;
     setIsLoading(true);
@@ -52,14 +77,70 @@ export default function PublicFooter() {
           {/* BRAND */}
           <div className="space-y-5">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent">
-                <Zap className="h-5 w-5 text-white" />
+              <div className="relative shrink-0">
+                <Image
+                  src={general?.systemLogo || "/event_logo.jpg"}
+                  alt={
+                    general?.systemName ? `${general.systemName} logo` : "logo"
+                  }
+                  width={36}
+                  height={36}
+                  priority
+                  className="
+                    w-8 h-8
+                    sm:w-9 sm:h-9
+                    rounded-full
+                    object-cover
+                    transition-transform duration-300
+                    group-hover:scale-105
+                  "
+                />
+
+                {/* glow effect */}
+                <div
+                  className="
+                    absolute -inset-1
+                    rounded-full
+                    bg-gradient-to-r from-primary to-accent
+                    opacity-0
+                    blur-lg
+                    group-hover:opacity-40
+                    transition
+                  "
+                />
               </div>
-              <span className="text-lg font-bold">{metaConfig.siteName}</span>
+              <div className="flex flex-col min-w-0 leading-tight">
+                {/* system name */}
+                <span
+                  className="
+                    text-sm sm:text-base lg:text-lg
+                    font-bold
+                    bg-gradient-to-r from-primary via-accent to-primary
+                    bg-clip-text text-transparent
+                    bg-[length:200%_auto]
+                    animate-gradient
+                    truncate
+                  "
+                >
+                  {general?.systemName}
+                </span>
+
+                {/* system title */}
+                <span
+                  className="
+                    hidden sm:block
+                    text-xs
+                    text-muted-foreground
+                    truncate
+                  "
+                >
+                  {general?.systemTitle}
+                </span>
+              </div>
             </div>
 
             <p className="max-w-sm text-sm text-muted-foreground leading-relaxed">
-              {metaConfig.siteDescription}
+              {general?.systemDescription}
             </p>
 
             <div className="flex gap-3">
@@ -83,11 +164,11 @@ export default function PublicFooter() {
           {/* NEWSLETTER */}
           <div className="space-y-5">
             <h4 className="text-sm font-semibold uppercase tracking-wide">
-              {metaConfig.subscribeTitle}
+              Đăng ký nhận tin
             </h4>
 
             <p className="text-sm text-muted-foreground">
-              {metaConfig.newsDescription}
+              Nhận thông tin mới nhất về sự kiện và tin tức từ chúng tôi.
             </p>
 
             <div className="relative max-w-sm">
@@ -130,16 +211,12 @@ export default function PublicFooter() {
         {/* BOTTOM */}
         <div className="flex flex-col gap-4 text-center text-xs text-muted-foreground md:flex-row md:justify-between md:text-left">
           <span>
-            {metaConfig.siteAuthor} · {t("footer.allRightsReserved")}
+            {general?.systemName} · {t("footer.allRightsReserved")}
           </span>
 
           <div className="flex justify-center gap-6">
             {["termsOfService", "privacyPolicy", "cookies"].map((k) => (
-              <a
-                key={k}
-                href="#"
-                className="hover:text-foreground transition"
-              >
+              <a key={k} href="#" className="hover:text-foreground transition">
                 {t(`footer.${k}`)}
               </a>
             ))}

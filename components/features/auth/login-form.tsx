@@ -73,7 +73,6 @@ export default function LoginForm() {
     mode: "onTouched",
   });
 
-
   const onSubmit = async (data: LoginFormValues) => {
     const result = await login(data);
     if (!result.success && result.error) {

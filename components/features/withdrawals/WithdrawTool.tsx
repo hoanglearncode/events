@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { api } from "@/services/apiClient";
 import { API_ENDPOINTS } from "@/shared/const/api";
-import { paymentService } from "@/services/payment.service";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -83,11 +82,6 @@ export function WithdrawTool() {
       data.bankCode = null;
     }
     try {
-      await api.post(API_ENDPOINTS.PAY.PAYMENT_INFO_ADD as any, data);
-      log(`Đã lưu info ${provider}`, "success");
-      alert("Lưu thành công!");
-      // refresh list
-      loadPaymentInfos();
     } catch (e: any) {
       log(`Lỗi lưu: ${e.response?.data?.message || e.message}`, "error");
     }
@@ -95,11 +89,6 @@ export function WithdrawTool() {
 
   async function loadPaymentInfos() {
     try {
-      const infos = await paymentService.getMyPaymentInfos();
-      setPaymentInfos(infos || []);
-      if (infos && infos.length > 0 && !selectedPaymentInfoId) {
-        setSelectedPaymentInfoId(infos[0].id);
-      }
     } catch (e: any) {
       log("Không load được payment infos", "error");
     }
@@ -107,18 +96,6 @@ export function WithdrawTool() {
 
   async function deposit(provider: "PAYOS" | "PAYPAL") {
     try {
-      log(`Creating Deposit ${provider}...`);
-      const endpoint =
-        provider === "PAYOS"
-          ? API_ENDPOINTS.PAY.PAYOS_CREATE
-          : API_ENDPOINTS.PAY.PAYPAL_CREATE;
-      const res = await api.post(endpoint as any, {
-        amount,
-        currency: provider === "PAYOS" ? "VND" : "USD",
-      });
-      const result = res?.result || res?.data || res;
-      log(`Deposit created`, "success");
-      if (result.checkoutUrl) window.open(result.checkoutUrl, "_blank");
     } catch (e: any) {
       log(`Lỗi nạp: ${e.response?.data?.message || e.message}`, "error");
     }
@@ -126,15 +103,6 @@ export function WithdrawTool() {
 
   async function withdraw(provider: "PAYOS" | "PAYPAL") {
     try {
-      log(`Rút ${amount} về ${provider}...`);
-      await paymentService.withdraw({
-        amount: Number(amount),
-        provider: provider as any,
-      });
-      log("Rút thành công! Đợi xíu check lại ví.", "success");
-      // refresh
-      loadPaymentInfos();
-      setTimeout(checkBalance, 3000);
     } catch (e: any) {
       log(`Lỗi rút: ${e.response?.data?.message || e.message}`, "error");
     }

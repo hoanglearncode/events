@@ -8,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useBanks, useSavePaymentInfo } from "@/hooks/usePayment";
 import type { PaymentProvider } from "@/types/payment";
 
 interface PaymentInfoFormProps {
@@ -17,8 +16,7 @@ interface PaymentInfoFormProps {
 }
 
 export function PaymentInfoForm({ provider, userId }: PaymentInfoFormProps) {
-  const { data: banks } = useBanks();
-  const saveInfo = useSavePaymentInfo();
+
 
   const [formData, setFormData] = useState({
     bankCode: "",
@@ -51,11 +49,6 @@ export function PaymentInfoForm({ provider, userId }: PaymentInfoFormProps) {
             <SelectValue placeholder="Chọn ngân hàng" />
           </SelectTrigger>
           <SelectContent>
-            {banks?.map((bank: any) => (
-              <SelectItem key={bank.code} value={bank.code}>
-                {bank.code} - {bank.fullName}
-              </SelectItem>
-            ))}
           </SelectContent>
         </Select>
       </div>

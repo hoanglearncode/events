@@ -89,7 +89,8 @@ const complaints = [
     priority: "high",
     status: "pending",
     createdAt: "2024-02-06 11:15",
-    description: "Cà phê Arabica nhưng hương vị giống Robusta, nghi ngờ hàng kém chất lượng",
+    description:
+      "Cà phê Arabica nhưng hương vị giống Robusta, nghi ngờ hàng kém chất lượng",
     orderCode: "ORD-2024-0201",
     unread: true,
     messages: 2,
@@ -172,16 +173,41 @@ const categoryLabels = {
 };
 
 const priorityConfig = {
-  high: { label: "Cao", color: "bg-brand-error/10 text-brand-error border-brand-error/20" },
-  medium: { label: "Trung bình", color: "bg-brand-warning/10 text-brand-warning border-brand-warning/20" },
-  low: { label: "Thấp", color: "bg-brand-accent/10 text-brand-accent border-brand-accent/20" },
+  high: {
+    label: "Cao",
+    color: "bg-brand-error/10 text-brand-error border-brand-error/20",
+  },
+  medium: {
+    label: "Trung bình",
+    color: "bg-brand-warning/10 text-brand-warning border-brand-warning/20",
+  },
+  low: {
+    label: "Thấp",
+    color: "bg-brand-accent/10 text-brand-accent border-brand-accent/20",
+  },
 };
 
 const statusConfig = {
-  pending: { label: "Chờ xử lý", color: "bg-brand-warning/10 text-brand-warning border-brand-warning/20", icon: Clock },
-  inProgress: { label: "Đang xử lý", color: "bg-brand-primary/10 text-brand-primary border-brand-primary/20", icon: MessageSquare },
-  resolved: { label: "Đã giải quyết", color: "bg-brand-success/10 text-brand-success border-brand-success/20", icon: CheckCircle2 },
-  rejected: { label: "Từ chối", color: "bg-muted text-muted-foreground border-border", icon: XCircle },
+  pending: {
+    label: "Chờ xử lý",
+    color: "bg-brand-warning/10 text-brand-warning border-brand-warning/20",
+    icon: Clock,
+  },
+  inProgress: {
+    label: "Đang xử lý",
+    color: "bg-brand-primary/10 text-brand-primary border-brand-primary/20",
+    icon: MessageSquare,
+  },
+  resolved: {
+    label: "Đã giải quyết",
+    color: "bg-brand-success/10 text-brand-success border-brand-success/20",
+    icon: CheckCircle2,
+  },
+  rejected: {
+    label: "Từ chối",
+    color: "bg-muted text-muted-foreground border-border",
+    icon: XCircle,
+  },
 };
 
 export default function ComplaintsManagement() {
@@ -201,9 +227,12 @@ export default function ComplaintsManagement() {
       complaint.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
       complaint.orderCode.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesStatus = filterStatus === "all" || complaint.status === filterStatus;
-    const matchesPriority = filterPriority === "all" || complaint.priority === filterPriority;
-    const matchesCategory = filterCategory === "all" || complaint.category === filterCategory;
+    const matchesStatus =
+      filterStatus === "all" || complaint.status === filterStatus;
+    const matchesPriority =
+      filterPriority === "all" || complaint.priority === filterPriority;
+    const matchesCategory =
+      filterCategory === "all" || complaint.category === filterCategory;
 
     const matchesTab =
       activeTab === "all" ||
@@ -211,7 +240,13 @@ export default function ComplaintsManagement() {
       (activeTab === "inProgress" && complaint.status === "inProgress") ||
       (activeTab === "resolved" && complaint.status === "resolved");
 
-    return matchesSearch && matchesStatus && matchesPriority && matchesCategory && matchesTab;
+    return (
+      matchesSearch &&
+      matchesStatus &&
+      matchesPriority &&
+      matchesCategory &&
+      matchesTab
+    );
   });
 
   const handleViewDetail = (complaint: any) => {
@@ -267,7 +302,9 @@ export default function ComplaintsManagement() {
               <CardContent className="p-4">
                 <div className="text-center">
                   <p className="text-sm text-muted-foreground mb-1">Tổng số</p>
-                  <p className="text-3xl font-bold text-foreground">{complaintStats.total}</p>
+                  <p className="text-3xl font-bold text-foreground">
+                    {complaintStats.total}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -275,8 +312,12 @@ export default function ComplaintsManagement() {
             <Card className="border-border shadow-md glass-dark">
               <CardContent className="p-4">
                 <div className="text-center">
-                  <p className="text-sm text-muted-foreground mb-1">Chờ xử lý</p>
-                  <p className="text-3xl font-bold text-brand-warning">{complaintStats.pending}</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Chờ xử lý
+                  </p>
+                  <p className="text-3xl font-bold text-brand-warning">
+                    {complaintStats.pending}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -284,8 +325,12 @@ export default function ComplaintsManagement() {
             <Card className="border-border shadow-md glass-dark">
               <CardContent className="p-4">
                 <div className="text-center">
-                  <p className="text-sm text-muted-foreground mb-1">Đang xử lý</p>
-                  <p className="text-3xl font-bold text-brand-primary">{complaintStats.inProgress}</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Đang xử lý
+                  </p>
+                  <p className="text-3xl font-bold text-brand-primary">
+                    {complaintStats.inProgress}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -293,8 +338,12 @@ export default function ComplaintsManagement() {
             <Card className="border-border shadow-md glass-dark">
               <CardContent className="p-4">
                 <div className="text-center">
-                  <p className="text-sm text-muted-foreground mb-1">Đã giải quyết</p>
-                  <p className="text-3xl font-bold text-brand-success">{complaintStats.resolved}</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Đã giải quyết
+                  </p>
+                  <p className="text-3xl font-bold text-brand-success">
+                    {complaintStats.resolved}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -302,8 +351,12 @@ export default function ComplaintsManagement() {
             <Card className="border-border shadow-md glass-dark">
               <CardContent className="p-4">
                 <div className="text-center">
-                  <p className="text-sm text-muted-foreground mb-1">Tỷ lệ giải quyết</p>
-                  <p className="text-3xl font-bold text-brand-success">{complaintStats.resolutionRate}%</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Tỷ lệ giải quyết
+                  </p>
+                  <p className="text-3xl font-bold text-brand-success">
+                    {complaintStats.resolutionRate}%
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -311,8 +364,12 @@ export default function ComplaintsManagement() {
             <Card className="border-border shadow-md glass-dark">
               <CardContent className="p-4">
                 <div className="text-center">
-                  <p className="text-sm text-muted-foreground mb-1">Thời gian TB</p>
-                  <p className="text-3xl font-bold text-foreground">{complaintStats.avgResponseTime}</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Thời gian TB
+                  </p>
+                  <p className="text-3xl font-bold text-foreground">
+                    {complaintStats.avgResponseTime}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -349,7 +406,10 @@ export default function ComplaintsManagement() {
                   </SelectContent>
                 </Select>
 
-                <Select value={filterPriority} onValueChange={setFilterPriority}>
+                <Select
+                  value={filterPriority}
+                  onValueChange={setFilterPriority}
+                >
                   <SelectTrigger className="w-[160px] bg-card border-border">
                     <SelectValue placeholder="Độ ưu tiên" />
                   </SelectTrigger>
@@ -361,7 +421,10 @@ export default function ComplaintsManagement() {
                   </SelectContent>
                 </Select>
 
-                <Select value={filterCategory} onValueChange={setFilterCategory}>
+                <Select
+                  value={filterCategory}
+                  onValueChange={setFilterCategory}
+                >
                   <SelectTrigger className="w-[160px] bg-card border-border">
                     <SelectValue placeholder="Danh mục" />
                   </SelectTrigger>
@@ -384,7 +447,11 @@ export default function ComplaintsManagement() {
         {/* TABS & LIST */}
         <Card className="border-border shadow-xl glass-dark">
           <CardContent className="p-0">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
               <div className="border-b border-border px-6 bg-muted/20">
                 <TabsList className="bg-transparent h-12">
                   <TabsTrigger
@@ -400,7 +467,10 @@ export default function ComplaintsManagement() {
                     <div className="flex items-center gap-2">
                       Chờ xử lý
                       <Badge className="bg-brand-warning hover:bg-brand-warning/90">
-                        {complaints.filter((c) => c.status === "pending").length}
+                        {
+                          complaints.filter((c) => c.status === "pending")
+                            .length
+                        }
                       </Badge>
                     </div>
                   </TabsTrigger>
@@ -408,13 +478,16 @@ export default function ComplaintsManagement() {
                     value="inProgress"
                     className="data-[state=active]:bg-card data-[state=active]:shadow-sm"
                   >
-                    Đang xử lý ({complaints.filter((c) => c.status === "inProgress").length})
+                    Đang xử lý (
+                    {complaints.filter((c) => c.status === "inProgress").length}
+                    )
                   </TabsTrigger>
                   <TabsTrigger
                     value="resolved"
                     className="data-[state=active]:bg-card data-[state=active]:shadow-sm"
                   >
-                    Đã giải quyết ({complaints.filter((c) => c.status === "resolved").length})
+                    Đã giải quyết (
+                    {complaints.filter((c) => c.status === "resolved").length})
                   </TabsTrigger>
                 </TabsList>
               </div>
@@ -423,7 +496,9 @@ export default function ComplaintsManagement() {
                 {filteredComplaints.length === 0 ? (
                   <div className="p-12 text-center">
                     <AlertCircle className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
-                    <p className="text-foreground font-medium">Không tìm thấy khiếu nại nào</p>
+                    <p className="text-foreground font-medium">
+                      Không tìm thấy khiếu nại nào
+                    </p>
                     <p className="text-sm text-muted-foreground mt-1">
                       Thử thay đổi bộ lọc hoặc tìm kiếm khác
                     </p>
@@ -431,8 +506,11 @@ export default function ComplaintsManagement() {
                 ) : (
                   <div className="divide-y divide-border">
                     {filteredComplaints.map((complaint) => {
-                      const StatusIcon = statusConfig[complaint.status as keyof typeof statusConfig].icon;
-                      
+                      const StatusIcon =
+                        statusConfig[
+                          complaint.status as keyof typeof statusConfig
+                        ].icon;
+
                       return (
                         <div
                           key={complaint.id}
@@ -440,7 +518,9 @@ export default function ComplaintsManagement() {
                           onClick={() => handleViewDetail(complaint)}
                         >
                           {/* Status Icon */}
-                          <div className={`w-12 h-12 rounded-xl border-2 flex items-center justify-center flex-shrink-0 ${statusConfig[complaint.status as keyof typeof statusConfig].color}`}>
+                          <div
+                            className={`w-12 h-12 rounded-xl border-2 flex items-center justify-center flex-shrink-0 ${statusConfig[complaint.status as keyof typeof statusConfig].color}`}
+                          >
                             <StatusIcon className="w-5 h-5" />
                           </div>
 
@@ -465,22 +545,45 @@ export default function ComplaintsManagement() {
                             </p>
 
                             <div className="flex flex-wrap items-center gap-3">
-                              <Badge variant="outline" className="border-border">
+                              <Badge
+                                variant="outline"
+                                className="border-border"
+                              >
                                 <User className="w-3 h-3 mr-1" />
                                 {complaint.customer}
                               </Badge>
 
-                              <Badge variant="outline" className="border-border">
+                              <Badge
+                                variant="outline"
+                                className="border-border"
+                              >
                                 <Tag className="w-3 h-3 mr-1" />
-                                {categoryLabels[complaint.category as keyof typeof categoryLabels]}
+                                {
+                                  categoryLabels[
+                                    complaint.category as keyof typeof categoryLabels
+                                  ]
+                                }
                               </Badge>
 
-                              <Badge className={priorityConfig[complaint.priority as keyof typeof priorityConfig].color}>
-                                {priorityConfig[complaint.priority as keyof typeof priorityConfig].label}
+                              <Badge
+                                className={
+                                  priorityConfig[
+                                    complaint.priority as keyof typeof priorityConfig
+                                  ].color
+                                }
+                              >
+                                {
+                                  priorityConfig[
+                                    complaint.priority as keyof typeof priorityConfig
+                                  ].label
+                                }
                               </Badge>
 
                               {complaint.orderCode !== "N/A" && (
-                                <Badge variant="outline" className="border-border">
+                                <Badge
+                                  variant="outline"
+                                  className="border-border"
+                                >
                                   <FileText className="w-3 h-3 mr-1" />
                                   {complaint.orderCode}
                                 </Badge>
@@ -538,11 +641,32 @@ export default function ComplaintsManagement() {
                       <Badge variant="outline" className="border-border">
                         {selectedComplaint.id}
                       </Badge>
-                      <Badge className={statusConfig[selectedComplaint.status as keyof typeof statusConfig].color}>
-                        {statusConfig[selectedComplaint.status as keyof typeof statusConfig].label}
+                      <Badge
+                        className={
+                          statusConfig[
+                            selectedComplaint.status as keyof typeof statusConfig
+                          ].color
+                        }
+                      >
+                        {
+                          statusConfig[
+                            selectedComplaint.status as keyof typeof statusConfig
+                          ].label
+                        }
                       </Badge>
-                      <Badge className={priorityConfig[selectedComplaint.priority as keyof typeof priorityConfig].color}>
-                        Ưu tiên: {priorityConfig[selectedComplaint.priority as keyof typeof priorityConfig].label}
+                      <Badge
+                        className={
+                          priorityConfig[
+                            selectedComplaint.priority as keyof typeof priorityConfig
+                          ].color
+                        }
+                      >
+                        Ưu tiên:{" "}
+                        {
+                          priorityConfig[
+                            selectedComplaint.priority as keyof typeof priorityConfig
+                          ].label
+                        }
                       </Badge>
                     </DialogDescription>
                   </div>
@@ -560,22 +684,33 @@ export default function ComplaintsManagement() {
                   <CardContent className="space-y-2">
                     <div className="flex items-center gap-2">
                       <User className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm font-medium">{selectedComplaint.customer}</span>
+                      <span className="text-sm font-medium">
+                        {selectedComplaint.customer}
+                      </span>
                     </div>
                     {selectedComplaint.orderCode !== "N/A" && (
                       <div className="flex items-center gap-2">
                         <FileText className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm">Mã đơn hàng: {selectedComplaint.orderCode}</span>
+                        <span className="text-sm">
+                          Mã đơn hàng: {selectedComplaint.orderCode}
+                        </span>
                       </div>
                     )}
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm">Ngày tạo: {selectedComplaint.createdAt}</span>
+                      <span className="text-sm">
+                        Ngày tạo: {selectedComplaint.createdAt}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Tag className="w-4 h-4 text-muted-foreground" />
                       <span className="text-sm">
-                        Danh mục: {categoryLabels[selectedComplaint.category as keyof typeof categoryLabels]}
+                        Danh mục:{" "}
+                        {
+                          categoryLabels[
+                            selectedComplaint.category as keyof typeof categoryLabels
+                          ]
+                        }
                       </span>
                     </div>
                   </CardContent>
@@ -589,7 +724,9 @@ export default function ComplaintsManagement() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm leading-relaxed">{selectedComplaint.description}</p>
+                    <p className="text-sm leading-relaxed">
+                      {selectedComplaint.description}
+                    </p>
                   </CardContent>
                 </Card>
 

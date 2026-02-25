@@ -23,12 +23,12 @@ export default function MarkdownEditor({
 
   return (
     <div className={cn("border rounded-lg overflow-hidden", className)}>
-        <Textarea
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={`# Tiêu đề\n\n**In đậm**, *in nghiêng*, danh sách:\n- Item 1\n- Item 2`}
-          className="min-h-[220px] border-0 rounded-none focus-visible:ring-0"
-        />
+      <Textarea
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={`# Tiêu đề\n\n**In đậm**, *in nghiêng*, danh sách:\n- Item 1\n- Item 2`}
+        className="min-h-[220px] border-0 rounded-none focus-visible:ring-0"
+      />
     </div>
   );
 }

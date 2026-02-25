@@ -14,10 +14,9 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { Transaction, PaymentStatus } from "@/types/payment.types";
 
 interface PaymentResultProps {
-  transaction: Transaction | null;
+  transaction: any | null;
   isLoading: boolean;
   onClose: () => void;
   onRetry: () => void;
@@ -222,7 +221,7 @@ export function PaymentResult({
   );
 }
 
-function getStatusConfig(status: PaymentStatus) {
+function getStatusConfig(status: any) {
   switch (status) {
     case "COMPLETED":
       return {

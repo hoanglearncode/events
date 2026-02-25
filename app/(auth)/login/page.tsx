@@ -31,6 +31,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import LoginForm from "@/components/features/auth/login-form";
+import { useSettingStore } from "@/store/setting.store";
+import { RegisterBlockedDialog } from "@/components/RegisterBlockedDialog";
 
 function SocialButton({
   children,
@@ -49,91 +51,105 @@ function SocialButton({
   );
 }
 export default function LoginPage() {
+  const general = useSettingStore((state) => state.general);
+
+  const [openRegisterDialog, setOpenRegisterDialog] = useState(false);
+
+  const handleRegisterClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (!general?.allowRegister) {
+        e.preventDefault();
+        setOpenRegisterDialog(true);
+      }
+    },
+    [general?.allowRegister]
+  );
+
   return (
     <div className="min-h-screen grid lg:grid-cols-2 bg-background">
-    <aside className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-primary/10 via-background to-secondary/10 border-r border-border relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none dark:opacity-20">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-secondary rounded-full blur-[120px]" />
-      </div>
-
-      <div className="relative z-10">
-        <div className="flex items-center gap-3 mb-8">
-          <Image
-            src="/event_logo.jpg"
-            alt="Nhà Có Event logo"
-            width={55}
-            height={55}
-            priority
-            className="rounded-md"
-          />
-          <span className="text-2xl font-bold tracking-tight">
-            Nhà Có Event
-          </span>
+      <aside className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-primary/10 via-background to-secondary/10 border-r border-border relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none dark:opacity-20">
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary rounded-full blur-[120px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-secondary rounded-full blur-[120px]" />
         </div>
 
-        <h1 className="text-4xl font-extrabold leading-tight mb-6">
-          Kết nối Nhân sự <br />
-          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Sự kiện toàn quốc
-          </span>
-        </h1>
-
-        <div className="space-y-6 max-w-lg">
-          <div className="flex gap-4">
-            <div className="mt-1 bg-primary/10 p-2 rounded-md h-fit">
-              <Layers className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-lg text-primary">
-                Kết nối đúng người – đúng việc
-              </h3>
-              <p className="text-muted-foreground">
-                Mạng lưới nhân sự sự kiện toàn quốc, kết nối nhanh chóng giữa
-                Ban Tổ chức, Doanh nghiệp và Nhân sự sự kiện.
-              </p>
-            </div>
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-8">
+            <Image
+              src={general?.systemLogo || "/event_logo.jpg"}
+              alt={general?.systemName ? `${general.systemName} logo` : "logo"}
+              width={55}
+              height={55}
+              priority
+              className="rounded-md"
+            />
+            <span className="text-2xl font-bold tracking-tight">
+              {general?.systemName || "Nhà Có Event"}
+            </span>
           </div>
 
-          <div className="flex gap-4">
-            <div className="mt-1 bg-secondary/10 p-2 rounded-md h-fit">
-              <Bot className="w-5 h-5 text-secondary" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-lg text-secondary">
-                Tuyển dụng linh hoạt – minh bạch
-              </h3>
-              <p className="text-muted-foreground">
-                Tuyển Tình nguyện viên, Cộng tác viên, Nhân sự sự kiện
-                với quy trình rõ ràng, thông tin minh bạch.
-              </p>
-            </div>
-          </div>
+          <h1 className="text-4xl font-extrabold leading-tight mb-6">
+            Kết nối Nhân sự <br />
+            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Sự kiện toàn quốc
+            </span>
+          </h1>
 
-          <div className="flex gap-4">
-            <div className="mt-1 bg-accent/10 p-2 rounded-md h-fit">
-              <Video className="w-5 h-5 text-accent" />
+          <div className="space-y-6 max-w-lg">
+            <div className="flex gap-4">
+              <div className="mt-1 bg-primary/10 p-2 rounded-md h-fit">
+                <Layers className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg text-primary">
+                  Kết nối đúng người – đúng việc
+                </h3>
+                <p className="text-muted-foreground">
+                  Mạng lưới nhân sự sự kiện toàn quốc, kết nối nhanh chóng giữa
+                  Ban Tổ chức, Doanh nghiệp và Nhân sự sự kiện.
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-semibold text-lg text-accent">
-                Đồng hành cùng Ban Tổ chức
-              </h3>
-              <p className="text-muted-foreground">
-                Hỗ trợ sự kiện từ nhỏ đến lớn – từ chuẩn bị, triển khai
-                đến vận hành thực tế.
-              </p>
+
+            <div className="flex gap-4">
+              <div className="mt-1 bg-secondary/10 p-2 rounded-md h-fit">
+                <Bot className="w-5 h-5 text-secondary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg text-secondary">
+                  Tuyển dụng linh hoạt – minh bạch
+                </h3>
+                <p className="text-muted-foreground">
+                  Tuyển Tình nguyện viên, Cộng tác viên, Nhân sự sự kiện với quy
+                  trình rõ ràng, thông tin minh bạch.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="mt-1 bg-accent/10 p-2 rounded-md h-fit">
+                <Video className="w-5 h-5 text-accent" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg text-accent">
+                  Đồng hành cùng Ban Tổ chức
+                </h3>
+                <p className="text-muted-foreground">
+                  Hỗ trợ sự kiện từ nhỏ đến lớn – từ chuẩn bị, triển khai đến
+                  vận hành thực tế.
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="relative z-10 mt-12 pt-8 border-t border-border">
-        <div className="flex items-center gap-4 text-sm text-muted-foreground italic">
-          <ShieldCheck className="w-4 h-4 text-accent" />
-          Nhanh chóng – Minh bạch – Đúng người
+        <div className="relative z-10 mt-12 pt-8 border-t border-border">
+          <div className="flex items-center gap-4 text-sm text-muted-foreground italic">
+            <ShieldCheck className="w-4 h-4 text-accent" />
+            Nhanh chóng – Minh bạch – Đúng người
+          </div>
         </div>
-      </div>
-    </aside>
+      </aside>
       <main className="flex items-center justify-center p-6 lg:p-12">
         <Card
           className="w-full max-w-md glass-dark"
@@ -182,7 +198,13 @@ export default function LoginPage() {
               Chưa có tài khoản?{" "}
               <Link
                 href="/register"
-                className="text-primary font-semibold hover:underline"
+                onClick={handleRegisterClick}
+                className={`font-semibold transition
+                  ${
+                    general?.allowRegister
+                      ? "text-primary hover:underline"
+                      : "text-muted-foreground cursor-not-allowed"
+                  }`}
               >
                 Đăng ký ngay
               </Link>
@@ -190,6 +212,10 @@ export default function LoginPage() {
           </CardFooter>
         </Card>
       </main>
+      <RegisterBlockedDialog
+        open={openRegisterDialog}
+        onOpenChange={setOpenRegisterDialog}
+      />
     </div>
   );
 }

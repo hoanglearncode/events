@@ -1,4 +1,5 @@
 // hooks/use-auth.ts
+'use client';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AuthService } from "@/services/auth.service";
@@ -194,7 +195,7 @@ export const useProfile = () => {
   return useQuery({
     queryKey: authQueryKeys.profile,
     queryFn: () => AuthService.getProfile(),
-    enabled: !!getAccessToken() && !user,
+    enabled: true,
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: (failureCount, error: any) => {
       if (error?.status === 401) return false;

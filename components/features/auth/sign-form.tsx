@@ -115,7 +115,9 @@ export default function RegisterComponent() {
     try {
       clearErrors();
       await registerMutation.mutateAsync(data as any);
-      toast.success("Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.");
+      toast.success(
+        "Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản."
+      );
     } catch (error: unknown) {
       console.error("Registration error:", error);
 
@@ -132,7 +134,8 @@ export default function RegisterComponent() {
         toast.error("Vui lòng kiểm tra lại thông tin đăng ký.");
       } else {
         const errorMessage =
-          (error as Error)?.message || "Đăng ký thất bại. Vui lòng thử lại sau.";
+          (error as Error)?.message ||
+          "Đăng ký thất bại. Vui lòng thử lại sau.";
         toast.error(errorMessage);
       }
     }
@@ -187,9 +190,7 @@ export default function RegisterComponent() {
 
       {/* Confirm password */}
       <div className="space-y-2">
-        <Label htmlFor={`confirmPassword`}>
-          Xác nhận mật khẩu
-        </Label>
+        <Label htmlFor={`confirmPassword`}>Xác nhận mật khẩu</Label>
         <PasswordField
           id={`confirmPassword`}
           placeholder="Nhập lại mật khẩu"
@@ -209,7 +210,9 @@ export default function RegisterComponent() {
             className="accent-primary"
             {...register("agreeToTerms")}
           />
-          <span className="text-xs">Tôi đồng ý với Điều khoản và Chính sách</span>
+          <span className="text-xs">
+            Tôi đồng ý với Điều khoản và Chính sách
+          </span>
         </label>
         <FieldError
           message={errors.agreeToTerms?.message as string | undefined}

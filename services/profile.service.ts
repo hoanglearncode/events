@@ -2,9 +2,9 @@ import {
   ProfileData,
   ProfileResponse,
   ProfileFormData,
-  ProfileDetailData,
   UpdateAvatarData,
 } from "@/types/profile";
+import { UserProfile } from "@/types/auth";
 import { api } from "./apiClient";
 import { API_ENDPOINTS } from "@/shared/const/api";
 
@@ -22,9 +22,9 @@ class ProfileServices {
   }
 
   // Lấy thông tin profile chi tiết
-  static async getDetails(): Promise<ProfileDetailData> {
+  static async getDetails(): Promise<UserProfile> {
     try {
-      const response = await api.get<ProfileResponse<ProfileDetailData>>(
+      const response = await api.get<ProfileResponse<UserProfile>>(
         `${API_ENDPOINTS.AUTH.PROFILE_DETAILS}`
       );
       return response.result;
@@ -36,9 +36,9 @@ class ProfileServices {
   // Cập nhật profile
   static async update(
     formData: ProfileFormData
-  ): Promise<ProfileResponse<ProfileDetailData>> {
+  ): Promise<ProfileResponse<UserProfile>> {
     try {
-      const data = await api.put<ProfileResponse<ProfileDetailData>>(
+      const data = await api.put<ProfileResponse<UserProfile>>(
         API_ENDPOINTS.AUTH.PROFILE_UPDATE,
         formData
       );
@@ -80,14 +80,12 @@ class ProfileServices {
   }
 
   // Upload avatar
-  static async updateAvatar(
-    file: File
-  ): Promise<ProfileResponse<ProfileDetailData>> {
+  static async updateAvatar(file: File): Promise<ProfileResponse<UserProfile>> {
     try {
       const formData = new FormData();
       formData.append("avatar", file);
 
-      const data = await api.post<ProfileResponse<ProfileDetailData>>(
+      const data = await api.post<ProfileResponse<UserProfile>>(
         `${API_ENDPOINTS.AUTH.PROFILE}/avatar`,
         formData
       );
@@ -107,9 +105,9 @@ class ProfileServices {
   }
 
   // Xóa avatar
-  static async deleteAvatar(): Promise<ProfileResponse<ProfileDetailData>> {
+  static async deleteAvatar(): Promise<ProfileResponse<UserProfile>> {
     try {
-      const data = await api.delete<ProfileResponse<ProfileDetailData>>(
+      const data = await api.delete<ProfileResponse<UserProfile>>(
         `${API_ENDPOINTS.AUTH.PROFILE}/avatar`
       );
       return data;

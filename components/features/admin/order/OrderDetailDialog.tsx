@@ -32,8 +32,6 @@ import {
   Loader2,
 } from "lucide-react";
 import { OrderDetail } from "@/types/order";
-import { useOrderActions } from "@/hooks/queries/useOrders";
-import { useConfirmDelivery } from "@/hooks/queries/orderQueries";
 import { useState } from "react";
 import { StatusBadge } from "./StatusBadge";
 import { toast } from "sonner";
@@ -58,39 +56,18 @@ export function OrderDetailDialog({
     open: boolean;
   }>({ type: null, open: false });
 
-  const {
-    loading: actionLoading,
-    fulfillOrder,
-    refundOrder,
-    downloadInvoice,
-  } = useOrderActions();
 
-  const confirmDelivery = useConfirmDelivery();
 
   const handleFulfill = async () => {
     if (!order) return;
-    const success = await fulfillOrder({ orderId: order.id });
-    if (success) {
-      setActionDialog({ type: null, open: false });
-      onRefresh();
-    }
   };
 
   const handleRefund = async () => {
     if (!order) return;
-    const success = await refundOrder({
-      orderId: order.id,
-      reason: "Customer request",
-    });
-    if (success) {
-      setActionDialog({ type: null, open: false });
-      onRefresh();
-    }
   };
 
   const handleDownloadInvoice = async () => {
     if (!order) return;
-    await downloadInvoice(order.id);
   };
 
   const handleConfirmDelivery = async () => {
@@ -101,7 +78,6 @@ export function OrderDetailDialog({
   const performConfirmDelivery = async () => {
     if (!order) return;
     try {
-      await confirmDelivery.mutateAsync(order.id);
       onRefresh();
       toast.success("Xác nhận thành công. Tiền đã được cộng vào ví.");
     } catch (error) {
@@ -197,26 +173,7 @@ export function OrderDetailDialog({
                   <h4 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest border-b border-border pb-2">
                     Hành động quản lý
                   </h4>
-                  {/* Confirm Delivery Button - Only show for PAID orders */}
-                  {(order.status === "PAID" || order.status === "PENDING") && (
-                    <Button
-                      onClick={handleConfirmDelivery}
-                      disabled={confirmDelivery.isPending}
-                      className="w-full bg-green-600 hover:bg-green-700 text-white mb-3"
-                    >
-                      {confirmDelivery.isPending ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Đang xử lý...
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle2 size={20} className="mr-2" />
-                          Xác nhận giao hàng
-                        </>
-                      )}
-                    </Button>
-                  )}
+                  
                   <div className="grid grid-cols-2 gap-3">
                     <Button
                       variant="outline"
@@ -317,15 +274,6 @@ export function OrderDetailDialog({
               này không thể hoàn tác.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={actionLoading}>Hủy</AlertDialogCancel>
-            <AlertDialogAction onClick={handleFulfill} disabled={actionLoading}>
-              {actionLoading && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Xác nhận
-            </AlertDialogAction>
-          </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
@@ -342,19 +290,6 @@ export function OrderDetailDialog({
               vào ví của khách hàng.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={actionLoading}>Hủy</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleRefund}
-              disabled={actionLoading}
-              className="bg-destructive hover:bg-destructive/90"
-            >
-              {actionLoading && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Hoàn tiền
-            </AlertDialogAction>
-          </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
       {/* Deliver Confirmation Dialog */}
@@ -370,17 +305,7 @@ export function OrderDetailDialog({
               ví.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={confirmDelivery.isPending}>
-              Hủy
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={performConfirmDelivery}
-              disabled={confirmDelivery.isPending}
-            >
-              {confirmDelivery.isPending ? "Đang xử lý..." : "Xác nhận"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
+          
         </AlertDialogContent>
       </AlertDialog>
     </>

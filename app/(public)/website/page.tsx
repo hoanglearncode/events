@@ -2,19 +2,23 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { ChevronRight, ChevronLeft, CalendarDays, TrendingUp, Pin } from "lucide-react";
+import {
+  ChevronRight,
+  ChevronLeft,
+  CalendarDays,
+  TrendingUp,
+  Pin,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Advertisement } from "./_components/AdvertisementDefautl";
 
-
 const pinnedPosts = [
   {
     id: 1,
     title: `Học bổng Quỹ TNT "Ươm Mầm Ước Mơ" – Niên khóa 2025–2026`,
-    excerpt:
-      `Quỹ Học bổng TNT "Ươm Mầm Ước Mơ" trân trọng thông báo bắt đầu nhận hồ sơ xin học bổng năm học 2025–2026 với nhiều quyền lợi hấp dẫn...`,
+    excerpt: `Quỹ Học bổng TNT "Ươm Mầm Ước Mơ" trân trọng thông báo bắt đầu nhận hồ sơ xin học bổng năm học 2025–2026 với nhiều quyền lợi hấp dẫn...`,
     image: "/mock/pinned.jpg",
     category: "Học bổng 2025–2026",
     updatedAt: "08 thg 11, 2026",
@@ -126,10 +130,12 @@ export default function HomePortalPage() {
   }, []);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + pinnedPosts.length) % pinnedPosts.length);
+    setCurrentSlide(
+      (prev) => (prev - 1 + pinnedPosts.length) % pinnedPosts.length
+    );
   }, []);
 
-  const goToSlide = useCallback((index : number) => {
+  const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index);
   }, []);
 
@@ -151,27 +157,29 @@ export default function HomePortalPage() {
       <main className="pt-12 md:pt-20 pb-16 md:pb-24">
         <div className="container max-w-7xl mx-auto px-4 md:px-6 space-y-8 md:space-y-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            
             {/* ================= LEFT COLUMN (MAIN CONTENT) ================= */}
             <div className="lg:col-span-8 space-y-8 md:space-y-12">
-              
               {/* -------- PINNED POST SLIDER -------- */}
               <section>
                 <div className="flex items-center gap-2 mb-4 text-primary font-semibold">
                   <Pin className="w-4 h-4" />
-                  <h3 className="uppercase tracking-wider text-xs md:text-sm">Nổi bật nhất</h3>
+                  <h3 className="uppercase tracking-wider text-xs md:text-sm">
+                    Nổi bật nhất
+                  </h3>
                 </div>
 
-                <div 
+                <div
                   className="relative"
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
                   {/* Slider Container */}
                   <div className="overflow-hidden rounded-lg">
-                    <div 
+                    <div
                       className="flex transition-transform duration-500 ease-out"
-                      style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                      style={{
+                        transform: `translateX(-${currentSlide * 100}%)`,
+                      }}
                     >
                       {pinnedPosts.map((post) => (
                         <div key={post.id} className="w-full flex-shrink-0">
@@ -198,21 +206,29 @@ export default function HomePortalPage() {
                                     <CalendarDays className="w-3 h-3" />
                                     <span>{post.updatedAt}</span>
                                   </div>
-                                  
+
                                   <h2 className="text-lg md:text-xl lg:text-2xl font-bold leading-tight group-hover:text-primary transition-colors">
-                                    <a href="#" className="hover:underline decoration-primary/30 underline-offset-4">
+                                    <a
+                                      href="#"
+                                      className="hover:underline decoration-primary/30 underline-offset-4"
+                                    >
                                       {post.title}
                                     </a>
                                   </h2>
-                                  
+
                                   <p className="text-xs md:text-sm text-muted-foreground line-clamp-2 md:line-clamp-3">
                                     {post.excerpt}
                                   </p>
                                 </div>
 
                                 <div className="pt-2">
-                                  <Button variant="ghost" size="sm" className="pl-0 group/btn hover:bg-transparent hover:text-primary text-sm">
-                                    Xem chi tiết <ChevronRight className="w-4 h-4 ml-1 transition-transform group-hover/btn:translate-x-1" />
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="pl-0 group/btn hover:bg-transparent hover:text-primary text-sm"
+                                  >
+                                    Xem chi tiết{" "}
+                                    <ChevronRight className="w-4 h-4 ml-1 transition-transform group-hover/btn:translate-x-1" />
                                   </Button>
                                 </div>
                               </div>
@@ -246,9 +262,9 @@ export default function HomePortalPage() {
                         key={index}
                         onClick={() => goToSlide(index)}
                         className={`h-2 rounded-full transition-all ${
-                          index === currentSlide 
-                            ? 'w-8 bg-primary' 
-                            : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                          index === currentSlide
+                            ? "w-8 bg-primary"
+                            : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
                         }`}
                         aria-label={`Go to slide ${index + 1}`}
                       />
@@ -260,8 +276,15 @@ export default function HomePortalPage() {
               {/* -------- LATEST POSTS -------- */}
               <section>
                 <div className="flex items-center justify-between mb-4 md:mb-6">
-                  <h3 className="text-base md:text-lg font-bold">Mới cập nhật</h3>
-                  <Button variant="link" className="text-muted-foreground h-auto p-0 text-sm">Xem tất cả</Button>
+                  <h3 className="text-base md:text-lg font-bold">
+                    Mới cập nhật
+                  </h3>
+                  <Button
+                    variant="link"
+                    className="text-muted-foreground h-auto p-0 text-sm"
+                  >
+                    Xem tất cả
+                  </Button>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -282,16 +305,19 @@ export default function HomePortalPage() {
                             />
                           ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground/50">
-                              <Image 
+                              <Image
                                 src="/placeholder.svg"
-                                width={40} 
-                                height={40} 
-                                className="opacity-20" 
-                                alt="" 
+                                width={40}
+                                height={40}
+                                className="opacity-20"
+                                alt=""
                               />
                             </div>
                           )}
-                          <Badge variant="secondary" className="absolute top-2 right-2 text-[10px] bg-background/80 backdrop-blur-sm">
+                          <Badge
+                            variant="secondary"
+                            className="absolute top-2 right-2 text-[10px] bg-background/80 backdrop-blur-sm"
+                          >
                             {post.category}
                           </Badge>
                         </div>
@@ -314,13 +340,14 @@ export default function HomePortalPage() {
 
             {/* ================= RIGHT COLUMN (SIDEBAR) ================= */}
             <aside className="lg:col-span-4 space-y-6 md:space-y-8">
-              
               {/* Popular Widget */}
               <Card className="border-none shadow-none bg-secondary/20 lg:bg-card lg:border lg:border-border lg:shadow-sm">
                 <CardContent className="p-0 lg:p-6">
                   <div className="flex items-center gap-2 mb-3 md:mb-4 lg:mb-6 px-4 pt-4 lg:p-0">
                     <TrendingUp className="w-4 md:w-5 h-4 md:h-5 text-primary" />
-                    <h3 className="font-bold text-base md:text-lg">Đọc nhiều nhất</h3>
+                    <h3 className="font-bold text-base md:text-lg">
+                      Đọc nhiều nhất
+                    </h3>
                   </div>
 
                   <div className="flex flex-col divide-y divide-border/50">
@@ -365,7 +392,6 @@ export default function HomePortalPage() {
               {/* Advertisement Banner */}
               <Advertisement />
             </aside>
-
           </div>
         </div>
       </main>

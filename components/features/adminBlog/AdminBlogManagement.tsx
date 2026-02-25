@@ -4,10 +4,7 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AdminBlogTable from "@/components/features/adminBlog/AdminBlogTable";
-import {
-  AdminBlogService,
-  AdminBlogPostResponse,
-} from "@/services/adminBlog.service";
+
 import { TablePagination } from "@/components/features/product/paga";
 import {
   Dialog,
@@ -29,7 +26,7 @@ import { toast } from "sonner";
 type ActionType = "delete" | "approve" | "feature" | null;
 
 export default function AdminBlogManagement() {
-  const [posts, setPosts] = useState<AdminBlogPostResponse[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(10);
@@ -40,38 +37,17 @@ export default function AdminBlogManagement() {
   const [openDialog, setOpenDialog] = useState(false);
   const [actionType, setActionType] = useState<ActionType>(null);
   const [selectedPost, setSelectedPost] =
-    useState<AdminBlogPostResponse | null>(null);
+    useState<any | null>(null);
   const [approvalStatus, setApprovalStatus] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const fetchPosts = async () => {
-    setIsLoading(true);
-    var res;
-    try {
-      tab === "pending"
-        ? (res = await AdminBlogService.getAllPending({
-            page,
-            limit: perPage,
-            search,
-          }))
-        : (res = await AdminBlogService.getAll({
-            page,
-            limit: perPage,
-            search,
-          }));
-
-      setPosts(res.result);
-      setTotal(res.pagination.total || 0);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+ 
 
   useEffect(() => {
-    fetchPosts();
+    // fetchPosts(); 
   }, [page, perPage, search, tab]);
 
-  const handleOpenDialog = (post: AdminBlogPostResponse, type: ActionType) => {
+  const handleOpenDialog = (post: any, type: ActionType) => {
     setSelectedPost(post);
     setActionType(type);
     setOpenDialog(true);
@@ -86,61 +62,15 @@ export default function AdminBlogManagement() {
 
   const handleDelete = async () => {
     if (!selectedPost) return;
-
-    setIsSubmitting(true);
-    try {
-      await AdminBlogService.deletePost(selectedPost.id);
-      toast.success("Xóa bài viết thành công!");
-      handleCloseDialog();
-
-      if (posts.length === 1 && page > 0) {
-        setPage(page - 1);
-      } else {
-        fetchPosts();
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Có lỗi xảy ra khi xóa bài viết!");
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   const handleFeature = async () => {
     if (!selectedPost) return;
 
-    setIsSubmitting(true);
-    try {
-      await AdminBlogService.toggleFeatured(selectedPost.id);
-      toast.success("Đã cập nhật bài viết nổi bật!");
-      handleCloseDialog();
-      fetchPosts();
-    } catch (error) {
-      toast.error("Có lỗi khi cập nhật nổi bật!");
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   const handleApprove = async () => {
     if (!selectedPost) return;
-
-    setIsSubmitting(true);
-    try {
-      await AdminBlogService.approvePost(selectedPost.id, approvalStatus);
-      toast.success(
-        approvalStatus
-          ? "Duyệt bài viết thành công!"
-          : "Từ chối bài viết thành công!"
-      );
-      handleCloseDialog();
-      fetchPosts();
-    } catch (error) {
-      console.error(error);
-      toast.error("Có lỗi xảy ra khi duyệt bài viết!");
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   const handleSubmit = () => {
@@ -192,7 +122,7 @@ export default function AdminBlogManagement() {
       ) : (
         <AdminBlogTable
           posts={posts}
-          onViewDetail={(post) => window.open(`/blog/${post.slug}`, "_blank")}
+          onViewDetail={(post) => window.open(`/blog/`, "_blank")}
           onDelete={(post) => handleOpenDialog(post, "delete")}
           onApprove={(post) => handleOpenDialog(post, "approve")}
           onFeature={(post) => handleOpenDialog(post, "feature")}

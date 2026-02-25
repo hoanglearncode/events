@@ -1,4 +1,3 @@
-
 import {
   Table,
   TableBody,
@@ -66,7 +65,6 @@ export default function AdminBlogTable({
   onApprove,
   onFeature,
 }: AdminBlogTableProps) {
-
   const [search, setSearch] = useState("");
 
   const filteredPosts = useMemo(() => {
@@ -79,7 +77,6 @@ export default function AdminBlogTable({
         p.authorName.toLowerCase().includes(q)
     );
   }, [posts, search]);
-
 
   return (
     <div className="bg-card border rounded-lg overflow-hidden">
@@ -97,7 +94,7 @@ export default function AdminBlogTable({
         <span className="text-sm text-muted-foreground">
           {filteredPosts.length}/{posts.length} bài viết
         </span>
-      </div>  
+      </div>
 
       <Table>
         <TableHeader>

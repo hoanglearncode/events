@@ -1,4 +1,8 @@
-import { SystemSetting } from "@/app/(dashboard)/admin/settings/_types/setting";
+import {
+  General,
+  SettingVersion,
+  SystemSetting,
+} from "@/app/(dashboard)/admin/settings/_types/setting";
 import { api } from "@/services/apiClient";
 import { API_ENDPOINTS } from "@/shared/const/api";
 import { ApiResponse } from "@/types/api";
@@ -17,16 +21,33 @@ export const getSettingDetail = async (): Promise<SystemSetting> => {
 
     return result;
   } catch (err: any) {
+    throw new Error(err?.message || "Không thể lấy cấu hình hệ thống");
+  }
+};
+
+export const getVersionList = async (): Promise<SettingVersion[]> => {
+  try {
+    const response = await api.get<ApiResponse<SettingVersion[]>>(
+      API_ENDPOINTS.setting.admin.version
+    );
+
+    const { code, message, result } = response;
+
+    if (code !== 200) {
+      throw new Error(message || "Get version setting failed");
+    }
+
+    return result;
+  } catch (err: any) {
     throw new Error(
-      err?.message || "Không thể lấy cấu hình hệ thống"
+      err?.message || "Không thể lấy danh sách cấu hình hệ thống"
     );
   }
 };
 
-
-export const getSettingGeneral= async ()=> {
+export const getSettingGeneral = async () => {
   try {
-    const response = await api.get<ApiResponse<SystemSetting>>(
+    const response = await api.get<ApiResponse<General>>(
       API_ENDPOINTS.setting.public.general
     );
 
@@ -38,13 +59,11 @@ export const getSettingGeneral= async ()=> {
 
     return result;
   } catch (err: any) {
-    throw new Error(
-      err?.message || "Không thể lấy cấu hình hệ thống"
-    );
+    throw new Error(err?.message || "Không thể lấy cấu hình hệ thống");
   }
-}
+};
 
-export const getSettingRequirement= async ()=> {
+export const getSettingRequirement = async () => {
   try {
     const response = await api.get<ApiResponse<SystemSetting>>(
       API_ENDPOINTS.setting.public.recruitment
@@ -58,13 +77,11 @@ export const getSettingRequirement= async ()=> {
 
     return result;
   } catch (err: any) {
-    throw new Error(
-      err?.message || "Không thể lấy cấu hình hệ thống"
-    );
+    throw new Error(err?.message || "Không thể lấy cấu hình hệ thống");
   }
-}
+};
 
-export const getSettingContent = async ()=> {
+export const getSettingContent = async () => {
   try {
     const response = await api.get<ApiResponse<SystemSetting>>(
       API_ENDPOINTS.setting.public.content
@@ -78,13 +95,11 @@ export const getSettingContent = async ()=> {
 
     return result;
   } catch (err: any) {
-    throw new Error(
-      err?.message || "Không thể lấy cấu hình hệ thống"
-    );
+    throw new Error(err?.message || "Không thể lấy cấu hình hệ thống");
   }
-}
+};
 
-export const getSettingPayment = async ()=> {
+export const getSettingPayment = async () => {
   try {
     const response = await api.get<ApiResponse<SystemSetting>>(
       API_ENDPOINTS.setting.public.finance
@@ -98,13 +113,11 @@ export const getSettingPayment = async ()=> {
 
     return result;
   } catch (err: any) {
-    throw new Error(
-      err?.message || "Không thể lấy cấu hình hệ thống"
-    );
+    throw new Error(err?.message || "Không thể lấy cấu hình hệ thống");
   }
-}
+};
 
-export const getSettingSecurity = async ()=> {
+export const getSettingSecurity = async () => {
   try {
     const response = await api.get<ApiResponse<SystemSetting>>(
       API_ENDPOINTS.setting.public.security
@@ -118,13 +131,11 @@ export const getSettingSecurity = async ()=> {
 
     return result;
   } catch (err: any) {
-    throw new Error(
-      err?.message || "Không thể lấy cấu hình hệ thống"
-    );
+    throw new Error(err?.message || "Không thể lấy cấu hình hệ thống");
   }
-}
+};
 
-export const getSettingIntegration = async ()=> {
+export const getSettingIntegration = async () => {
   try {
     const response = await api.get<ApiResponse<SystemSetting>>(
       API_ENDPOINTS.setting.public.integration
@@ -138,16 +149,15 @@ export const getSettingIntegration = async ()=> {
 
     return result;
   } catch (err: any) {
-    throw new Error(
-      err?.message || "Không thể lấy cấu hình hệ thống"
-    );
+    throw new Error(err?.message || "Không thể lấy cấu hình hệ thống");
   }
-}
+};
 
-export const updateSetting = async ()=> {
+export const updateSetting = async (data: any) => {
   try {
-    const response = await api.get<ApiResponse<SystemSetting>>(
-      API_ENDPOINTS.setting.admin.update
+    const response = await api.put<ApiResponse<SystemSetting>>(
+      API_ENDPOINTS.setting.admin.update,
+      { data }
     );
 
     const { code, message, result } = response;
@@ -158,8 +168,42 @@ export const updateSetting = async ()=> {
 
     return result;
   } catch (err: any) {
-    throw new Error(
-      err?.message || "Không thể lấy cấu hình hệ thống"
-    );
+    throw new Error(err?.message || "Không thể lấy cấu hình hệ thống");
   }
-}
+};
+
+export const rollbackVersion = async (id: number) => {
+  try {
+    const response = await api.put<ApiResponse<boolean>>(
+      API_ENDPOINTS.setting.admin.rollback(id)
+    );
+
+    const { code, message, result } = response;
+
+    if (code !== 200) {
+      throw new Error(message || "Rollback setting failed");
+    }
+
+    return result;
+  } catch (err: any) {
+    throw new Error(err?.message || "Không thể rollback cấu hình hệ thống");
+  }
+};
+
+export const deleteVersion = async (id: number) => {
+  try {
+    const response = await api.delete<ApiResponse<boolean>>(
+      API_ENDPOINTS.setting.admin.delete(id)
+    );
+
+    const { code, message, result } = response;
+
+    if (code !== 200) {
+      throw new Error(message || "Delete setting failed");
+    }
+
+    return result;
+  } catch (err: any) {
+    throw new Error(err?.message || "Không thể xóa cấu hình hệ thống");
+  }
+};

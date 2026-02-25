@@ -9,7 +9,6 @@ import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Cookies from "js-cookie";
 import { ACCESS_TOKEN } from "@/shared/const/cookie";
-import { decodeToken } from "@/middleware";
 
 interface OrdersFilterProps {
   activeFilter: string;
@@ -40,12 +39,7 @@ export function OrdersFilter({
   const token = Cookies.get(ACCESS_TOKEN);
   const hasToken = !!token;
   let userRole = "ADMIN";
-  if (hasToken && token) {
-    const decoded = decodeToken(token);
-    if (decoded) {
-      userRole = decoded.role;
-    }
-  }
+ 
 
   return (
     <div className="space-y-6">
@@ -91,7 +85,6 @@ export function OrdersFilter({
             <Button
               size="sm"
               variant={viewMode === "all" ? "default" : "ghost"}
-              onClick={() => onViewModeChange("all")}
               className={cn(
                 "px-4 py-2 rounded-sm text-xs font-medium transition-all",
                 viewMode === "all"
@@ -104,7 +97,6 @@ export function OrdersFilter({
             <Button
               size="sm"
               variant={viewMode === "mine" ? "default" : "ghost"}
-              onClick={() => onViewModeChange("mine")}
               className={cn(
                 "px-4 py-2 rounded-sm text-xs font-medium transition-all",
                 viewMode === "mine"

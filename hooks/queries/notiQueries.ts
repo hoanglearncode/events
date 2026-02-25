@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { NotificationService } from "@/services/noti.service";
+
 
 export type NotificationResponse = {
   id: number;
@@ -18,7 +18,6 @@ export type NotificationFormValues = {
 export const useMyNotifications = (page = 0, size = 10) => {
   return useQuery({
     queryKey: ["notifications", "my", page, size],
-    queryFn: () => NotificationService.my({ page, size }),
   });
 };
 
@@ -26,7 +25,6 @@ export const useReadNotification = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => NotificationService.read(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["notifications", "my"],
@@ -39,7 +37,6 @@ export const useReadAllNotifications = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => NotificationService.readAll(),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["notifications", "my"],
@@ -50,7 +47,5 @@ export const useReadAllNotifications = () => {
 
 export const useBroadcastNotification = () => {
   return useMutation({
-    mutationFn: (payload: NotificationFormValues) =>
-      NotificationService.broadcast(payload),
   });
 };

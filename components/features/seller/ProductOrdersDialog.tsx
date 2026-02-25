@@ -7,7 +7,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { useOrdersByProduct } from "@/hooks/queries/orderQueries";
 import { Button } from "@/components/ui/button";
 import { Package, Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -30,17 +29,6 @@ const ProductOrdersDialog: React.FC<ProductOrdersDialogProps> = ({
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const {
-    data: orders = [],
-    isLoading,
-    refetch,
-  } = useOrdersByProduct(
-    productId,
-    statusFilter || undefined,
-    page,
-    size,
-    open
-  );
 
   const formatMoney = (amount: number, currency = "VND") => {
     if (currency === "VND") {
@@ -68,14 +56,6 @@ const ProductOrdersDialog: React.FC<ProductOrdersDialogProps> = ({
     };
     return statusMap[status] || "bg-gray-100 text-gray-800";
   };
-
-  const filteredOrders = orders.filter((order: any) => {
-    return (
-      searchTerm === "" ||
-      order.orderCode?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.buyer?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -117,93 +97,7 @@ const ProductOrdersDialog: React.FC<ProductOrdersDialogProps> = ({
           </select>
         </div>
 
-        {/* Orders List */}
-        {isLoading ? (
-          <div className="py-8 text-center">
-            <Package className="w-8 h-8 animate-pulse text-gray-400 mx-auto mb-2" />
-            <p className="text-gray-600">Đang tải...</p>
-          </div>
-        ) : filteredOrders.length === 0 ? (
-          <div className="py-8 text-center">
-            <Package className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-            <p className="text-gray-600">Chưa có đơn hàng nào</p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {filteredOrders.map((order: any) => (
-              <div
-                key={order.id}
-                className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="font-mono text-sm text-gray-600">
-                        #{order.orderCode || order.id}
-                      </span>
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}
-                      >
-                        {order.status}
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-gray-600">
-                      <div>
-                        <span className="font-medium">Người mua:</span>{" "}
-                        {order.buyer || order.buyerEmail || "N/A"}
-                      </div>
-                      <div>
-                        <span className="font-medium">Số lượng:</span>{" "}
-                        {order.qty || order.quantity || 1}
-                      </div>
-                      <div>
-                        <span className="font-medium">Tổng tiền:</span>{" "}
-                        <span className="font-semibold text-blue-600">
-                          {formatMoney(
-                            order.amount || order.totalAmount,
-                            order.currency
-                          )}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="font-medium">Ngày:</span>{" "}
-                        {formatDate(order.createdAt || order.date)}
-                      </div>
-                    </div>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    Chi tiết
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Pagination */}
-        {filteredOrders.length > 0 && (
-          <div className="flex justify-center gap-2 pt-4 border-t">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setPage((p) => Math.max(0, p - 1))}
-              disabled={page === 0}
-            >
-              Trước
-            </Button>
-            <span className="px-4 py-2 text-sm text-gray-600 flex items-center">
-              Trang {page + 1}
-            </span>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setPage((p) => p + 1)}
-              disabled={filteredOrders.length < size}
-            >
-              Sau
-            </Button>
-          </div>
-        )}
+        
       </DialogContent>
     </Dialog>
   );
