@@ -12,61 +12,12 @@ export const profileKeys = {
   basic: () => [...profileKeys.all, "basic"] as const,
 };
 
-export function useProfile() {
-  return useQuery({
-    queryKey: profileKeys.basic(),
-    queryFn: async () => {
-      const response = await profileService.get();
-      return response.result;
-    },
-    staleTime: 5 * 60 * 1000, // 5 phút
-    retry: 1,
-  });
-}
-
 export function useProfileDetails() {
   return useQuery({
     queryKey: profileKeys.details(),
     queryFn: () => profileService.getDetails(),
     staleTime: 5 * 60 * 1000,
     retry: 1,
-  });
-}
-
-// Hook cập nhật profile
-export function useUpdateProfile(options?: {
-  onSuccess?: (data: UserProfile) => void;
-}) {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (data: ProfileFormData | FormData) =>
-      profileService.update(data as any),
-
-    onSuccess: (response: any) => {
-      const updatedProfile: UserProfile =
-        response?.result ?? response?.data ?? response;
-
-      // 1) Update cache ngay (fast UI)
-      try {
-        queryClient.setQueryData(profileKeys.basic(), updatedProfile);
-        queryClient.setQueryData(profileKeys.details(), updatedProfile);
-      } catch (e) {
-        // ignore if key not present
-      }
-
-      // 2) Invalidate để refetch các query liên quan (nếu cần)
-      queryClient.invalidateQueries({ queryKey: profileKeys.all });
-
-      toast.success("Cập nhật profile thành công!");
-      options?.onSuccess?.(updatedProfile);
-    },
-
-    onError: (error: any) => {
-      const message = error?.message ?? "Cập nhật profile thất bại";
-      toast.error(message);
-      // bạn có thể expose options.onError nếu muốn
-    },
   });
 }
 

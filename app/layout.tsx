@@ -8,8 +8,7 @@ import { Toaster as SonnerToaster } from "sonner";
 import { I18nProvider } from "@/providers/i18n-provider";
 import { AuthProvider } from "@/providers/auth-provider";
 import { SettingProvider } from "@/providers/setting-provider";
-import { getSettingGeneral } from "@/services/setting.service";
-
+import { useSettingStore } from "@/store/setting.store";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -21,22 +20,22 @@ const geistMono = Geist_Mono({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  // const settings = await getSettingGeneral();
+  const settings = useSettingStore.getState().general;
 
   return {
     title:
-      // settings?.systemTitle ??
+      settings?.systemTitle ??
       "VolHub – Nền tảng sự kiện & tuyển dụng hàng đầu cho sinh viên và doanh nghiệp",
     description:
-      // settings?.systemDescription ??
+      settings?.systemDescription ??
       "VolHub kết nối sinh viên, tình nguyện viên và doanh nghiệp thông qua các sự kiện tuyển dụng, hoạt động cộng đồng và cơ hội nghề nghiệp uy tín trên toàn quốc.",
     // Nếu có logo từ API
-    // ...(settings?.systemLogo && {
-    //   icons: { icon: settings.systemLogo },
-    //   openGraph: {
-    //     images: [settings.systemLogo],
-    //   },
-    // }),
+    ...(settings?.systemLogo && {
+      icons: { icon: settings.systemLogo },
+      openGraph: {
+        images: [settings.systemLogo],
+      },
+    }),
   };
 }
 

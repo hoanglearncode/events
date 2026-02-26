@@ -50,6 +50,8 @@ export const useSettingGeneralQuery = () =>
     queryKey: settingKeys.general(),
     queryFn: getSettingGeneral,
     staleTime: 10 * 60 * 1000,
+    retry: 2,
+    refetchOnWindowFocus: false,
   });
 
 export const useSettingRecruitmentQuery = () =>
