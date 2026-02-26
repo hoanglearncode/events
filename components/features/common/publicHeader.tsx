@@ -42,7 +42,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SearchDialog } from "./SearchResult";
 import { ACCESS_TOKEN } from "@/shared/const/cookie";
@@ -138,19 +138,19 @@ export default function PublicHeader() {
     closeAll,
   } = useMenuState();
 
-  const general = useSettingStore((state) => state.general);
+  // const general = useSettingStore((state) => state.general);
 
   const [openRegisterDialog, setOpenRegisterDialog] = useState(false);
 
-  const handleRegisterClick = useCallback(
-    (e: React.MouseEvent) => {
-      if (!general?.allowRegister) {
-        e.preventDefault();
-        setOpenRegisterDialog(true);
-      }
-    },
-    [general?.allowRegister]
-  );
+  // const handleRegisterClick = useCallback(
+  //   (e: React.MouseEvent) => {
+  //     if (!general?.allowRegister) {
+  //       e.preventDefault();
+  //       setOpenRegisterDialog(true);
+  //     }
+  //   },
+  //   [general?.allowRegister]
+  // );
 
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -189,7 +189,7 @@ export default function PublicHeader() {
   );
 
   const handleSignOut = useCallback(() => {
-    Cookies.remove(ACCESS_TOKEN);
+    // Cookies.remove(ACCESS_TOKEN);
     router.push("/login");
   }, [router]);
 
@@ -219,13 +219,14 @@ export default function PublicHeader() {
           </Link>
           <Link
             href="/register"
-            onClick={handleRegisterClick}
+            // onClick={handleRegisterClick}
             className={`font-semibold transition
                   ${
-                    general?.allowRegister
+                    false
                       ? "text-primary hover:underline"
                       : "text-muted-foreground cursor-not-allowed"
-                  }`}
+                  }`
+                }
           >
             <Button
               size="sm"
@@ -327,13 +328,14 @@ export default function PublicHeader() {
             href="/register"
             className={`font-semibold transition
                   ${
-                    general?.allowRegister
+                    // general?.allowRegister
+                    false
                       ? "text-primary hover:underline"
                       : "text-muted-foreground cursor-not-allowed"
                   }`}
             onClick={() => {
               setIsMobileMenuOpen(false);
-              handleRegisterClick(null as any);
+              // handleRegisterClick(null as any);
             }}
           >
             <Button
@@ -460,7 +462,7 @@ export default function PublicHeader() {
               className="flex items-center gap-2 sm:gap-3 min-w-0 group touch-manipulation"
             >
               {/* LOGO */}
-              <div className="relative shrink-0">
+              {/* <div className="relative shrink-0">
                 <Image
                   src={general?.systemLogo || "/event_logo.jpg"}
                   alt={
@@ -480,7 +482,7 @@ export default function PublicHeader() {
                 />
 
                 {/* glow effect */}
-                <div
+                {/* <div
                   className="
                     absolute -inset-1
                     rounded-full
@@ -491,7 +493,7 @@ export default function PublicHeader() {
                     transition
                   "
                 />
-              </div>
+              </div> */}
 
               {/* TEXT BLOCK */}
               <div className="flex flex-col min-w-0 leading-tight">
@@ -507,7 +509,7 @@ export default function PublicHeader() {
                     truncate
                   "
                 >
-                  {general?.systemName}
+                  {/* {general?.systemName} */}
                 </span>
 
                 {/* system title */}
@@ -519,7 +521,7 @@ export default function PublicHeader() {
                     truncate
                   "
                 >
-                  {general?.systemTitle}
+                  {/* {general?.systemTitle} */}
                 </span>
               </div>
             </Link>
@@ -580,7 +582,7 @@ export default function PublicHeader() {
                         className="transition-transform duration-300"
                       />
                       <span className="text-lg bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                        {general?.systemName}
+                        {/* {general?.systemName} */}
                       </span>
                     </Link>
                   </SheetTitle>
